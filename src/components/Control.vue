@@ -68,13 +68,13 @@ const props = defineProps<{
 .type-checkbox.state-hover .checkbox-bg {
   border-color: #6c869f;
 }
-.type-checkbox.state-active .checkbox-bg {
-  border-color: #2c8dff;
-  background: #2c8dff;
-}
 .type-checkbox.state-disabled .checkbox-bg {
   opacity: 0.5;
   cursor: not-allowed;
+}
+.type-checkbox.active .checkbox-bg {
+  border-color: #2c8dff;
+  background: #2c8dff;
 }
 .checkbox-check {
   position: absolute;
@@ -117,12 +117,12 @@ const props = defineProps<{
 .type-toggle.state-hover .toggle-bg {
   background: #6c869f;
 }
-.type-toggle.state-active .toggle-bg {
-  background: #2c8dff;
-}
 .type-toggle.state-disabled .toggle-bg {
   opacity: 0.5;
   cursor: not-allowed;
+}
+.type-toggle.active .toggle-bg {
+  background: #2c8dff;
 }
 .toggle-circle {
   position: absolute;
@@ -167,13 +167,13 @@ const props = defineProps<{
 .type-radio.state-hover .radio-bg {
   border-color: #6c869f;
 }
-.type-radio.state-active .radio-bg {
-  border-color: #2c8dff;
-  background: #2c8dff;
-}
 .type-radio.state-disabled .radio-bg {
   opacity: 0.5;
   cursor: not-allowed;
+}
+.type-radio.active .radio-bg {
+  border-color: #2c8dff;
+  background: #2c8dff;
 }
 .radio-dot {
   position: absolute;
