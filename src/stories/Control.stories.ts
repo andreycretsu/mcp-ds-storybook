@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
+import { ref } from 'vue';
 import Control from '../components/Control.vue';
 
 const meta = {
@@ -31,6 +32,28 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+function interactiveTemplate(args: any) {
+  const active = ref(args.active ?? false);
+  const hover = ref(false);
+  return {
+    components: { Control },
+    setup() {
+      return { args, active, hover };
+    },
+    template: `
+      <Control
+        v-bind="args"
+        :active="active"
+        :state="hover ? 'hover' : args.state"
+        @mouseenter="hover = true"
+        @mouseleave="hover = false"
+        @click="active = !active"
+        style="cursor: pointer;"
+      />
+    `,
+  };
+}
+
 export const Checkbox: Story = {
   args: {
     type: 'checkbox',
@@ -38,6 +61,7 @@ export const Checkbox: Story = {
     state: 'default',
     active: false,
   },
+  render: interactiveTemplate,
 };
 
 export const CheckboxActive: Story = {
@@ -46,6 +70,25 @@ export const CheckboxActive: Story = {
     size: 'M',
     state: 'default',
     active: true,
+  },
+  render: interactiveTemplate,
+};
+
+export const CheckboxHover: Story = {
+  args: {
+    type: 'checkbox',
+    size: 'M',
+    state: 'hover',
+    active: false,
+  },
+};
+
+export const CheckboxDisabled: Story = {
+  args: {
+    type: 'checkbox',
+    size: 'M',
+    state: 'disabled',
+    active: false,
   },
 };
 
@@ -56,6 +99,7 @@ export const Toggle: Story = {
     state: 'default',
     active: false,
   },
+  render: interactiveTemplate,
 };
 
 export const ToggleActive: Story = {
@@ -64,6 +108,25 @@ export const ToggleActive: Story = {
     size: 'M',
     state: 'default',
     active: true,
+  },
+  render: interactiveTemplate,
+};
+
+export const ToggleHover: Story = {
+  args: {
+    type: 'toggle',
+    size: 'M',
+    state: 'hover',
+    active: false,
+  },
+};
+
+export const ToggleDisabled: Story = {
+  args: {
+    type: 'toggle',
+    size: 'M',
+    state: 'disabled',
+    active: false,
   },
 };
 
@@ -74,6 +137,7 @@ export const Radio: Story = {
     state: 'default',
     active: false,
   },
+  render: interactiveTemplate,
 };
 
 export const RadioActive: Story = {
@@ -82,5 +146,24 @@ export const RadioActive: Story = {
     size: 'M',
     state: 'default',
     active: true,
+  },
+  render: interactiveTemplate,
+};
+
+export const RadioHover: Story = {
+  args: {
+    type: 'radio',
+    size: 'M',
+    state: 'hover',
+    active: false,
+  },
+};
+
+export const RadioDisabled: Story = {
+  args: {
+    type: 'radio',
+    size: 'M',
+    state: 'disabled',
+    active: false,
   },
 }; 
