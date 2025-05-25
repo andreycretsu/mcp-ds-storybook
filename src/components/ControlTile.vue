@@ -25,7 +25,7 @@
             <Icon :icon="icon" :size="iconSize" :color="iconColor" :spin="iconSpin" :pulse="iconPulse" :fixedWidth="iconFixedWidth" />
           </div>
         </div>
-        <div v-else-if="showInfoIcon" class="icon-container">
+        <div v-if="showInfoIcon" class="icon-container info-icon">
           <div class="small-icon">
             <Icon icon="fa-solid fa-info-circle" :size="iconSize" :color="infoIconColor" />
           </div>
@@ -69,10 +69,11 @@ const iconSize = computed(() => {
   }
 })
 
-// Only one of icon, infoIcon, or control can be shown
+// Icon and control are mutually exclusive
 const showIconVisual = computed(() => !!props.icon)
-const showInfoIcon = computed(() => !props.icon && !!props.showInfoIcon)
-const showControlVisual = computed(() => !props.icon && !props.showInfoIcon && !!props.control)
+const showControlVisual = computed(() => !props.icon && !!props.control)
+// Info icon is independent
+const showInfoIcon = computed(() => !!props.showInfoIcon)
 </script>
 
 <style scoped>
@@ -295,5 +296,9 @@ const showControlVisual = computed(() => !props.icon && !props.showInfoIcon && !
 
 .type-Hug {
   width: fit-content;
+}
+
+.info-icon {
+  margin-left: 4px;
 }
 </style> 
