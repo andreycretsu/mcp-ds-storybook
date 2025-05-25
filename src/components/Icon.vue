@@ -1,6 +1,6 @@
 <template>
   <i
-    :class="computedClass"
+    :class="[computedClass, sizeClass]"
     :style="computedStyle"
     :aria-label="ariaLabel"
     :aria-hidden="ariaHidden !== undefined ? ariaHidden : true"
@@ -12,8 +12,8 @@
 import { computed } from 'vue'
 
 const props = defineProps<{
-  icon: string // e.g. 'fa-solid fa-user', 'fa-regular fa-user', 'fa-brands fa-github', 'fa-light fa-user', etc.
-  size?: string // e.g. '24px', '1.5em', '2rem'
+  icon: string // e.g. 'fa-solid fa-user', 'fa-regular fa-user', 'fa-brands fa-github', etc.
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' // Five sizes from MCP/Figma
   color?: string
   spin?: boolean
   pulse?: boolean
@@ -22,6 +22,17 @@ const props = defineProps<{
   ariaLabel?: string
   ariaHidden?: boolean
 }>()
+
+const sizeClass = computed(() => {
+  switch (props.size) {
+    case 'xs': return 'icon-xs'
+    case 'sm': return 'icon-sm'
+    case 'md': return 'icon-md'
+    case 'lg': return 'icon-lg'
+    case 'xl': return 'icon-xl'
+    default: return 'icon-md'
+  }
+})
 
 const computedClass = computed(() => {
   return [
@@ -37,8 +48,15 @@ const computedClass = computed(() => {
 
 const computedStyle = computed(() => {
   return {
-    fontSize: props.size,
     color: props.color,
   }
 })
-</script> 
+</script>
+
+<style scoped>
+.icon-xs { font-size: 12px; }
+.icon-sm { font-size: 16px; }
+.icon-md { font-size: 20px; }
+.icon-lg { font-size: 24px; }
+.icon-xl { font-size: 32px; }
+</style> 
