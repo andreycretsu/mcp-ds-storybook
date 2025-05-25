@@ -51,6 +51,7 @@ const computedClass = computed(() => {
 const computedStyle = computed(() => {
   return {
     color: props.color,
+    fontSize: 'inherit', // Let the container control the size
   }
 })
 </script>
@@ -60,32 +61,36 @@ const computedStyle = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f0f0f0; /* Optional background color */
-  border: 1px solid #ccc; /* Optional border */
+  /* No background or border for clean look */
 }
 
 .icon-xs {
   width: 16px;
   height: 16px;
+  font-size: 12px;
 }
 
 .icon-sm {
   width: 24px;
   height: 24px;
+  font-size: 16px;
 }
 
 .icon-md {
   width: 32px;
   height: 32px;
+  font-size: 20px;
 }
 
 .icon-lg {
   width: 48px;
   height: 48px;
+  font-size: 24px;
 }
 
 .icon-xl {
   width: 64px;
   height: 64px;
+  font-size: 32px;
 }
 </style> 
