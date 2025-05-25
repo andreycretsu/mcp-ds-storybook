@@ -13,14 +13,12 @@
     <!-- Left: Control or Icon -->
     <div class="left-slot">
       <template v-if="control">
-        <div :class="['control', `control-${size}`]">
-          <div class="control-container">
-            <div class="control-icon"></div>
-            <div class="control-partial">
-              <div class="control-rectangle"></div>
-            </div>
-          </div>
-        </div>
+        <Control
+          :type="controlType"
+          :size="controlSize"
+          :state="controlState"
+          :active="controlActive"
+        />
       </template>
       <template v-else-if="icon">
         <Icon :icon="iconClass" :size="size === 'L' ? 'md' : 'sm'" :color="iconColor" :spin="iconSpin" :pulse="iconPulse" :fixedWidth="iconFixedWidth" />
@@ -43,6 +41,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import Icon from './Icon.vue'
+import Control from './Control.vue'
 
 const props = defineProps<{
   label: string
@@ -51,6 +50,8 @@ const props = defineProps<{
   type?: 'Fixed' | 'Hug'
   state?: 'default' | 'active' | 'disabled'
   control?: boolean
+  controlType?: 'checkbox' | 'toggle' | 'radio'
+  active?: boolean
   icon?: string // Only the icon name, e.g. 'house'
   iconColor?: string
   iconSpin?: boolean
@@ -69,6 +70,11 @@ const info = computed(() => props.info ?? false)
 
 // Icon class masking
 const iconClass = computed(() => props.icon ? `fa-solid fa-${props.icon}` : '')
+
+// Map size and state for Control.vue
+const controlSize = computed(() => props.size === 'L' ? 'M' : 'S')
+const controlState = computed(() => props.state === 'active' ? 'default' : props.state)
+const controlActive = computed(() => props.state === 'active' ? true : !!props.active)
 </script>
 
 <style scoped>
