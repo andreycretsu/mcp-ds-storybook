@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/vue3';
+import type { Meta, StoryObj, StoryFn } from '@storybook/vue3';
 import ControlTile from '../components/ControlTile.vue';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories
@@ -18,46 +18,25 @@ const meta = {
       options: ['Fixed', 'Hug'],
       description: 'Type variant from MCP server'
     },
+    controlType: {
+      control: 'select',
+      options: ['checkbox', 'toggle', 'radio'],
+      description: 'Type of control',
+      defaultValue: 'checkbox'
+    },
     disabled: {
       control: 'boolean',
       description: 'Disable state from MCP server',
       defaultValue: false
     },
-    control: {
-      control: 'boolean',
-      description: 'Show control visual instead of icon',
-      defaultValue: false
-    },
     info: {
       control: 'boolean',
-      description: 'Show info icon'
+      description: 'Show info icon',
+      defaultValue: false
     },
     icon: {
       control: 'text',
       description: 'FontAwesome icon name'
-    },
-    iconColor: {
-      control: 'color',
-      description: 'Icon color'
-    },
-    iconSpin: {
-      control: 'boolean',
-      description: 'Spin animation',
-      defaultValue: false
-    },
-    iconPulse: {
-      control: 'boolean',
-      description: 'Pulse animation',
-      defaultValue: false
-    },
-    iconFixedWidth: {
-      control: 'boolean',
-      description: 'Fixed width icon',
-      defaultValue: false
-    },
-    infoIconColor: {
-      control: 'color',
-      description: 'Info icon color'
     }
   }
 } satisfies Meta<typeof ControlTile>;
@@ -70,19 +49,38 @@ type Story = StoryObj<typeof meta>;
  * to learn how to use render functions.
  */
 
+// Visual selector for story logic only
+const visualOptions = ['empty', 'control', 'icon'];
+
+const Template: StoryFn<typeof ControlTile> = (args, { globals, parameters }) => {
+  // Use a local variable for visual mode (simulate a toolbar or control)
+  const visual = parameters.visual || 'empty';
+  let control = false;
+  let icon = '';
+  if (visual === 'control') control = true;
+  if (visual === 'icon') icon = args.icon || 'star';
+  return {
+    components: { ControlTile },
+    setup() {
+      return { args: { ...args, control, icon } };
+    },
+    template: `<ControlTile v-bind="args" />`,
+  };
+};
+
 // Size variants from MCP
 export const Large: Story = {
+  render: Template,
+  parameters: { visual: 'empty' },
   args: {
     label: 'Large Tile',
     description: 'Description text',
     size: 'L',
     type: 'Fixed',
-    control: false,
+    controlType: 'checkbox',
     info: false,
-    iconSpin: false,
-    iconPulse: false,
-    iconFixedWidth: false,
-    disabled: false
+    disabled: false,
+    icon: ''
   }
 }
 
@@ -92,11 +90,9 @@ export const Medium: Story = {
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
-    control: false,
+    controlType: 'checkbox',
+    icon: '',
     info: false,
-    iconSpin: false,
-    iconPulse: false,
-    iconFixedWidth: false,
     disabled: false
   }
 }
@@ -108,11 +104,9 @@ export const Fixed: Story = {
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
-    control: false,
+    controlType: 'checkbox',
+    icon: '',
     info: false,
-    iconSpin: false,
-    iconPulse: false,
-    iconFixedWidth: false,
     disabled: false
   }
 }
@@ -123,11 +117,9 @@ export const Hug: Story = {
     description: 'Description text',
     size: 'M',
     type: 'Hug',
-    control: false,
+    controlType: 'checkbox',
+    icon: '',
     info: false,
-    iconSpin: false,
-    iconPulse: false,
-    iconFixedWidth: false,
     disabled: false
   }
 }
@@ -139,11 +131,9 @@ export const Default: Story = {
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
-    control: false,
+    controlType: 'checkbox',
+    icon: '',
     info: false,
-    iconSpin: false,
-    iconPulse: false,
-    iconFixedWidth: false,
     disabled: false
   }
 }
@@ -154,11 +144,9 @@ export const Hover: Story = {
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
-    control: false,
+    controlType: 'checkbox',
+    icon: '',
     info: false,
-    iconSpin: false,
-    iconPulse: false,
-    iconFixedWidth: false,
     disabled: false
   },
   parameters: {
@@ -172,79 +160,71 @@ export const Disabled: Story = {
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
-    control: false,
+    controlType: 'checkbox',
+    icon: '',
     info: false,
-    iconSpin: false,
-    iconPulse: false,
-    iconFixedWidth: false,
     disabled: true
   }
 }
 
 // Icon examples
 export const WithIcon: Story = {
+  render: Template,
+  parameters: { visual: 'icon' },
   args: {
     label: 'With Icon',
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
-    control: false,
+    controlType: 'checkbox',
     info: false,
-    iconSpin: false,
-    iconPulse: false,
-    iconFixedWidth: false,
     disabled: false,
-    icon: 'fa-solid fa-star',
-    iconColor: '#2563EB'
+    icon: 'star'
   }
 }
 
 export const WithControl: Story = {
+  render: Template,
+  parameters: { visual: 'control' },
   args: {
     label: 'With Control',
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
-    control: true,
+    controlType: 'checkbox',
     info: false,
-    iconSpin: false,
-    iconPulse: false,
-    iconFixedWidth: false,
-    disabled: false
+    disabled: false,
+    icon: ''
   }
 }
 
 export const WithInfoIcon: Story = {
+  render: Template,
+  parameters: { visual: 'empty' },
   args: {
     label: 'With Info Icon',
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
-    control: false,
-    iconSpin: false,
-    iconPulse: false,
-    iconFixedWidth: false,
-    disabled: false,
+    controlType: 'checkbox',
     info: true,
-    infoIconColor: '#6B7280'
+    disabled: false,
+    icon: ''
   }
 }
 
 // Complex example
 export const Complex: Story = {
+  render: Template,
+  parameters: { visual: 'icon' },
   args: {
     label: 'Complex Example',
     description: 'With icon, info icon, and active state',
     size: 'L',
     type: 'Fixed',
-    control: false,
-    iconSpin: false,
-    iconPulse: false,
-    iconFixedWidth: false,
-    disabled: false,
-    icon: 'fa-solid fa-star',
-    iconColor: '#2563EB',
+    controlType: 'checkbox',
     info: true,
-    infoIconColor: '#6B7280'
+    disabled: false,
+    icon: 'star'
   }
 }
