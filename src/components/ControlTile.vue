@@ -7,10 +7,10 @@
       { disabled, active }
     ]"
   >
-    <div class="control" v-if="showControl">
+    <div v-if="showControlVisual" class="control">
       <div class="control-container">
         <div class="control-icon">
-          <span class="control-icon-text">{{ controlIcon }}</span>
+          <!-- No icon here, just the control visual -->
         </div>
         <div class="control-partial">
           <div class="control-rectangle"></div>
@@ -20,9 +20,14 @@
     <div class="content">
       <div class="label-container">
         <span class="label">{{ label }}</span>
-        <div v-if="showIcon" class="icon-container">
+        <div v-if="showIconVisual" class="icon-container">
           <div class="small-icon">
-            <span class="small-icon-text">{{ icon }}</span>
+            <Icon :icon="icon" :size="iconSize" :color="iconColor" :spin="iconSpin" :pulse="iconPulse" :fixedWidth="iconFixedWidth" />
+          </div>
+        </div>
+        <div v-else-if="showInfoIcon" class="icon-container">
+          <div class="small-icon">
+            <Icon icon="fa-solid fa-info-circle" :size="iconSize" :color="infoIconColor" />
           </div>
         </div>
       </div>
@@ -32,22 +37,42 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
+import Icon from './Icon.vue'
 
-const isHover = ref(false)
-
-defineProps<{
+const props = defineProps<{
   label: string
   description?: string
   size?: 'S' | 'M' | 'L'
   type?: 'Fixed' | 'Hug'
   disabled?: boolean
   active?: boolean
-  showControl?: boolean
-  controlIcon?: string
-  showIcon?: boolean
+  control?: boolean
+  showInfoIcon?: boolean
   icon?: string
+  iconColor?: string
+  iconSpin?: boolean
+  iconPulse?: boolean
+  iconFixedWidth?: boolean
+  infoIconColor?: string
 }>()
+
+const isHover = ref(false)
+
+// Map ControlTile size to Icon size
+const iconSize = computed(() => {
+  switch (props.size) {
+    case 'S': return 'xs'
+    case 'M': return 'sm'
+    case 'L': return 'md'
+    default: return 'sm'
+  }
+})
+
+// Only one of icon, infoIcon, or control can be shown
+const showIconVisual = computed(() => !!props.icon)
+const showInfoIcon = computed(() => !props.icon && !!props.showInfoIcon)
+const showControlVisual = computed(() => !props.icon && !props.showInfoIcon && !!props.control)
 </script>
 
 <style scoped>
