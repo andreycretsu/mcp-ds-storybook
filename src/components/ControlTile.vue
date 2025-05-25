@@ -101,7 +101,7 @@ const showLeft = computed(() => showControl.value || showIcon.value)
 .control-tile {
   display: flex;
   align-items: flex-start;
-  gap: 16px; /* Figma: 16px between left and content */
+  gap: 16px;
   border-radius: 8px;
   background: #fbfcfe;
   border: 1px solid #e5ecf3;
@@ -133,6 +133,10 @@ const showLeft = computed(() => showControl.value || showIcon.value)
   border-color: #2c8dff;
   background: #e5ecf3;
 }
+.state-active.hover {
+  border-color: #2c8dff;
+  background: #f6f9fb;
+}
 .state-disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -152,7 +156,7 @@ const showLeft = computed(() => showControl.value || showIcon.value)
 .content {
   display: flex;
   flex-direction: column;
-  gap: 2px; /* Figma: 2px between label and description */
+  gap: 2px;
   flex: 1;
   align-items: flex-start;
 }

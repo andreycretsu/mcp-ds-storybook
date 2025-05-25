@@ -20,17 +20,15 @@ const meta = {
     },
     disabled: {
       control: 'boolean',
-      description: 'Disable state from MCP server'
-    },
-    active: {
-      control: 'boolean',
-      description: 'Active=yes/no from MCP server'
+      description: 'Disable state from MCP server',
+      defaultValue: false
     },
     control: {
       control: 'boolean',
-      description: 'Show control visual instead of icon'
+      description: 'Show control visual instead of icon',
+      defaultValue: false
     },
-    showInfoIcon: {
+    info: {
       control: 'boolean',
       description: 'Show info icon'
     },
@@ -44,15 +42,18 @@ const meta = {
     },
     iconSpin: {
       control: 'boolean',
-      description: 'Spin animation'
+      description: 'Spin animation',
+      defaultValue: false
     },
     iconPulse: {
       control: 'boolean',
-      description: 'Pulse animation'
+      description: 'Pulse animation',
+      defaultValue: false
     },
     iconFixedWidth: {
       control: 'boolean',
-      description: 'Fixed width icon'
+      description: 'Fixed width icon',
+      defaultValue: false
     },
     infoIconColor: {
       control: 'color',
@@ -75,7 +76,13 @@ export const Large: Story = {
     label: 'Large Tile',
     description: 'Description text',
     size: 'L',
-    type: 'Fixed'
+    type: 'Fixed',
+    control: false,
+    info: false,
+    iconSpin: false,
+    iconPulse: false,
+    iconFixedWidth: false,
+    disabled: false
   }
 }
 
@@ -84,7 +91,13 @@ export const Medium: Story = {
     label: 'Medium Tile',
     description: 'Description text',
     size: 'M',
-    type: 'Fixed'
+    type: 'Fixed',
+    control: false,
+    info: false,
+    iconSpin: false,
+    iconPulse: false,
+    iconFixedWidth: false,
+    disabled: false
   }
 }
 
@@ -94,7 +107,13 @@ export const Fixed: Story = {
     label: 'Fixed Width',
     description: 'Description text',
     size: 'M',
-    type: 'Fixed'
+    type: 'Fixed',
+    control: false,
+    info: false,
+    iconSpin: false,
+    iconPulse: false,
+    iconFixedWidth: false,
+    disabled: false
   }
 }
 
@@ -103,7 +122,13 @@ export const Hug: Story = {
     label: 'Hug Content',
     description: 'Description text',
     size: 'M',
-    type: 'Hug'
+    type: 'Hug',
+    control: false,
+    info: false,
+    iconSpin: false,
+    iconPulse: false,
+    iconFixedWidth: false,
+    disabled: false
   }
 }
 
@@ -113,7 +138,13 @@ export const Default: Story = {
     label: 'Default State',
     description: 'Description text',
     size: 'M',
-    type: 'Fixed'
+    type: 'Fixed',
+    control: false,
+    info: false,
+    iconSpin: false,
+    iconPulse: false,
+    iconFixedWidth: false,
+    disabled: false
   }
 }
 
@@ -122,7 +153,13 @@ export const Hover: Story = {
     label: 'Hover State',
     description: 'Description text',
     size: 'M',
-    type: 'Fixed'
+    type: 'Fixed',
+    control: false,
+    info: false,
+    iconSpin: false,
+    iconPulse: false,
+    iconFixedWidth: false,
+    disabled: false
   },
   parameters: {
     pseudo: { hover: true }
@@ -135,28 +172,12 @@ export const Disabled: Story = {
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
+    control: false,
+    info: false,
+    iconSpin: false,
+    iconPulse: false,
+    iconFixedWidth: false,
     disabled: true
-  }
-}
-
-// Active variants from MCP
-export const Active: Story = {
-  args: {
-    label: 'Active=yes',
-    description: 'Description text',
-    size: 'M',
-    type: 'Fixed',
-    active: true
-  }
-}
-
-export const Inactive: Story = {
-  args: {
-    label: 'Active=no',
-    description: 'Description text',
-    size: 'M',
-    type: 'Fixed',
-    active: false
   }
 }
 
@@ -167,6 +188,12 @@ export const WithIcon: Story = {
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
+    control: false,
+    info: false,
+    iconSpin: false,
+    iconPulse: false,
+    iconFixedWidth: false,
+    disabled: false,
     icon: 'fa-solid fa-star',
     iconColor: '#2563EB'
   }
@@ -178,7 +205,12 @@ export const WithControl: Story = {
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
-    control: true
+    control: true,
+    info: false,
+    iconSpin: false,
+    iconPulse: false,
+    iconFixedWidth: false,
+    disabled: false
   }
 }
 
@@ -188,7 +220,12 @@ export const WithInfoIcon: Story = {
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
-    showInfoIcon: true,
+    control: false,
+    iconSpin: false,
+    iconPulse: false,
+    iconFixedWidth: false,
+    disabled: false,
+    info: true,
     infoIconColor: '#6B7280'
   }
 }
@@ -200,10 +237,14 @@ export const Complex: Story = {
     description: 'With icon, info icon, and active state',
     size: 'L',
     type: 'Fixed',
+    control: false,
+    iconSpin: false,
+    iconPulse: false,
+    iconFixedWidth: false,
+    disabled: false,
     icon: 'fa-solid fa-star',
     iconColor: '#2563EB',
-    showInfoIcon: true,
-    infoIconColor: '#6B7280',
-    active: true
+    info: true,
+    infoIconColor: '#6B7280'
   }
 }
