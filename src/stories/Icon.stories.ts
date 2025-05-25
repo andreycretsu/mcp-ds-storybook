@@ -11,8 +11,9 @@ const meta = {
       description: 'FontAwesome icon class, e.g. fa-solid fa-user, fa-regular fa-user, fa-brands fa-github',
     },
     size: {
-      control: 'text',
-      description: 'Font size (e.g. 24px, 1.5em, 2rem)',
+      control: { type: 'select' },
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      description: 'Size of the icon (square container): xs, sm, md, lg, xl',
     },
     color: {
       control: 'color',
@@ -51,7 +52,7 @@ type Story = StoryObj<typeof meta>;
 export const Solid: Story = {
   args: {
     icon: 'fa-solid fa-user',
-    size: '32px',
+    size: 'md',
     color: '#2563EB',
   },
 };
@@ -59,7 +60,7 @@ export const Solid: Story = {
 export const Regular: Story = {
   args: {
     icon: 'fa-regular fa-user',
-    size: '32px',
+    size: 'md',
     color: '#10B981',
   },
 };
@@ -67,7 +68,7 @@ export const Regular: Story = {
 export const Brands: Story = {
   args: {
     icon: 'fa-brands fa-github',
-    size: '32px',
+    size: 'md',
     color: '#111827',
   },
 };
@@ -75,7 +76,7 @@ export const Brands: Story = {
 export const Spin: Story = {
   args: {
     icon: 'fa-solid fa-sync',
-    size: '32px',
+    size: 'md',
     color: '#F59E42',
     spin: true,
   },
@@ -84,7 +85,7 @@ export const Spin: Story = {
 export const Pulse: Story = {
   args: {
     icon: 'fa-solid fa-heart',
-    size: '32px',
+    size: 'md',
     color: '#EF4444',
     pulse: true,
   },
@@ -93,7 +94,7 @@ export const Pulse: Story = {
 export const FixedWidth: Story = {
   args: {
     icon: 'fa-solid fa-align-left',
-    size: '32px',
+    size: 'md',
     color: '#6366F1',
     fixedWidth: true,
   },
