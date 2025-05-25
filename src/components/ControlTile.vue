@@ -4,7 +4,8 @@
     :class="[
       `size-${size}`,
       `type-${type}`,
-      { active, disabled: isDisabled, hover: isHovering }
+      `state-${state}`,
+      { hover: isHovering }
     ]"
     @mouseenter="isHover = true"
     @mouseleave="isHover = false"
@@ -14,9 +15,7 @@
       <template v-if="control">
         <div :class="['control', `control-${size}`]">
           <div class="control-container">
-            <div class="control-icon">
-              <!-- Control visual (e.g. checkmark) can be slotted here if needed -->
-            </div>
+            <div class="control-icon"></div>
             <div class="control-partial">
               <div class="control-rectangle"></div>
             </div>
@@ -24,7 +23,7 @@
         </div>
       </template>
       <template v-else-if="icon">
-        <Icon :icon="icon" :size="size === 'L' ? 'md' : 'sm'" :color="iconColor" :spin="iconSpin" :pulse="iconPulse" :fixedWidth="iconFixedWidth" />
+        <Icon :icon="iconClass" :size="size === 'L' ? 'md' : 'sm'" :color="iconColor" :spin="iconSpin" :pulse="iconPulse" :fixedWidth="iconFixedWidth" />
       </template>
     </div>
     <div class="content">
@@ -50,11 +49,9 @@ const props = defineProps<{
   description?: string
   size?: 'L' | 'M'
   type?: 'Fixed' | 'Hug'
-  active?: boolean
-  disabled?: boolean
-  state?: 'Default' | 'Hover' | 'Disabled'
+  state?: 'default' | 'active' | 'disabled'
   control?: boolean
-  icon?: string
+  icon?: string // Only the icon name, e.g. 'house'
   iconColor?: string
   iconSpin?: boolean
   iconPulse?: boolean
@@ -64,15 +61,21 @@ const props = defineProps<{
 }>()
 
 const isHover = ref(false)
-const isDisabled = computed(() => props.disabled || props.state === 'Disabled')
-const isHovering = computed(() => isHover.value || props.state === 'Hover')
+const isHovering = computed(() => isHover.value)
+
+// Boolean defaults for Storybook toggles
+const control = computed(() => props.control ?? false)
+const info = computed(() => props.info ?? false)
+
+// Icon class masking
+const iconClass = computed(() => props.icon ? `fa-solid fa-${props.icon}` : '')
 </script>
 
 <style scoped>
 .control-tile {
   display: flex;
-  align-items: center;
-  gap: 16px;
+  align-items: flex-start;
+  gap: 12px; /* Figma: 12px between icon/control and text */
   border-radius: 6px;
   background: #fbfcfe;
   border: 1px solid #e5ecf3;
@@ -81,6 +84,7 @@ const isHovering = computed(() => isHover.value || props.state === 'Hover')
   min-height: 44px;
   min-width: 120px;
   box-sizing: border-box;
+  padding: 0; /* Remove default padding, use size classes */
 }
 .size-L {
   padding: 20px 24px;
@@ -100,26 +104,29 @@ const isHovering = computed(() => isHover.value || props.state === 'Hover')
 .type-Hug {
   width: fit-content;
 }
-.control-tile:hover,
-.control-tile.hover {
+.state-default {
   border-color: #e5ecf3;
-  background: #f6f9fb;
+  background: #fbfcfe;
 }
-.control-tile.active {
+.state-active {
   border-color: #2c8dff;
   background: #e5ecf3;
 }
-.control-tile.disabled {
+.state-disabled {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
 }
+.control-tile.hover {
+  border-color: #e5ecf3;
+  background: #f6f9fb;
+}
 .left-slot {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  margin-right: 16px;
   min-width: 20px;
+  margin-right: 0; /* gap handles spacing */
 }
 .control-L {
   width: 20px;
@@ -174,8 +181,9 @@ const isHovering = computed(() => isHover.value || props.state === 'Hover')
 .content {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px; /* Figma: 2px between label and description */
   flex: 1;
+  align-items: flex-start;
 }
 .label-container {
   display: flex;
