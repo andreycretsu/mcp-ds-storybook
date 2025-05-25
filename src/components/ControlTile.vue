@@ -4,30 +4,40 @@
     :class="[
       `size-${size || 'M'}`,
       `type-${type || 'Fixed'}`,
-      { disabled, active }
+      { 
+        disabled,
+        active,
+        hover: isHover
+      }
     ]"
+    @mouseenter="isHover = true"
+    @mouseleave="isHover = false"
   >
-    <div v-if="showControlVisual" class="control">
-      <div class="control-container">
-        <div class="control-icon">
-          <!-- No icon here, just the control visual -->
+    <!-- Left slot: icon or control visual -->
+    <div class="left-slot">
+      <template v-if="showIconVisual">
+        <Icon :icon="icon || ''" :size="size === 'L' ? 'md' : 'sm'" :color="iconColor" :spin="iconSpin" :pulse="iconPulse" :fixedWidth="iconFixedWidth" />
+      </template>
+      <template v-else-if="showControlVisual">
+        <div :class="['control', `control-${size || 'M'}`]">
+          <div class="control-container">
+            <div class="control-icon">
+              <!-- No icon here, just the control visual -->
+            </div>
+            <div class="control-partial">
+              <div class="control-rectangle"></div>
+            </div>
+          </div>
         </div>
-        <div class="control-partial">
-          <div class="control-rectangle"></div>
-        </div>
-      </div>
+      </template>
     </div>
     <div class="content">
       <div class="label-container">
         <span class="label">{{ label }}</span>
-        <div v-if="showIconVisual" class="icon-container">
-          <div class="small-icon">
-            <Icon :icon="icon" :size="iconSize" :color="iconColor" :spin="iconSpin" :pulse="iconPulse" :fixedWidth="iconFixedWidth" />
-          </div>
-        </div>
+        <!-- Info icon is always right of label -->
         <div v-if="showInfoIcon" class="icon-container info-icon">
           <div class="small-icon">
-            <Icon icon="fa-solid fa-info-circle" :size="iconSize" :color="infoIconColor" />
+            <Icon icon="fa-solid fa-info-circle" size="xs" :color="infoIconColor" />
           </div>
         </div>
       </div>
@@ -43,60 +53,80 @@ import Icon from './Icon.vue'
 const props = defineProps<{
   label: string
   description?: string
-  size?: 'S' | 'M' | 'L'
+  size?: 'L' | 'M'
   type?: 'Fixed' | 'Hug'
   disabled?: boolean
   active?: boolean
+  state?: 'Default' | 'Hover' | 'Disabled'
   control?: boolean
-  showInfoIcon?: boolean
   icon?: string
   iconColor?: string
   iconSpin?: boolean
   iconPulse?: boolean
   iconFixedWidth?: boolean
+  info?: boolean
   infoIconColor?: string
 }>()
 
 const isHover = ref(false)
 
-// Map ControlTile size to Icon size
-const iconSize = computed(() => {
-  switch (props.size) {
-    case 'S': return 'xs'
-    case 'M': return 'sm'
-    case 'L': return 'md'
-    default: return 'sm'
-  }
-})
-
-// Icon and control are mutually exclusive
-const showIconVisual = computed(() => !!props.icon)
+const showIconVisual = computed(() => !!props.icon && !props.control)
 const showControlVisual = computed(() => !props.icon && !!props.control)
-// Info icon is independent
-const showInfoIcon = computed(() => !!props.showInfoIcon)
+const showInfoIcon = computed(() => !!props.info)
+const isDisabled = computed(() => props.disabled || props.state === 'Disabled')
+const isActive = computed(() => !!props.active)
+const isHovering = computed(() => isHover.value || props.state === 'Hover')
 </script>
 
 <style scoped>
 .control-tile {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px;
-  border-radius: 8px;
-  background: #FFFFFF;
-  border: 1px solid #E5E7EB;
+  gap: 16px;
+  border-radius: 6px;
+  background: #fbfcfe;
+  border: 1px solid #e5ecf3;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(.4,0,.2,1);
+  min-height: 44px;
+  min-width: 120px;
+  box-sizing: border-box;
 }
 
-.control-tile:hover {
-  border-color: #D1D5DB;
-  background: #F9FAFB;
+/* Size variants from MCP */
+.size-L {
+  padding: 20px 24px;
+  min-width: 160px;
+  min-height: 60px;
+  border-radius: 6px;
+}
+
+.size-M {
+  padding: 12px 16px;
+  min-width: 120px;
+  min-height: 44px;
+  border-radius: 4px;
+}
+
+/* Type variants from MCP */
+.type-Fixed {
+  width: 100%;
+}
+
+.type-Hug {
+  width: fit-content;
+}
+
+/* State variants from MCP */
+.control-tile:hover,
+.control-tile.hover {
+  border-color: #e5ecf3;
+  background: #f6f9fb;
 }
 
 .control-tile.active {
-  border-color: #2563EB;
-  background: #EFF6FF;
+  border-color: #2c8dff;
+  background: #e5ecf3;
 }
 
 .control-tile.disabled {
@@ -105,20 +135,27 @@ const showInfoIcon = computed(() => !!props.showInfoIcon)
   pointer-events: none;
 }
 
-.control {
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
+.left-slot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+  min-width: 20px;
 }
 
-.size-M .control {
+/* Control sizes from MCP */
+.control-L {
+  width: 20px;
+  height: 20px;
+}
+
+.control-M {
   width: 16px;
   height: 16px;
 }
 
-.size-S .control {
-  width: 12px;
-  height: 12px;
+.control {
+  flex-shrink: 0;
 }
 
 .control-container {
@@ -138,20 +175,6 @@ const showInfoIcon = computed(() => !!props.showInfoIcon)
   justify-content: center;
 }
 
-.size-M .control-icon {
-  width: 12px;
-  height: 12px;
-  top: 2px;
-  left: 2px;
-}
-
-.size-S .control-icon {
-  width: 8px;
-  height: 8px;
-  top: 2px;
-  left: 2px;
-}
-
 .control-partial {
   position: absolute;
   top: 0;
@@ -162,25 +185,23 @@ const showInfoIcon = computed(() => !!props.showInfoIcon)
 
 .control-rectangle {
   position: absolute;
+  background: #ffffff;
+  border-radius: 1px;
+}
+
+/* Rectangle positions from MCP */
+.control-L .control-rectangle {
   top: 9px;
   left: 4px;
   width: 12px;
   height: 2px;
-  background: #000000;
 }
 
-.size-M .control-rectangle {
+.control-M .control-rectangle {
   top: 7px;
   left: 3px;
   width: 10px;
   height: 2px;
-}
-
-.size-S .control-rectangle {
-  top: 5px;
-  left: 2px;
-  width: 8px;
-  height: 1px;
 }
 
 .content {
@@ -197,27 +218,25 @@ const showInfoIcon = computed(() => !!props.showInfoIcon)
   height: 20px;
 }
 
+/* Label container heights from MCP */
 .size-M .label-container {
   height: 16px;
 }
 
-.size-S .label-container {
-  height: 12px;
+.label {
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  color: #000f30;
 }
 
-.label {
-  font-family: Inter, sans-serif;
-  font-weight: 500;
-  color: #111827;
+/* Label text sizes from MCP */
+.size-L .label {
+  font-size: 14px;
+  line-height: 14px;
 }
 
 .size-M .label {
   font-size: 12px;
-  line-height: 16px;
-}
-
-.size-S .label {
-  font-size: 10px;
   line-height: 12px;
 }
 
@@ -230,16 +249,6 @@ const showInfoIcon = computed(() => !!props.showInfoIcon)
   flex-shrink: 0;
 }
 
-.size-M .icon-container {
-  width: 12px;
-  height: 12px;
-}
-
-.size-S .icon-container {
-  width: 8px;
-  height: 8px;
-}
-
 .small-icon {
   width: 12px;
   height: 12px;
@@ -248,54 +257,21 @@ const showInfoIcon = computed(() => !!props.showInfoIcon)
   justify-content: center;
 }
 
-.size-M .small-icon {
-  width: 10px;
-  height: 10px;
-}
-
-.size-S .small-icon {
-  width: 8px;
-  height: 8px;
-}
-
 .description {
-  font-family: Inter, sans-serif;
+  font-family: 'Inter', sans-serif;
+  color: #3d5c7a;
+  font-weight: 400;
+}
+
+/* Description text sizes from MCP */
+.size-L .description {
   font-size: 12px;
   line-height: 16px;
-  color: #6B7280;
-  font-weight: 400;
 }
 
 .size-M .description {
   font-size: 10px;
   line-height: 12px;
-}
-
-.size-S .description {
-  font-size: 8px;
-  line-height: 10px;
-}
-
-/* Size variants */
-.size-S {
-  min-width: 80px;
-}
-
-.size-M {
-  min-width: 120px;
-}
-
-.size-L {
-  min-width: 160px;
-}
-
-/* Type variants */
-.type-Fixed {
-  width: 100%;
-}
-
-.type-Hug {
-  width: fit-content;
 }
 
 .info-icon {

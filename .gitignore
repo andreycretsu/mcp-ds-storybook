@@ -25,3 +25,6 @@ storybook-static
 *.sw?
 
 *storybook.log
+
+# Local Netlify folder
+.netlify

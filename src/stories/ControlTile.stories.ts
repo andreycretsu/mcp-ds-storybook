@@ -10,45 +10,53 @@ const meta = {
   argTypes: {
     size: {
       control: 'select',
-      options: ['S', 'M', 'L'],
-      description: 'Size of the control tile'
+      options: ['L', 'M'],
+      description: 'Size variant from MCP server'
     },
     type: {
       control: 'select',
       options: ['Fixed', 'Hug'],
-      description: 'Width type of the control tile'
+      description: 'Type variant from MCP server'
     },
     disabled: {
       control: 'boolean',
-      description: 'Whether the control tile is disabled'
+      description: 'Disable state from MCP server'
     },
     active: {
       control: 'boolean',
-      description: 'Whether the control tile is in active state'
+      description: 'Active=yes/no from MCP server'
     },
-    label: {
-      control: 'text',
-      description: 'Main text of the control tile'
-    },
-    description: {
-      control: 'text',
-      description: 'Description text below the label'
-    },
-    showControl: {
+    control: {
       control: 'boolean',
-      description: 'Whether to show the control element'
+      description: 'Show control visual instead of icon'
     },
-    controlIcon: {
-      control: 'text',
-      description: 'Icon to show in the control element'
-    },
-    showIcon: {
+    showInfoIcon: {
       control: 'boolean',
-      description: 'Whether to show the small icon next to the label'
+      description: 'Show info icon'
     },
     icon: {
       control: 'text',
-      description: 'Icon to show next to the label'
+      description: 'FontAwesome icon name'
+    },
+    iconColor: {
+      control: 'color',
+      description: 'Icon color'
+    },
+    iconSpin: {
+      control: 'boolean',
+      description: 'Spin animation'
+    },
+    iconPulse: {
+      control: 'boolean',
+      description: 'Pulse animation'
+    },
+    iconFixedWidth: {
+      control: 'boolean',
+      description: 'Fixed width icon'
+    },
+    infoIconColor: {
+      control: 'color',
+      description: 'Info icon color'
     }
   }
 } satisfies Meta<typeof ControlTile>;
@@ -61,74 +69,141 @@ type Story = StoryObj<typeof meta>;
  * to learn how to use render functions.
  */
 
-// Large Fixed Control Tile
-export const LargeFixed: Story = {
+// Size variants from MCP
+export const Large: Story = {
   args: {
-    size: 'L',
-    type: 'Fixed',
-    label: 'Control Tile',
+    label: 'Large Tile',
     description: 'Description text',
-    disabled: false,
-    active: false,
-    showControl: true,
-    controlIcon: '🟢',
-    showIcon: true,
-    icon: '🔷'
+    size: 'L',
+    type: 'Fixed'
   }
-};
+}
 
-// Large Fixed Disabled
-export const LargeFixedDisabled: Story = {
+export const Medium: Story = {
   args: {
-    ...LargeFixed.args,
+    label: 'Medium Tile',
+    description: 'Description text',
+    size: 'M',
+    type: 'Fixed'
+  }
+}
+
+// Type variants from MCP
+export const Fixed: Story = {
+  args: {
+    label: 'Fixed Width',
+    description: 'Description text',
+    size: 'M',
+    type: 'Fixed'
+  }
+}
+
+export const Hug: Story = {
+  args: {
+    label: 'Hug Content',
+    description: 'Description text',
+    size: 'M',
+    type: 'Hug'
+  }
+}
+
+// State variants from MCP
+export const Default: Story = {
+  args: {
+    label: 'Default State',
+    description: 'Description text',
+    size: 'M',
+    type: 'Fixed'
+  }
+}
+
+export const Hover: Story = {
+  args: {
+    label: 'Hover State',
+    description: 'Description text',
+    size: 'M',
+    type: 'Fixed'
+  },
+  parameters: {
+    pseudo: { hover: true }
+  }
+}
+
+export const Disabled: Story = {
+  args: {
+    label: 'Disabled State',
+    description: 'Description text',
+    size: 'M',
+    type: 'Fixed',
     disabled: true
   }
-};
+}
 
-// Large Fixed Active
-export const LargeFixedActive: Story = {
+// Active variants from MCP
+export const Active: Story = {
   args: {
-    ...LargeFixed.args,
+    label: 'Active=yes',
+    description: 'Description text',
+    size: 'M',
+    type: 'Fixed',
     active: true
   }
-};
+}
 
-// Large Hug Control Tile
-export const LargeHug: Story = {
+export const Inactive: Story = {
   args: {
-    ...LargeFixed.args,
-    type: 'Hug'
+    label: 'Active=no',
+    description: 'Description text',
+    size: 'M',
+    type: 'Fixed',
+    active: false
   }
-};
+}
 
-// Medium Fixed Control Tile
-export const MediumFixed: Story = {
+// Icon examples
+export const WithIcon: Story = {
   args: {
-    ...LargeFixed.args,
-    size: 'M'
+    label: 'With Icon',
+    description: 'Description text',
+    size: 'M',
+    type: 'Fixed',
+    icon: 'fa-solid fa-star',
+    iconColor: '#2563EB'
   }
-};
+}
 
-// Medium Hug Control Tile
-export const MediumHug: Story = {
+export const WithControl: Story = {
   args: {
-    ...MediumFixed.args,
-    type: 'Hug'
+    label: 'With Control',
+    description: 'Description text',
+    size: 'M',
+    type: 'Fixed',
+    control: true
   }
-};
+}
 
-// Small Fixed Control Tile
-export const SmallFixed: Story = {
+export const WithInfoIcon: Story = {
   args: {
-    ...LargeFixed.args,
-    size: 'S'
+    label: 'With Info Icon',
+    description: 'Description text',
+    size: 'M',
+    type: 'Fixed',
+    showInfoIcon: true,
+    infoIconColor: '#6B7280'
   }
-};
+}
 
-// Small Hug Control Tile
-export const SmallHug: Story = {
+// Complex example
+export const Complex: Story = {
   args: {
-    ...SmallFixed.args,
-    type: 'Hug'
+    label: 'Complex Example',
+    description: 'With icon, info icon, and active state',
+    size: 'L',
+    type: 'Fixed',
+    icon: 'fa-solid fa-star',
+    iconColor: '#2563EB',
+    showInfoIcon: true,
+    infoIconColor: '#6B7280',
+    active: true
   }
-};
+}
