@@ -1,11 +1,13 @@
 <template>
-  <i
-    :class="[computedClass, sizeClass]"
-    :style="computedStyle"
-    :aria-label="ariaLabel"
-    :aria-hidden="ariaHidden !== undefined ? ariaHidden : true"
-    role="img"
-  />
+  <div :class="['icon-container', sizeClass]">
+    <i
+      :class="computedClass"
+      :style="computedStyle"
+      :aria-label="ariaLabel"
+      :aria-hidden="ariaHidden !== undefined ? ariaHidden : true"
+      role="img"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -54,9 +56,36 @@ const computedStyle = computed(() => {
 </script>
 
 <style scoped>
-.icon-xs { font-size: 12px; }
-.icon-sm { font-size: 16px; }
-.icon-md { font-size: 20px; }
-.icon-lg { font-size: 24px; }
-.icon-xl { font-size: 32px; }
+.icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f0f0f0; /* Optional background color */
+  border: 1px solid #ccc; /* Optional border */
+}
+
+.icon-xs {
+  width: 16px;
+  height: 16px;
+}
+
+.icon-sm {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-md {
+  width: 32px;
+  height: 32px;
+}
+
+.icon-lg {
+  width: 48px;
+  height: 48px;
+}
+
+.icon-xl {
+  width: 64px;
+  height: 64px;
+}
 </style> 
