@@ -10,19 +10,24 @@
     @mouseenter="isHover = true"
     @mouseleave="isHover = false"
   >
-    <!-- Left: Control or Icon -->
-    <div class="left-slot">
-      <template v-if="control">
-        <Control
-          :type="controlType"
-          :size="controlSize"
-          :state="controlState"
-          :active="controlActive"
-        />
-      </template>
-      <template v-else-if="icon">
-        <Icon :icon="iconClass" :size="size === 'L' ? 'md' : 'sm'" :color="iconColor" :spin="iconSpin" :pulse="iconPulse" :fixedWidth="iconFixedWidth" />
-      </template>
+    <!-- Left: Control or Icon (mutually exclusive) -->
+    <div v-if="showLeft" class="left-slot">
+      <Control
+        v-if="showControl"
+        :type="controlType"
+        :size="controlSize"
+        :state="controlState"
+        :active="controlActive"
+      />
+      <Icon
+        v-else-if="showIcon"
+        :icon="iconClass"
+        :size="size === 'L' ? 'md' : 'sm'"
+        :color="iconColor"
+        :spin="iconSpin"
+        :pulse="iconPulse"
+        :fixedWidth="iconFixedWidth"
+      />
     </div>
     <div class="content">
       <div class="label-container">
@@ -75,34 +80,34 @@ const iconClass = computed(() => props.icon ? `fa-solid fa-${props.icon}` : '')
 const controlSize = computed(() => props.size === 'L' ? 'M' : 'S')
 const controlState = computed(() => props.state === 'active' ? 'default' : props.state)
 const controlActive = computed(() => props.state === 'active' ? true : !!props.active)
+
+// Mutual exclusivity: only one of icon or control
+const showControl = computed(() => !!props.control && !props.icon)
+const showIcon = computed(() => !!props.icon && !props.control)
+const showLeft = computed(() => showControl.value || showIcon.value)
 </script>
 
 <style scoped>
 .control-tile {
   display: flex;
   align-items: flex-start;
-  gap: 12px; /* Figma: 12px between icon/control and text */
-  border-radius: 6px;
+  gap: 16px; /* Figma: 16px between left and content */
+  border-radius: 8px;
   background: #fbfcfe;
   border: 1px solid #e5ecf3;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(.4,0,.2,1);
-  min-height: 44px;
-  min-width: 120px;
-  box-sizing: border-box;
-  padding: 0; /* Remove default padding, use size classes */
-}
-.size-L {
-  padding: 20px 24px;
-  min-width: 160px;
   min-height: 60px;
-  border-radius: 6px;
+  min-width: 160px;
+  box-sizing: border-box;
+  padding: 20px 24px;
 }
 .size-M {
   padding: 12px 16px;
   min-width: 120px;
   min-height: 44px;
-  border-radius: 4px;
+  border-radius: 6px;
+  gap: 12px;
 }
 .type-Fixed {
   width: 100%;
@@ -132,57 +137,7 @@ const controlActive = computed(() => props.state === 'active' ? true : !!props.a
   align-items: flex-start;
   justify-content: center;
   min-width: 20px;
-  margin-right: 0; /* gap handles spacing */
-}
-.control-L {
-  width: 20px;
-  height: 20px;
-}
-.control-M {
-  width: 16px;
-  height: 16px;
-}
-.control {
-  flex-shrink: 0;
-}
-.control-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-.control-icon {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.control-partial {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-.control-rectangle {
-  position: absolute;
-  background: #ffffff;
-  border-radius: 1px;
-}
-.control-L .control-rectangle {
-  top: 9px;
-  left: 4px;
-  width: 12px;
-  height: 2px;
-}
-.control-M .control-rectangle {
-  top: 7px;
-  left: 3px;
-  width: 10px;
-  height: 2px;
+  margin-right: 0;
 }
 .content {
   display: flex;
