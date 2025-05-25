@@ -4,20 +4,22 @@
     :class="[
       `size-${size}`,
       `type-${type}`,
-      `state-${state}`,
-      { hover: isHovering }
+      { 'state-active': isActive, 'state-disabled': disabled, hover: isHovering } 
     ]"
-    @mouseenter="isHover = true"
-    @mouseleave="isHover = false"
+    @mouseenter="onMouseEnter"
+    @mouseleave="onMouseLeave"
+    @click="onTileClick"
+    :tabindex="disabled ? -1 : 0"
+    :aria-disabled="disabled"
   >
     <!-- Left: Control or Icon (mutually exclusive) -->
     <div v-if="showLeft" class="left-slot">
       <Control
         v-if="showControl"
-        :type="controlType"
+        :type="controlTypeSafe"
         :size="controlSize"
         :state="controlState"
-        :active="controlActive"
+        :active="isActive"
       />
       <Icon
         v-else-if="showIcon"
@@ -48,39 +50,47 @@ import { ref, computed } from 'vue'
 import Icon from './Icon.vue'
 import Control from './Control.vue'
 
-const props = defineProps<{
-  label: string
-  description?: string
-  size?: 'L' | 'M'
-  type?: 'Fixed' | 'Hug'
-  state?: 'default' | 'active' | 'disabled'
-  control?: boolean
-  controlType?: 'checkbox' | 'toggle' | 'radio'
-  active?: boolean
-  icon?: string // Only the icon name, e.g. 'house'
-  iconColor?: string
-  iconSpin?: boolean
-  iconPulse?: boolean
-  iconFixedWidth?: boolean
-  info?: boolean
-  infoIconColor?: string
-}>()
+const props = defineProps({
+  label: { type: String, required: true },
+  description: { type: String, default: '' },
+  size: { type: String, default: 'L' },
+  type: { type: String, default: 'Fixed' },
+  disabled: { type: Boolean, default: false },
+  control: { type: Boolean, default: false },
+  controlType: { type: String, default: 'checkbox' },
+  icon: { type: String, default: '' },
+  iconColor: { type: String, default: '' },
+  iconSpin: { type: Boolean, default: false },
+  iconPulse: { type: Boolean, default: false },
+  iconFixedWidth: { type: Boolean, default: false },
+  info: { type: Boolean, default: false },
+  infoIconColor: { type: String, default: '' },
+})
 
-const isHover = ref(false)
-const isHovering = computed(() => isHover.value)
+const isActive = ref(false)
+const isHovering = ref(false)
 
-// Boolean defaults for Storybook toggles
-const control = computed(() => props.control ?? false)
-const info = computed(() => props.info ?? false)
+function onTileClick() {
+  if (!props.disabled) isActive.value = !isActive.value
+}
+function onMouseEnter() { isHovering.value = true }
+function onMouseLeave() { isHovering.value = false }
 
 // Icon class masking
 const iconClass = computed(() => props.icon ? `fa-solid fa-${props.icon}` : '')
 
-// Map size and state for Control.vue
+// Map size for Control.vue
 const controlSize = computed(() => props.size === 'L' ? 'M' : 'S')
-const controlState = computed(() => props.state === 'active' ? 'default' : props.state)
-const controlActive = computed(() => props.state === 'active' ? true : !!props.active)
-
+// Only allow valid controlType
+const controlTypeSafe = computed<"checkbox" | "toggle" | "radio">(() => {
+  return ['checkbox', 'toggle', 'radio'].includes(props.controlType) ? props.controlType as 'checkbox' | 'toggle' | 'radio' : 'checkbox'
+})
+// Control state: hover if tile is hovered, disabled if tile is disabled, else default
+const controlState = computed(() => {
+  if (props.disabled) return 'disabled'
+  if (isHovering.value) return 'hover'
+  return 'default'
+})
 // Mutual exclusivity: only one of icon or control
 const showControl = computed(() => !!props.control && !props.icon)
 const showIcon = computed(() => !!props.icon && !props.control)
