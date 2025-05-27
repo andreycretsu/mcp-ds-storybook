@@ -2,9 +2,11 @@
   <div
     class="control-tile"
     :class="[
-      `size-${size}`,
-      `type-${type}`,
-      { 'state-active': isActive, 'state-disabled': disabled, hover: isHovering } 
+      size ? `size-${size}` : '',
+      type ? `type-${type}` : '',
+      { 'state-active': isActive, 'state-disabled': disabled, hover: isHovering },
+      leftSlot === 'control' ? 'leftslot-control' : leftSlot === 'icon' ? 'leftslot-icon' : '',
+      leftSlot === 'control' && controlType === 'toggle' ? 'leftslot-toggle' : ''
     ]"
     @mouseenter="onMouseEnter"
     @mouseleave="onMouseLeave"
@@ -25,10 +27,6 @@
         v-else-if="showIcon"
         :icon="iconClass"
         :size="size === 'L' ? 'md' : 'sm'"
-        :color="iconColor"
-        :spin="iconSpin"
-        :pulse="iconPulse"
-        :fixedWidth="iconFixedWidth"
       />
     </div>
     <div class="content">
@@ -36,7 +34,7 @@
         <span class="label">{{ label }}</span>
         <div v-if="info" class="icon-container info-icon">
           <div class="small-icon">
-            <Icon icon="fa-solid fa-circle-info" size="xs" :color="infoIconColor || '#91a4b7'" />
+            <Icon icon="fa-solid fa-circle-info" size="xs" />
           </div>
         </div>
       </div>
@@ -56,15 +54,10 @@ const props = defineProps({
   size: { type: String, default: 'L' },
   type: { type: String, default: 'Fixed' },
   disabled: { type: Boolean, default: false },
-  control: { type: Boolean, default: false },
-  controlType: { type: String, default: 'checkbox' },
-  icon: { type: String, default: '' },
-  iconColor: { type: String, default: '' },
-  iconSpin: { type: Boolean, default: false },
-  iconPulse: { type: Boolean, default: false },
-  iconFixedWidth: { type: Boolean, default: false },
+  leftSlot: { type: String, default: 'none' }, // 'none' | 'icon' | 'control'
+  icon: { type: String, default: '' }, // only if leftSlot === 'icon'
+  controlType: { type: String, default: 'checkbox' }, // only if leftSlot === 'control'
   info: { type: Boolean, default: false },
-  infoIconColor: { type: String, default: '' },
 })
 
 const isActive = ref(false)
@@ -81,19 +74,16 @@ const iconClass = computed(() => props.icon ? `fa-solid fa-${props.icon}` : '')
 
 // Map size for Control.vue
 const controlSize = computed(() => props.size === 'L' ? 'M' : 'S')
-// Only allow valid controlType
 const controlTypeSafe = computed<"checkbox" | "toggle" | "radio">(() => {
   return ['checkbox', 'toggle', 'radio'].includes(props.controlType) ? props.controlType as 'checkbox' | 'toggle' | 'radio' : 'checkbox'
 })
-// Control state: hover if tile is hovered, disabled if tile is disabled, else default
 const controlState = computed(() => {
   if (props.disabled) return 'disabled'
   if (isHovering.value) return 'hover'
   return 'default'
 })
-// Mutual exclusivity: only one of icon or control
-const showControl = computed(() => !!props.control && !props.icon)
-const showIcon = computed(() => !!props.icon && !props.control)
+const showControl = computed(() => props.leftSlot === 'control')
+const showIcon = computed(() => props.leftSlot === 'icon')
 const showLeft = computed(() => showControl.value || showIcon.value)
 </script>
 
@@ -101,7 +91,6 @@ const showLeft = computed(() => showControl.value || showIcon.value)
 .control-tile {
   display: flex;
   align-items: flex-start;
-  gap: 16px;
   border-radius: 8px;
   background: #fbfcfe;
   border: 1px solid #e5ecf3;
@@ -110,20 +99,27 @@ const showLeft = computed(() => showControl.value || showIcon.value)
   min-height: 60px;
   min-width: 160px;
   box-sizing: border-box;
-  padding: 20px 24px;
 }
 .size-M {
-  padding: 12px 16px;
+  padding: 8px;
   min-width: 120px;
   min-height: 44px;
   border-radius: 6px;
-  gap: 12px;
+}
+.size-L {
+  padding: 12px;
+  min-width: 160px;
+  min-height: 60px;
+  border-radius: 8px;
 }
 .type-Fixed {
   width: 100%;
 }
 .type-Hug {
-  width: fit-content;
+  width: fit-content !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  flex: none !important;
 }
 .state-default {
   border-color: #e5ecf3;
@@ -131,11 +127,14 @@ const showLeft = computed(() => showControl.value || showIcon.value)
 }
 .state-active {
   border-color: #2c8dff;
-  background: #e5ecf3;
+  background: #fbfcfe;
+  /* Figma active shadow effect */
+  box-shadow: 0 0 0 4px rgba(44, 141, 255, 0.12), 0 1.5px 6px 0 rgba(44, 141, 255, 0.10);
 }
 .state-active.hover {
   border-color: #2c8dff;
   background: #f6f9fb;
+  box-shadow: 0 0 0 4px rgba(44, 141, 255, 0.16), 0 1.5px 6px 0 rgba(44, 141, 255, 0.12);
 }
 .state-disabled {
   opacity: 0.5;
@@ -148,10 +147,37 @@ const showLeft = computed(() => showControl.value || showIcon.value)
 }
 .left-slot {
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-start;
+  /* No width, min-width, or max-width. Let it hug content. */
+}
+.size-L .left-slot {
+  margin-right: 12px;
+}
+.size-M .left-slot {
+  margin-right: 8px;
+}
+.size-L.leftslot-control.leftslot-toggle .left-slot {
+  width: 32px;
+  min-width: 32px;
+  max-width: 32px;
+}
+.size-M.leftslot-control.leftslot-toggle .left-slot {
+  width: 28px;
+  min-width: 28px;
+  max-width: 28px;
+}
+.size-L.leftslot-control:not(.leftslot-toggle) .left-slot,
+.size-L.leftslot-icon .left-slot {
+  width: 20px;
   min-width: 20px;
-  margin-right: 0;
+  max-width: 20px;
+}
+.size-M.leftslot-control:not(.leftslot-toggle) .left-slot,
+.size-M.leftslot-icon .left-slot {
+  width: 16px;
+  min-width: 16px;
+  max-width: 16px;
 }
 .content {
   display: flex;
@@ -173,6 +199,7 @@ const showLeft = computed(() => showControl.value || showIcon.value)
   font-family: 'Inter', sans-serif;
   font-weight: 500;
   color: #000f30;
+  user-select: none;
 }
 .size-L .label {
   font-size: 14px;
@@ -201,6 +228,7 @@ const showLeft = computed(() => showControl.value || showIcon.value)
   font-family: 'Inter', sans-serif;
   color: #3d5c7a;
   font-weight: 400;
+  user-select: none;
 }
 .size-L .description {
   font-size: 12px;

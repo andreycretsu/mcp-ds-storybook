@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   type?: 'checkbox' | 'toggle' | 'radio'
   size?: 'M' | 'S'
   state?: 'default' | 'hover' | 'disabled'
@@ -45,7 +45,12 @@ const props = defineProps<{
 .control {
   display: flex;
   align-items: center;
-  justify-content: center;
+}
+
+.type-checkbox.size-M,
+.type-toggle.size-M,
+.type-radio.size-M {
+  justify-content: flex-start;
 }
 
 /* Checkbox styles */

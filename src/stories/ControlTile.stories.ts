@@ -18,11 +18,23 @@ const meta = {
       options: ['Fixed', 'Hug'],
       description: 'Type variant from MCP server'
     },
+    leftSlot: {
+      control: 'select',
+      options: ['none', 'icon', 'control'],
+      description: 'What to show in the left slot',
+      defaultValue: 'none',
+    },
+    icon: {
+      control: 'text',
+      description: 'FontAwesome icon name',
+      if: { arg: 'leftSlot', eq: 'icon' }
+    },
     controlType: {
       control: 'select',
       options: ['checkbox', 'toggle', 'radio'],
       description: 'Type of control',
-      defaultValue: 'checkbox'
+      if: { arg: 'leftSlot', eq: 'control' },
+      defaultValue: 'checkbox',
     },
     disabled: {
       control: 'boolean',
@@ -34,10 +46,8 @@ const meta = {
       description: 'Show info icon',
       defaultValue: false
     },
-    icon: {
-      control: 'text',
-      description: 'FontAwesome icon name'
-    }
+    label: { control: 'text', description: 'Tile label' },
+    description: { control: 'text', description: 'Tile description' },
   }
 } satisfies Meta<typeof ControlTile>;
 
@@ -49,38 +59,18 @@ type Story = StoryObj<typeof meta>;
  * to learn how to use render functions.
  */
 
-// Visual selector for story logic only
-const visualOptions = ['empty', 'control', 'icon'];
-
-const Template: StoryFn<typeof ControlTile> = (args, { globals, parameters }) => {
-  // Use a local variable for visual mode (simulate a toolbar or control)
-  const visual = parameters.visual || 'empty';
-  let control = false;
-  let icon = '';
-  if (visual === 'control') control = true;
-  if (visual === 'icon') icon = args.icon || 'star';
-  return {
-    components: { ControlTile },
-    setup() {
-      return { args: { ...args, control, icon } };
-    },
-    template: `<ControlTile v-bind="args" />`,
-  };
-};
-
 // Size variants from MCP
 export const Large: Story = {
-  render: Template,
-  parameters: { visual: 'empty' },
   args: {
     label: 'Large Tile',
     description: 'Description text',
     size: 'L',
     type: 'Fixed',
-    controlType: 'checkbox',
+    leftSlot: 'none',
     info: false,
     disabled: false,
-    icon: ''
+    icon: '',
+    controlType: 'checkbox',
   }
 }
 
@@ -90,10 +80,11 @@ export const Medium: Story = {
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
-    controlType: 'checkbox',
-    icon: '',
+    leftSlot: 'none',
     info: false,
-    disabled: false
+    disabled: false,
+    icon: '',
+    controlType: 'checkbox',
   }
 }
 
@@ -169,37 +160,34 @@ export const Disabled: Story = {
 
 // Icon examples
 export const WithIcon: Story = {
-  render: Template,
-  parameters: { visual: 'icon' },
   args: {
     label: 'With Icon',
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
-    controlType: 'checkbox',
+    leftSlot: 'icon',
+    icon: 'star',
     info: false,
     disabled: false,
-    icon: 'star'
+    controlType: 'checkbox',
   }
 }
 
 export const WithControl: Story = {
-  render: Template,
-  parameters: { visual: 'control' },
   args: {
     label: 'With Control',
     description: 'Description text',
     size: 'M',
     type: 'Fixed',
+    leftSlot: 'control',
     controlType: 'checkbox',
     info: false,
     disabled: false,
-    icon: ''
+    icon: '',
   }
 }
 
 export const WithInfoIcon: Story = {
-  render: Template,
   parameters: { visual: 'empty' },
   args: {
     label: 'With Info Icon',
@@ -215,7 +203,6 @@ export const WithInfoIcon: Story = {
 
 // Complex example
 export const Complex: Story = {
-  render: Template,
   parameters: { visual: 'icon' },
   args: {
     label: 'Complex Example',
