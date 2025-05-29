@@ -203,61 +203,60 @@ const rowHeight = 36 // 32px height + 4px gap
 
 // Initialize continuous calendar dates (no duplicates)
 const initializeMonths = () => {
-  const today = new Date()
-  const startDate = new Date(today.getFullYear(), today.getMonth() - 6, 1) // 6 months ago
-  const endDate = new Date(today.getFullYear(), today.getMonth() + 6, 0) // 6 months ahead
-  
-  // Generate continuous dates without duplicates
+  // Set the start and end years for the picker
+  const startYear = 2015
+  const endYear = 2035
+  const startDate = new Date(startYear, 0, 1) // Jan 1, 2015
+  const endDate = new Date(endYear, 11, 31) // Dec 31, 2035
+
+  // Generate all dates in the range
   const allDatesArray: DatePickerDate[] = []
   const currentDate = new Date(startDate)
-  
+
   while (currentDate <= endDate) {
     allDatesArray.push({
       year: currentDate.getFullYear(),
       month: currentDate.getMonth(),
       day: currentDate.getDate(),
-      isCurrentMonth: true // All dates are valid
+      isCurrentMonth: true // Will be used for styling
     })
-    
     // Move to next day
     currentDate.setDate(currentDate.getDate() + 1)
   }
-  
+
   // Pad the beginning to start on Monday
   const firstDate = allDatesArray[0]
   const firstDayOfWeek = (new Date(firstDate.year, firstDate.month, firstDate.day).getDay() + 6) % 7
-  
   for (let i = firstDayOfWeek - 1; i >= 0; i--) {
     const padDate = new Date(firstDate.year, firstDate.month, firstDate.day - (i + 1))
     allDatesArray.unshift({
       year: padDate.getFullYear(),
       month: padDate.getMonth(),
       day: padDate.getDate(),
-      isCurrentMonth: true
+      isCurrentMonth: false
     })
   }
-  
+
   // Pad the end to complete the last week
   const totalCells = Math.ceil(allDatesArray.length / 7) * 7
   const lastDate = allDatesArray[allDatesArray.length - 1]
-  
   for (let i = allDatesArray.length; i < totalCells; i++) {
     const padDate = new Date(lastDate.year, lastDate.month, lastDate.day + (i - allDatesArray.length + 1))
     allDatesArray.push({
       year: padDate.getFullYear(),
       month: padDate.getMonth(),
       day: padDate.getDate(),
-      isCurrentMonth: true
+      isCurrentMonth: false
     })
   }
-  
+
   // Create a single month object containing all dates
   visibleMonths.value = [{
-    year: today.getFullYear(),
-    month: today.getMonth(),
+    year: startYear,
+    month: 0,
     dates: allDatesArray,
-    monthName: today.toLocaleDateString('en-US', { month: 'long' }),
-    yearNumber: today.getFullYear()
+    monthName: new Date(startYear, 0, 1).toLocaleDateString('en-US', { month: 'long' }),
+    yearNumber: startYear
   }]
 }
 
