@@ -1,79 +1,52 @@
 <template>
   <div class="icon-color-picker">
-    <!-- Search Bar -->
-    <div class="search-container">
-      <div class="search-icon">
-        <i class="fa-solid fa-magnifying-glass"></i>
-      </div>
-      <div class="search-input-container">
-        <input 
-          type="text" 
-          placeholder="Search" 
-          v-model="searchQuery"
-          class="search-input"
-        />
-      </div>
-    </div>
+    <!-- Search Input -->
+    <SearchInput
+      v-model="searchQuery"
+      placeholder="Search"
+    />
 
-    <!-- Icon Grid with Internal Scroll -->
-    <div class="grid-container">
-      <div class="icon-grid" ref="iconGrid">
-        <div 
-          v-for="icon in filteredIcons" 
-          :key="icon.name"
-          class="icon-cell"
-          @click="selectIcon(icon)"
-          :class="{ 'selected': selectedIcon?.name === icon.name }"
-        >
-          <i :class="`fa-solid fa-${icon.name}`"></i>
-        </div>
-      </div>
-    </div>
+    <!-- Icon Grid -->
+    <IconGrid
+      :icons="allIcons"
+      :search-query="searchQuery"
+      :selected-icon="selectedIcon"
+      :icon-color="selectedColor"
+      @icon-selected="selectIcon"
+    />
 
-    <!-- Color Palette Footer -->
+    <!-- Color Selection Footer -->
     <div class="footer">
-      <div class="color-palette">
-        <div 
-          v-for="color in colorPalette" 
-          :key="color"
-          class="color-container"
-          @click="selectColor(color)"
-          :class="{ 'selected': selectedColor === color }"
-        >
-          <div 
-            class="color-swatch" 
-            :style="{ backgroundColor: color }"
-          ></div>
-        </div>
-      </div>
+      <!-- Color Palette -->
+      <ColorPalette
+        :colors="colorPalette"
+        :selected-color="selectedColor"
+        @color-selected="selectColor"
+      />
       
+      <!-- Custom Color Section -->
       <div class="custom-color-section">
-        <div class="color-input-frame">
-          <input 
-            type="text" 
-            v-model="customColorHex"
-            class="color-hex-input"
-            placeholder="#9B74B7"
-            @input="updateCustomColor"
-          />
-          <div class="eyedropper-icon">
-            <i class="fa-solid fa-eye-dropper-full"></i>
-          </div>
-        </div>
-        <div class="custom-color-container" :class="{ 'selected': selectedColor === customColor }">
-          <div 
-            class="color-swatch custom-swatch" 
-            :style="{ backgroundColor: customColor }"
-            @click="selectColor(customColor)"
-          ></div>
-        </div>
+        <HexColorInput
+          v-model="customColorHex"
+          @color-change="updateCustomColor"
+        />
+        <ColorSwatch
+          :color="customColor"
+          :is-selected="selectedColor === customColor"
+          @color-selected="selectColor"
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, defineEmits, defineProps } from 'vue'
+import { ref } from 'vue'
+import SearchInput from './SearchInput.vue'
+import IconGrid from './IconGrid.vue'
+import ColorPalette from './ColorPalette.vue'
+import ColorSwatch from './ColorSwatch.vue'
+import HexColorInput from './HexColorInput.vue'
 
 // Props
 interface Props {
@@ -99,7 +72,6 @@ const selectedIcon = ref<{ name: string } | null>(null)
 const selectedColor = ref('#476887')
 const customColorHex = ref('#9B74B7')
 const customColor = ref('#9B74B7')
-const visibleIconsCount = 130
 
 // FontAwesome 6 Pro icons (extensive collection for designers)
 const allIcons = ref([
@@ -383,13 +355,7 @@ const colorPalette = ref([
   '#E40097'  // Rose
 ])
 
-// Computed
-const filteredIcons = computed(() => {
-  if (!searchQuery.value) return allIcons.value
-  return allIcons.value.filter(icon => 
-    icon.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-  )
-})
+// The IconGrid component now handles filtering internally
 
 // Methods
 const selectIcon = (icon: { name: string }) => {
@@ -404,14 +370,11 @@ const selectColor = (color: string) => {
   updateModelValue()
 }
 
-const updateCustomColor = () => {
-  const hex = customColorHex.value
-  if (hex.match(/^#[0-9A-F]{6}$/i)) {
-    customColor.value = hex
-    selectedColor.value = hex
-    emit('color-selected', hex)
-    updateModelValue()
-  }
+const updateCustomColor = (hex: string) => {
+  customColor.value = hex
+  selectedColor.value = hex
+  emit('color-selected', hex)
+  updateModelValue()
 }
 
 const updateModelValue = () => {
@@ -438,118 +401,7 @@ const updateModelValue = () => {
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.08), 0px 0px 2px 0px rgba(0, 0, 0, 0.06);
 }
 
-/* Search Bar */
-.search-container {
-  height: 40px;
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  gap: 8px;
-  border-bottom: 1px solid #e5ecf3;
-  flex-shrink: 0;
-}
-
-.search-icon {
-  width: 16px;
-  height: 16px;
-  color: #476887;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.search-input-container {
-  flex: 1;
-  min-width: 0;
-}
-
-.search-input {
-  width: 100%;
-  border: none;
-  outline: none;
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  color: #476887;
-  background: transparent;
-}
-
-.search-input::placeholder {
-  color: #476887;
-}
-
-/* Grid Container - Autolayout equivalent with proper scrolling */
-.grid-container {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  flex-direction: column;
-  border-bottom: 1px solid #e5ecf3;
-}
-
-.icon-grid {
-  flex: 1;
-  padding: 12px;
-  display: grid;
-  grid-template-columns: repeat(10, 32px);
-  gap: 0;
-  overflow-y: auto;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(71, 104, 135, 0.3) transparent;
-  grid-auto-rows: 32px;
-  align-content: start;
-}
-
-.icon-grid::-webkit-scrollbar {
-  width: 8px;
-}
-
-.icon-grid::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.icon-grid::-webkit-scrollbar-thumb {
-  background-color: rgba(71, 104, 135, 0.3);
-  border-radius: 4px;
-  border: 2px solid transparent;
-  background-clip: content-box;
-}
-
-.icon-grid::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(71, 104, 135, 0.5);
-}
-
-.icon-cell {
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  box-sizing: border-box;
-}
-
-.icon-cell:hover {
-  background-color: #f1f5f8;
-}
-
-.icon-cell.selected {
-  background-color: #e5ecf3;
-}
-
-.icon-cell i {
-  font-size: 18px;
-  color: v-bind(selectedColor);
-  font-weight: 900;
-  text-align: center;
-  line-height: 1;
-}
-
-/* Footer - Autolayout equivalent */
+/* Footer - Clean layout for composed components */
 .footer {
   height: 48px;
   background: #fbfcfe;
@@ -563,113 +415,10 @@ const updateModelValue = () => {
   box-sizing: border-box;
 }
 
-.color-palette {
-  display: flex;
-  gap: 4px;
-  align-items: center;
-}
-
-.color-container {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  padding: 2px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.color-container:hover {
-  background-color: #e5ecf3;
-}
-
-.color-container.selected {
-  background-color: #ffffff;
-  box-shadow: 0 0 0 2px #476887;
-  border-radius: 50%;
-}
-
-.color-swatch {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
-}
-
 /* Custom Color Section - Proper autolayout */
 .custom-color-section {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.color-input-frame {
-  display: flex;
-  align-items: center;
-  background: #ffffff;
-  border-radius: 4px;
-  padding: 4px 8px;
-  border: 1px solid #e5ecf3;
-  height: 20px;
-  box-sizing: border-box;
-  gap: 4px;
-}
-
-.color-hex-input {
-  border: none;
-  outline: none;
-  font-family: 'Inter', sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  color: #000000;
-  background: transparent;
-  width: 52px;
-  min-width: 0;
-}
-
-.eyedropper-icon {
-  width: 12px;
-  height: 12px;
-  color: #476887;
-  font-size: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.custom-color-container {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  padding: 2px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.custom-color-container:hover {
-  background-color: #e5ecf3;
-}
-
-.custom-color-container.selected {
-  background-color: #ffffff;
-  box-shadow: 0 0 0 2px #476887;
-  border-radius: 50%;
-}
-
-.custom-swatch {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-sizing: border-box;
 }
 </style> 
