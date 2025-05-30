@@ -264,17 +264,53 @@ const initializeMonths = () => {
 const handleScroll = (event: Event) => {
   const container = event.target as HTMLElement
   const scrollTop = container.scrollTop
-  
-  // Calculate which row is at the center of the viewport
   const containerHeight = container.clientHeight
-  const centerScrollPosition = scrollTop + containerHeight / 2
-  const centerRowIndex = Math.floor(centerScrollPosition / rowHeight)
-  const centerDateIndex = centerRowIndex * 7 + 3 // Middle of the row
-  
-  // Get the date at the center and update current month
-  if (visibleMonths.value[0] && visibleMonths.value[0].dates[centerDateIndex]) {
-    const centerDate = visibleMonths.value[0].dates[centerDateIndex]
-    currentDisplayMonth.value = new Date(centerDate.year, centerDate.month, 1)
+
+  // Calculate how many rows fit in the viewport
+  const rowsInView = Math.floor(containerHeight / rowHeight)
+  // Find the first visible row index
+  const firstVisibleRow = Math.floor(scrollTop / rowHeight)
+  // Find the last visible row index
+  const lastVisibleRow = firstVisibleRow + rowsInView - 1
+
+  // For each month, count how many of its rows are visible
+  const monthRowMap: Record<string, {start: number, end: number, year: number, month: number}> = {}
+  let currentRow = 0
+  let prevMonthKey = ''
+  for (let i = 0; i < visibleMonths.value[0].dates.length; i += 7) {
+    const date = visibleMonths.value[0].dates[i]
+    const key = `${date.year}-${date.month}`
+    if (key !== prevMonthKey) {
+      monthRowMap[key] = { start: currentRow, end: currentRow, year: date.year, month: date.month }
+      prevMonthKey = key
+    }
+    monthRowMap[key].end = currentRow
+    currentRow++
+  }
+
+  // Find which month has the most rows visible in the viewport
+  let maxVisibleRows = -1
+  let activeMonthKey = ''
+  let activeMonthRow = -1
+  for (const key in monthRowMap) {
+    const { start, end, year, month } = monthRowMap[key]
+    // Count how many rows of this month are visible
+    const visibleRows = Math.max(0, Math.min(lastVisibleRow, end) - Math.max(firstVisibleRow, start) + 1)
+    // Prefer the month further down if equal
+    if (
+      visibleRows > maxVisibleRows ||
+      (visibleRows === maxVisibleRows && start > activeMonthRow)
+    ) {
+      maxVisibleRows = visibleRows
+      activeMonthKey = key
+      activeMonthRow = start
+    }
+  }
+
+  // Always switch to the month with the most visible rows
+  if (activeMonthKey) {
+    const { year, month } = monthRowMap[activeMonthKey]
+    currentDisplayMonth.value = new Date(year, month, 1)
   }
 }
 
@@ -901,7 +937,7 @@ onMounted(() => {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 4px;
-  padding: 8px 12px;
+  padding: 0 12px 4px 12px;
   background-color: #ffffff;
   flex-shrink: 0;
 }
