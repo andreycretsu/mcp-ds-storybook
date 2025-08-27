@@ -1,19 +1,51 @@
 {
-  "name": "test-mcp-project",
-  "private": true,
-  "version": "0.0.0",
+  "name": "@your-org/vue-design-system",
+  "private": false,
+  "version": "1.0.0",
+  "description": "A comprehensive Vue 3 design system component library",
   "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./style": "./dist/style.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "vue",
+    "vue3",
+    "components",
+    "design-system",
+    "ui",
+    "typescript"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/vue-design-system.git"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
+    "build:lib": "vite build --config vite.lib.config.ts",
     "preview": "vite preview",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "deploy-storybook": "gh-pages -d storybook-static"
+    "deploy-storybook": "gh-pages -d storybook-static",
+    "prepublishOnly": "npm run build:lib"
+  },
+  "peerDependencies": {
+    "vue": "^3.0.0"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^7.0.0",
-    "vue": "^3.5.13"
+    "@fortawesome/fontawesome-free": "^7.0.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.6",
@@ -38,6 +70,7 @@
     "typescript": "~5.8.3",
     "vite": "^6.3.5",
     "vitest": "^3.1.4",
+    "vue": "^3.5.13",
     "vue-tsc": "^2.2.8"
   }
 }

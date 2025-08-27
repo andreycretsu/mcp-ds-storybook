@@ -1,0 +1,40 @@
+# Source files
+src/
+stories/
+public/
+
+# Build files
+dist-storybook/
+storybook-static/
+
+# Development files
+.vscode/
+.idea/
+*.log
+.DS_Store
+
+# Configuration files
+vite.config.ts
+vite.lib.config.ts
+tsconfig*.json
+vitest.workspace.ts
+
+# Storybook files
+.storybook/
+
+# Git files
+.git/
+.gitignore
+
+# Documentation
+README.md
+*.md
+
+# Test files
+__tests__/
+*.test.*
+*.spec.*
+
+# Temporary files
+*.tmp
+*.temp
