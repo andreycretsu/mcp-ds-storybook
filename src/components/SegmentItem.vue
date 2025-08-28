@@ -57,23 +57,18 @@ const emit = defineEmits<{
 const handleClick = (event: Event) => {
   event.preventDefault()
   event.stopPropagation()
-  console.log('SegmentItem clicked:', props.label, 'isActive:', props.isActive) // Debug log
   
-  // Add temporary visual feedback
-  const target = event.target as HTMLElement
-  target.style.backgroundColor = '#ff0000'
-  setTimeout(() => {
-    target.style.backgroundColor = ''
-  }, 200)
+  // Add temporary visual feedback to the segment item, not the text
+  const segmentItem = (event.target as HTMLElement).closest('.segment-item') as HTMLElement
+  if (segmentItem) {
+    segmentItem.style.backgroundColor = '#ff0000'
+    setTimeout(() => {
+      segmentItem.style.backgroundColor = ''
+    }, 200)
+  }
   
   emit('click')
 }
-
-// Watch for isActive changes
-import { watch } from 'vue'
-watch(() => props.isActive, (newValue) => {
-  console.log('SegmentItem isActive changed for:', props.label, 'to:', newValue)
-})
 </script>
 
 <style scoped>

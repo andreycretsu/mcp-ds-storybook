@@ -15,10 +15,7 @@
             @mouseenter="handleSegmentHover(item, index)"
             @mouseleave="handleSegmentLeave"
           />
-          <!-- Debug info -->
-          <div style="font-size: 10px; color: red; margin-top: 4px;">
-            Debug: item.value={{ item.value }}, modelValue={{ modelValue }}, isActive={{ item.value === modelValue }}
-          </div>
+
         </div>
         <!-- Separator between segments (except last one) -->
         <div 
@@ -133,13 +130,8 @@ const getDropdownPosition = () => {
 }
 
 const handleSegmentClick = (item: SegmentedItem) => {
-  console.log('SegmentedControl - Segment clicked:', item.value, 'Current modelValue:', props.modelValue) // Debug log
-  
   // Always update the model value when clicking a segment
   emit('update:modelValue', item.value)
-  
-  // Force a re-render by updating local state
-  console.log('Emitting update:modelValue with:', item.value)
   
   if (item.dropdown) {
     // For dropdown items, toggle the dropdown
@@ -177,8 +169,6 @@ const handleSegmentLeave = () => {
 }
 
 const handleDropdownSelect = (option: DropdownOption) => {
-  console.log('Dropdown option selected:', option.value) // Debug log
-  
   selectedDropdownValue.value = option.value
   emit('dropdown-change', option.value)
   dropdownOpen.value = false
