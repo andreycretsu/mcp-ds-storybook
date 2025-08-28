@@ -3,9 +3,10 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 const meta: Meta = {
   title: 'Documentation/Installation',
   parameters: {
+    layout: 'fullscreen',
     docs: {
       description: {
-        story: `
+        component: `
 # Installation Guide
 
 Welcome to the Vue Design System! This guide will help you install and start using our component library in your Vue 3 projects.
@@ -156,7 +157,8 @@ yarn install
         `
       }
     }
-  }
+  },
+  tags: ['autodocs']
 };
 
 export default meta;

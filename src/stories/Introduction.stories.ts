@@ -3,9 +3,10 @@ import type { Meta, StoryObj } from '@storybook/vue3';
 const meta: Meta = {
   title: 'Documentation/Introduction',
   parameters: {
+    layout: 'fullscreen',
     docs: {
       description: {
-        story: `
+        component: `
 # Welcome to Vue Design System
 
 This is a comprehensive Vue 3 design system with 20+ components.
@@ -65,7 +66,8 @@ Check out the individual component stories in the sidebar for detailed examples 
         `
       }
     }
-  }
+  },
+  tags: ['autodocs']
 };
 
 export default meta;
