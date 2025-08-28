@@ -147,7 +147,11 @@ defineEmits<{
 }
 
 /* Hover effects */
-.segment-item:hover {
+.segment-item.active:hover {
+  background: #f6f9fb;
+}
+
+.segment-item.inactive:hover {
   background: #d3dfeb;
 }
 

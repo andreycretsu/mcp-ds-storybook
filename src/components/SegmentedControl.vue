@@ -2,15 +2,20 @@
   <div class="segmented-control">
     <div class="segmented-control-container">
       <template v-for="(item, index) in items" :key="index">
-        <SegmentItem
-          :label="item.label"
-          :is-active="item.value === modelValue"
-          :has-dropdown="item.dropdown"
-          :fixed-width="item.label === 'Company' || item.label === 'My'"
-          @click="handleSegmentClick(item)"
-          @mouseenter="handleSegmentHover(item)"
-          @mouseleave="handleSegmentLeave"
-        />
+        <div 
+          :ref="el => { if (el) segmentRefs[index] = el }"
+          class="segment-wrapper"
+        >
+          <SegmentItem
+            :label="item.label"
+            :is-active="item.value === modelValue"
+            :has-dropdown="item.dropdown"
+            :fixed-width="item.label === 'Company' || item.label === 'My'"
+            @click="handleSegmentClick(item)"
+            @mouseenter="handleSegmentHover(item, index)"
+            @mouseleave="handleSegmentLeave"
+          />
+        </div>
         <!-- Separator between segments (except last one) -->
         <div 
           v-if="index < items.length - 1" 
@@ -22,7 +27,10 @@
       <div
         v-if="dropdownOpen && (activeDropdownItem || hoveredItem)"
         class="dropdown-menu"
-        :style="{ width: getDropdownWidth() }"
+        :style="{ 
+          width: getDropdownWidth(),
+          left: getDropdownPosition()
+        }"
         @click.stop
         @mouseenter="isHoveringDropdown = true"
         @mouseleave="isHoveringDropdown = false"
@@ -72,7 +80,9 @@ const emit = defineEmits<{
 const dropdownOpen = ref(false)
 const selectedDropdownValue = ref('')
 const hoveredItem = ref<SegmentedItem | null>(null)
+const hoveredIndex = ref<number>(-1)
 const isHoveringDropdown = ref(false)
+const segmentRefs = ref<HTMLElement[]>([])
 
 const hasDropdown = computed(() => {
   return props.items.some(item => item.dropdown)
@@ -83,11 +93,26 @@ const activeDropdownItem = computed(() => {
 })
 
 const getDropdownWidth = () => {
-  const dropdownItem = hoveredItem.value || activeDropdownItem.value
-  if (dropdownItem && dropdownItem.label === 'Direct reports') {
-    return 'auto'
+  const index = hoveredIndex.value >= 0 ? hoveredIndex.value : props.items.findIndex(item => item.value === (activeDropdownItem.value?.value))
+  if (index >= 0 && segmentRefs.value[index]) {
+    const segmentElement = segmentRefs.value[index]
+    const rect = segmentElement.getBoundingClientRect()
+    return `${rect.width}px`
   }
   return '120px'
+}
+
+const getDropdownPosition = () => {
+  const index = hoveredIndex.value >= 0 ? hoveredIndex.value : props.items.findIndex(item => item.value === (activeDropdownItem.value?.value))
+  if (index >= 0 && segmentRefs.value[index]) {
+    const segmentElement = segmentRefs.value[index]
+    const rect = segmentElement.getBoundingClientRect()
+    const containerRect = segmentElement.closest('.segmented-control-container')?.getBoundingClientRect()
+    if (containerRect) {
+      return `${rect.left - containerRect.left}px`
+    }
+  }
+  return '0px'
 }
 
 const handleSegmentClick = (item: SegmentedItem) => {
@@ -111,9 +136,10 @@ const handleSegmentClick = (item: SegmentedItem) => {
   }
 }
 
-const handleSegmentHover = (item: SegmentedItem) => {
+const handleSegmentHover = (item: SegmentedItem, index: number) => {
   if (item.dropdown) {
     hoveredItem.value = item
+    hoveredIndex.value = index
     dropdownOpen.value = true
   }
 }
@@ -199,13 +225,15 @@ onUnmounted(() => {
   width: 1px;
 }
 
+.segment-wrapper {
+  position: relative;
+}
+
 
 
 .dropdown-menu {
   position: absolute;
   top: calc(100% + 8px);
-  left: 0;
-  right: 0;
   background: white;
   border: 1px solid #d3dfeb;
   border-radius: 4px;
