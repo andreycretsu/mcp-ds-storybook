@@ -130,7 +130,7 @@ const handleDropdownChange = (value: string) => {
             <SegmentedControl 
               v-model="selectedValue"
               :items="segmentedItems"
-              @update:modelValue="handleValueChange"
+              @update:modelValue="(value) => { console.log('App: update:modelValue received:', value); selectedValue = value; }"
             />
             <p>Selected: {{ selectedValue }}</p>
           </div>
@@ -140,7 +140,7 @@ const handleDropdownChange = (value: string) => {
             <SegmentedControl 
               v-model="selectedValueWithDropdown"
               :items="segmentedItemsWithDropdown"
-              @update:modelValue="handleValueChangeWithDropdown"
+              @update:modelValue="(value) => { console.log('App: update:modelValue with dropdown received:', value); selectedValueWithDropdown = value; }"
               @dropdown-change="handleDropdownChange"
             />
             <p>Selected: {{ selectedValueWithDropdown }}</p>
