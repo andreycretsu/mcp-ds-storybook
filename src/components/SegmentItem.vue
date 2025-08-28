@@ -7,7 +7,7 @@
       'has-dropdown': hasDropdown,
       'fixed-width': fixedWidth
     }"
-    @click="$emit('click')"
+    @click="handleClick"
   >
     <!-- Active state border and shadow -->
     <div 
@@ -47,10 +47,15 @@ interface Props {
   fixedWidth?: boolean
 }
 
-defineProps<Props>()
-defineEmits<{
+const props = defineProps<Props>()
+const emit = defineEmits<{
   click: []
 }>()
+
+const handleClick = () => {
+  console.log('SegmentItem clicked:', props.label) // Debug log
+  emit('click')
+}
 </script>
 
 <style scoped>

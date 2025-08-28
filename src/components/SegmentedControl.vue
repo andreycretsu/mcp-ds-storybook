@@ -129,7 +129,7 @@ const getDropdownPosition = () => {
 }
 
 const handleSegmentClick = (item: SegmentedItem) => {
-  console.log('Segment clicked:', item.value) // Debug log
+  console.log('SegmentedControl - Segment clicked:', item.value) // Debug log
   
   // Always update the model value when clicking a segment
   emit('update:modelValue', item.value)

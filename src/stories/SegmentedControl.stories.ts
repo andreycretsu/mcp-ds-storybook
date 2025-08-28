@@ -180,6 +180,45 @@ export const AllVariations: Story = {
   })
 }
 
+// Simple test story
+export const SimpleTest: Story = {
+  render: () => ({
+    components: { SegmentedControl },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px; max-width: 500px;">
+        <div>
+          <h3 style="margin-bottom: 12px; color: #374151;">Simple Test - Click to see active state</h3>
+          <SegmentedControl 
+            v-model="selectedValue"
+            :items="items"
+            @update:modelValue="handleValueChange"
+          />
+        </div>
+        
+        <div style="background: #f8fafc; padding: 16px; border-radius: 8px; border: 1px solid #e2e8f0;">
+          <h4 style="margin-bottom: 8px; color: #374151;">Current State:</h4>
+          <p style="margin: 4px 0; color: #64748b;">Selected: <strong>{{ selectedValue }}</strong></p>
+        </div>
+      </div>
+    `,
+    data() {
+      return {
+        selectedValue: 'company',
+        items: [
+          { label: 'Company', value: 'company' },
+          { label: 'My', value: 'my' }
+        ]
+      }
+    },
+    methods: {
+      handleValueChange(value: string) {
+        console.log('Value changed to:', value)
+        this.selectedValue = value
+      }
+    }
+  })
+}
+
 // Interactive demo
 export const InteractiveDemo: Story = {
   render: () => ({
