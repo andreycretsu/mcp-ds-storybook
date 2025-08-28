@@ -8,6 +8,8 @@
       'fixed-width': fixedWidth
     }"
     @click="handleClick"
+    @mousedown="() => console.log('Mouse down on:', props.label)"
+    @mouseup="() => console.log('Mouse up on:', props.label)"
   >
     <!-- Active state border and shadow -->
     <div 
@@ -52,8 +54,18 @@ const emit = defineEmits<{
   click: []
 }>()
 
-const handleClick = () => {
-  console.log('SegmentItem clicked:', props.label) // Debug log
+const handleClick = (event: Event) => {
+  event.preventDefault()
+  event.stopPropagation()
+  console.log('SegmentItem clicked:', props.label, 'isActive:', props.isActive) // Debug log
+  
+  // Add temporary visual feedback
+  const target = event.target as HTMLElement
+  target.style.backgroundColor = '#ff0000'
+  setTimeout(() => {
+    target.style.backgroundColor = ''
+  }, 200)
+  
   emit('click')
 }
 </script>
@@ -76,6 +88,10 @@ const handleClick = () => {
   min-height: 16px;
   min-width: fit-content;
   flex-shrink: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
 }
 
 .segment-item.fixed-width {

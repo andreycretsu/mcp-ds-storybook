@@ -11,7 +11,7 @@
             :is-active="item.value === modelValue"
             :has-dropdown="item.dropdown"
             :fixed-width="item.label === 'Company' || item.label === 'My'"
-            @click="handleSegmentClick(item)"
+            @click="() => handleSegmentClick(item)"
             @mouseenter="handleSegmentHover(item, index)"
             @mouseleave="handleSegmentLeave"
           />
@@ -129,7 +129,7 @@ const getDropdownPosition = () => {
 }
 
 const handleSegmentClick = (item: SegmentedItem) => {
-  console.log('SegmentedControl - Segment clicked:', item.value) // Debug log
+  console.log('SegmentedControl - Segment clicked:', item.value, 'Current modelValue:', props.modelValue) // Debug log
   
   // Always update the model value when clicking a segment
   emit('update:modelValue', item.value)
