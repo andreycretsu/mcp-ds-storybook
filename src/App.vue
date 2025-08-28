@@ -44,6 +44,16 @@ const handleDropdownChange = (value: string) => {
   console.log('Dropdown value changed to:', value)
   dropdownValue.value = value
 }
+
+// Watch for changes to debug reactivity
+import { watch } from 'vue'
+watch(selectedValue, (newValue) => {
+  console.log('App: selectedValue changed to:', newValue)
+})
+
+watch(selectedValueWithDropdown, (newValue) => {
+  console.log('App: selectedValueWithDropdown changed to:', newValue)
+})
 </script>
 
 <template>
@@ -128,23 +138,27 @@ const handleDropdownChange = (value: string) => {
           <div class="test-item">
             <h3>Basic SegmentedControl</h3>
             <SegmentedControl 
-              v-model="selectedValue"
+              :modelValue="selectedValue"
               :items="segmentedItems"
               @update:modelValue="(value) => { console.log('App: update:modelValue received:', value); selectedValue = value; }"
             />
             <p>Selected: {{ selectedValue }}</p>
+            <button @click="selectedValue = 'my'" style="margin: 4px; padding: 4px 8px; font-size: 12px;">Set to "My"</button>
+            <button @click="selectedValue = 'company'" style="margin: 4px; padding: 4px 8px; font-size: 12px;">Set to "Company"</button>
           </div>
           
           <div class="test-item">
             <h3>With Dropdown</h3>
             <SegmentedControl 
-              v-model="selectedValueWithDropdown"
+              :modelValue="selectedValueWithDropdown"
               :items="segmentedItemsWithDropdown"
               @update:modelValue="(value) => { console.log('App: update:modelValue with dropdown received:', value); selectedValueWithDropdown = value; }"
               @dropdown-change="handleDropdownChange"
             />
             <p>Selected: {{ selectedValueWithDropdown }}</p>
             <p>Dropdown Value: {{ dropdownValue }}</p>
+            <button @click="selectedValueWithDropdown = 'direct-reports'" style="margin: 4px; padding: 4px 8px; font-size: 12px;">Set to "Direct reports"</button>
+            <button @click="selectedValueWithDropdown = 'company'" style="margin: 4px; padding: 4px 8px; font-size: 12px;">Set to "Company"</button>
           </div>
         </div>
       </section>
