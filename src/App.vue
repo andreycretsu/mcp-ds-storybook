@@ -1,7 +1,49 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import ModalCard from './components/ModalCard.vue'
 import Button from './components/Button.vue'
 import Icon from './components/Icon.vue'
+import SegmentedControl from './components/SegmentedControl.vue'
+
+// SegmentedControl test data
+const selectedValue = ref('company')
+const selectedValueWithDropdown = ref('direct-reports')
+const dropdownValue = ref('')
+
+const segmentedItems = [
+  { label: 'Company', value: 'company' },
+  { label: 'My', value: 'my' }
+]
+
+const segmentedItemsWithDropdown = [
+  { label: 'Company', value: 'company' },
+  { 
+    label: 'Direct reports', 
+    value: 'direct-reports',
+    dropdown: true,
+    dropdownOptions: [
+      { label: 'Direct reports', value: 'direct-reports' },
+      { label: 'Indirect reports', value: 'indirect-reports' },
+      { label: 'All reports', value: 'all-reports' }
+    ]
+  },
+  { label: 'My', value: 'my' }
+]
+
+const handleValueChange = (value: string) => {
+  console.log('Value changed to:', value)
+  selectedValue.value = value
+}
+
+const handleValueChangeWithDropdown = (value: string) => {
+  console.log('Value with dropdown changed to:', value)
+  selectedValueWithDropdown.value = value
+}
+
+const handleDropdownChange = (value: string) => {
+  console.log('Dropdown value changed to:', value)
+  dropdownValue.value = value
+}
 </script>
 
 <template>
@@ -75,6 +117,34 @@ import Icon from './components/Icon.vue'
               <Button state="pressed" label="Pressed" />
               <Button state="disabled" label="Disabled" />
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SegmentedControl Test -->
+      <section class="showcase-section">
+        <h2>SegmentedControl Component Test</h2>
+        <div class="segmented-control-test">
+          <div class="test-item">
+            <h3>Basic SegmentedControl</h3>
+            <SegmentedControl 
+              v-model="selectedValue"
+              :items="segmentedItems"
+              @update:modelValue="handleValueChange"
+            />
+            <p>Selected: {{ selectedValue }}</p>
+          </div>
+          
+          <div class="test-item">
+            <h3>With Dropdown</h3>
+            <SegmentedControl 
+              v-model="selectedValueWithDropdown"
+              :items="segmentedItemsWithDropdown"
+              @update:modelValue="handleValueChangeWithDropdown"
+              @dropdown-change="handleDropdownChange"
+            />
+            <p>Selected: {{ selectedValueWithDropdown }}</p>
+            <p>Dropdown Value: {{ dropdownValue }}</p>
           </div>
         </div>
       </section>
@@ -288,6 +358,12 @@ import Icon from './components/Icon.vue'
   margin-bottom: 24px;
 }
 
+.segmented-control-test {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
 .test-item {
   display: flex;
   flex-direction: column;
@@ -303,6 +379,12 @@ import Icon from './components/Icon.vue'
 
 .test-item > * {
   margin: 0;
+}
+
+.test-item p {
+  font-size: 12px;
+  color: #666;
+  margin: 4px 0;
 }
 
 /* Responsive adjustments */
