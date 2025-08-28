@@ -82,6 +82,7 @@ const selectedDropdownValue = ref('')
 const hoveredItem = ref<SegmentedItem | null>(null)
 const hoveredIndex = ref<number>(-1)
 const isHoveringDropdown = ref(false)
+const isClicking = ref(false)
 const segmentRefs = ref<HTMLElement[]>([])
 
 const hasDropdown = computed(() => {
@@ -116,27 +117,27 @@ const getDropdownPosition = () => {
 }
 
 const handleSegmentClick = (item: SegmentedItem) => {
+  // Always update the model value when clicking a segment
+  emit('update:modelValue', item.value)
+  
   if (item.dropdown) {
-    // Toggle dropdown for dropdown items
-    if (item.value === props.modelValue) {
-      dropdownOpen.value = !dropdownOpen.value
-    } else {
-      dropdownOpen.value = true
-      emit('update:modelValue', item.value)
-      // Set first dropdown option as default
-      if (item.dropdownOptions && item.dropdownOptions.length > 0) {
-        selectedDropdownValue.value = item.dropdownOptions[0].value
-        emit('dropdown-change', item.dropdownOptions[0].value)
-      }
+    // For dropdown items, toggle the dropdown
+    dropdownOpen.value = !dropdownOpen.value
+    if (dropdownOpen.value && item.dropdownOptions && item.dropdownOptions.length > 0) {
+      // Set first dropdown option as default when opening
+      selectedDropdownValue.value = item.dropdownOptions[0].value
+      emit('dropdown-change', item.dropdownOptions[0].value)
     }
   } else {
-    // Regular segment click
+    // Regular segment click - close dropdown
     dropdownOpen.value = false
-    emit('update:modelValue', item.value)
+    hoveredItem.value = null
+    hoveredIndex.value = -1
   }
 }
 
 const handleSegmentHover = (item: SegmentedItem, index: number) => {
+  // Show dropdown instantly on hover for dropdown items
   if (item.dropdown) {
     hoveredItem.value = item
     hoveredIndex.value = index
@@ -159,7 +160,11 @@ const handleDropdownSelect = (option: DropdownOption) => {
   emit('dropdown-change', option.value)
   dropdownOpen.value = false
   hoveredItem.value = null
+  hoveredIndex.value = -1
   isHoveringDropdown.value = false
+  
+  // Keep the dropdown segment active when an option is selected
+  // The modelValue should remain as the segment value, not the dropdown option value
 }
 
 
