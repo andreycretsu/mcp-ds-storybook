@@ -1,16 +1,21 @@
 <template>
   <div class="segmented-control">
     <div class="segmented-control-container">
-      <SegmentItem
-        v-for="(item, index) in items"
-        :key="index"
-        :label="item.label"
-        :is-active="item.value === modelValue"
-        :has-dropdown="item.dropdown"
-        @click="handleSegmentClick(item)"
-        @mouseenter="handleSegmentHover(item)"
-        @mouseleave="handleSegmentLeave"
-      />
+      <template v-for="(item, index) in items" :key="index">
+        <SegmentItem
+          :label="item.label"
+          :is-active="item.value === modelValue"
+          :has-dropdown="item.dropdown"
+          @click="handleSegmentClick(item)"
+          @mouseenter="handleSegmentHover(item)"
+          @mouseleave="handleSegmentLeave"
+        />
+        <!-- Separator between segments (except last one) -->
+        <div 
+          v-if="index < items.length - 1" 
+          class="segment-separator"
+        ></div>
+      </template>
       
       <!-- Dropdown Menu -->
       <div
@@ -157,20 +162,38 @@ onUnmounted(() => {
 
 .segmented-control-container {
   display: flex;
-  background: transparent;
-  border: 1px solid #d3dfeb;
-  border-radius: 4px;
-  padding: 0;
+  background: #e5ecf3;
+  border: none;
+  border-radius: 6px;
+  padding: 4px;
   gap: 0;
   position: relative;
   width: fit-content;
+}
+
+.segment-separator {
+  width: 0;
+  height: 20px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.segment-separator::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -0.5px;
+  right: -0.5px;
+  background: #d3dfeb;
+  width: 1px;
 }
 
 
 
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 8px);
   left: 0;
   right: 0;
   background: white;
