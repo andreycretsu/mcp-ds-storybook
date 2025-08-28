@@ -7,7 +7,7 @@
           class="segment-wrapper"
         >
           <SegmentItem
-            :label="item.label"
+            :label="getSegmentLabel(item)"
             :is-active="item.value === modelValue"
             :has-dropdown="item.dropdown"
             :fixed-width="item.label === 'Company' || item.label === 'My'"
@@ -93,6 +93,18 @@ const activeDropdownItem = computed(() => {
   return props.items.find(item => item.value === props.modelValue && item.dropdown)
 })
 
+const getSegmentLabel = (item: SegmentedItem) => {
+  // If this is a dropdown item and we have a selected value, show the selected option label
+  if (item.dropdown && selectedDropdownValue.value && item.dropdownOptions) {
+    const selectedOption = item.dropdownOptions.find(option => option.value === selectedDropdownValue.value)
+    if (selectedOption) {
+      return selectedOption.label
+    }
+  }
+  // Otherwise show the original item label
+  return item.label
+}
+
 const getDropdownWidth = () => {
   const index = hoveredIndex.value >= 0 ? hoveredIndex.value : props.items.findIndex(item => item.value === (activeDropdownItem.value?.value))
   if (index >= 0 && segmentRefs.value[index]) {
@@ -117,6 +129,8 @@ const getDropdownPosition = () => {
 }
 
 const handleSegmentClick = (item: SegmentedItem) => {
+  console.log('Segment clicked:', item.value) // Debug log
+  
   // Always update the model value when clicking a segment
   emit('update:modelValue', item.value)
   
@@ -156,6 +170,8 @@ const handleSegmentLeave = () => {
 }
 
 const handleDropdownSelect = (option: DropdownOption) => {
+  console.log('Dropdown option selected:', option.value) // Debug log
+  
   selectedDropdownValue.value = option.value
   emit('dropdown-change', option.value)
   dropdownOpen.value = false
