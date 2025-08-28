@@ -68,6 +68,12 @@ const handleClick = (event: Event) => {
   
   emit('click')
 }
+
+// Watch for isActive changes
+import { watch } from 'vue'
+watch(() => props.isActive, (newValue) => {
+  console.log('SegmentItem isActive changed for:', props.label, 'to:', newValue)
+})
 </script>
 
 <style scoped>
