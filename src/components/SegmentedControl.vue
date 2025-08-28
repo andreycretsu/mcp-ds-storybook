@@ -1,63 +1,42 @@
 <template>
-  <div class="segmented-control" :class="{ 'has-dropdown': hasDropdown }">
+  <div class="segmented-control">
     <div class="segmented-control-container">
-      <button
+      <SegmentItem
         v-for="(item, index) in items"
         :key="index"
-        class="segment-button"
-        :class="{
-          'active': item.value === modelValue,
-          'has-dropdown': item.dropdown,
-          'dropdown-open': item.value === modelValue && item.dropdown && dropdownOpen,
-          'first': index === 0,
-          'last': index === items.length - 1
-        }"
+        :label="item.label"
+        :is-active="item.value === modelValue"
+        :has-dropdown="item.dropdown"
         @click="handleSegmentClick(item)"
-        @mouseenter="handleMouseEnter(item)"
-        @mouseleave="handleMouseLeave"
+        @mouseenter="handleSegmentHover(item)"
+        @mouseleave="handleSegmentLeave"
+      />
+      
+      <!-- Dropdown Menu -->
+      <div
+        v-if="dropdownOpen && (activeDropdownItem || hoveredItem)"
+        class="dropdown-menu"
+        @click.stop
+        @mouseenter="isHoveringDropdown = true"
+        @mouseleave="isHoveringDropdown = false"
       >
-        <span class="segment-text">{{ item.label }}</span>
-        <svg
-          v-if="item.dropdown"
-          class="dropdown-icon"
-          width="12"
-          height="12"
-          viewBox="0 0 12 12"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M3 4.5L6 7.5L9 4.5"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-        
-        <!-- Dropdown Menu -->
         <div
-          v-if="item.dropdown && item.value === modelValue && dropdownOpen"
-          class="dropdown-menu"
-          @click.stop
+          v-for="(option, optionIndex) in (hoveredItem || activeDropdownItem)?.dropdownOptions"
+          :key="optionIndex"
+          class="dropdown-item"
+          :class="{ 'active': option.value === selectedDropdownValue }"
+          @click="handleDropdownSelect(option)"
         >
-          <div
-            v-for="(option, optionIndex) in item.dropdownOptions"
-            :key="optionIndex"
-            class="dropdown-item"
-            :class="{ 'active': option.value === selectedDropdownValue }"
-            @click="handleDropdownSelect(option)"
-          >
-            {{ option.label }}
-          </div>
+          {{ option.label }}
         </div>
-      </button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
+import SegmentItem from './SegmentItem.vue'
 
 export interface SegmentedItem {
   label: string
@@ -74,14 +53,9 @@ export interface DropdownOption {
 interface Props {
   modelValue: string
   items: SegmentedItem[]
-  size?: 'small' | 'medium' | 'large'
-  variant?: 'default' | 'outline'
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  size: 'medium',
-  variant: 'default'
-})
+const props = defineProps<Props>()
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
@@ -91,9 +65,14 @@ const emit = defineEmits<{
 const dropdownOpen = ref(false)
 const selectedDropdownValue = ref('')
 const hoveredItem = ref<SegmentedItem | null>(null)
+const isHoveringDropdown = ref(false)
 
 const hasDropdown = computed(() => {
   return props.items.some(item => item.dropdown)
+})
+
+const activeDropdownItem = computed(() => {
+  return props.items.find(item => item.value === props.modelValue && item.dropdown)
 })
 
 const handleSegmentClick = (item: SegmentedItem) => {
@@ -117,19 +96,32 @@ const handleSegmentClick = (item: SegmentedItem) => {
   }
 }
 
+const handleSegmentHover = (item: SegmentedItem) => {
+  if (item.dropdown) {
+    hoveredItem.value = item
+    dropdownOpen.value = true
+  }
+}
+
+const handleSegmentLeave = () => {
+  // Add a small delay to allow moving to dropdown menu
+  setTimeout(() => {
+    if (!isHoveringDropdown.value) {
+      hoveredItem.value = null
+      dropdownOpen.value = false
+    }
+  }, 150)
+}
+
 const handleDropdownSelect = (option: DropdownOption) => {
   selectedDropdownValue.value = option.value
   emit('dropdown-change', option.value)
   dropdownOpen.value = false
-}
-
-const handleMouseEnter = (item: SegmentedItem) => {
-  hoveredItem.value = item
-}
-
-const handleMouseLeave = () => {
   hoveredItem.value = null
+  isHoveringDropdown.value = false
 }
+
+
 
 // Close dropdown when clicking outside
 const handleClickOutside = (event: Event) => {
@@ -160,64 +152,20 @@ onUnmounted(() => {
 <style scoped>
 .segmented-control {
   display: inline-flex;
-  font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .segmented-control-container {
   display: flex;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 2px;
-  gap: 0;
-}
-
-.segment-button {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
   background: transparent;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  color: #64748b;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  min-width: 0;
-  flex: 1;
+  border: 1px solid #d3dfeb;
+  border-radius: 4px;
+  padding: 0;
+  gap: 0;
+  position: relative;
 }
 
-.segment-button:hover {
-  background: #f1f5f9;
-  color: #475569;
-}
 
-.segment-button.active {
-  background: #3b82f6;
-  color: white;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-}
-
-.segment-button.active:hover {
-  background: #2563eb;
-}
-
-.segment-button.has-dropdown {
-  padding-right: 12px;
-}
-
-.dropdown-icon {
-  transition: transform 0.2s ease;
-  flex-shrink: 0;
-}
-
-.segment-button.dropdown-open .dropdown-icon {
-  transform: rotate(180deg);
-}
 
 .dropdown-menu {
   position: absolute;
@@ -225,28 +173,31 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid #d3dfeb;
+  border-radius: 4px;
+  box-shadow: 0px 1px 4px 0px rgba(9, 8, 61, 0.08);
   z-index: 1000;
   min-width: 120px;
 }
 
 .dropdown-item {
-  padding: 8px 12px;
-  font-size: 14px;
-  color: #374151;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #476887;
   cursor: pointer;
   transition: background-color 0.15s ease;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 .dropdown-item:hover {
-  background: #f9fafb;
+  background: rgba(255, 255, 255, 0.8);
+  color: #000f30;
 }
 
 .dropdown-item.active {
-  background: #eff6ff;
-  color: #1d4ed8;
+  background: rgba(255, 255, 255, 0.9);
+  color: #000f30;
   font-weight: 500;
 }
 
@@ -258,39 +209,8 @@ onUnmounted(() => {
   border-radius: 0 0 6px 6px;
 }
 
-/* Size variants */
-.segmented-control.size-small .segment-button {
-  padding: 6px 12px;
-  font-size: 12px;
-}
-
-.segmented-control.size-large .segment-button {
-  padding: 12px 20px;
-  font-size: 16px;
-}
-
-/* Variant styles */
-.segmented-control.variant-outline .segmented-control-container {
-  background: transparent;
-  border: 1px solid #d1d5db;
-}
-
-.segmented-control.variant-outline .segment-button:hover {
-  background: #f9fafb;
-}
-
-.segmented-control.variant-outline .segment-button.active {
-  background: #1f2937;
-  color: white;
-}
-
 /* Responsive */
 @media (max-width: 640px) {
-  .segment-button {
-    padding: 6px 12px;
-    font-size: 13px;
-  }
-  
   .dropdown-menu {
     min-width: 100px;
   }

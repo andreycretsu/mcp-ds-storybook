@@ -20,16 +20,6 @@ const meta: Meta<typeof SegmentedControl> = {
     items: {
       control: 'object',
       description: 'Array of segment items with optional dropdown options'
-    },
-    size: {
-      control: 'select',
-      options: ['small', 'medium', 'large'],
-      description: 'Size variant of the segmented control'
-    },
-    variant: {
-      control: 'select',
-      options: ['default', 'outline'],
-      description: 'Visual variant of the segmented control'
     }
   },
   tags: ['autodocs']
@@ -46,9 +36,7 @@ export const Default: Story = {
       { label: 'Company', value: 'company' },
       { label: 'Direct reports', value: 'direct-reports' },
       { label: 'My', value: 'my' }
-    ],
-    size: 'medium',
-    variant: 'default'
+    ]
   }
 }
 
@@ -69,9 +57,7 @@ export const WithDropdown: Story = {
         ]
       },
       { label: 'My', value: 'my' }
-    ],
-    size: 'medium',
-    variant: 'default'
+    ]
   }
 }
 
@@ -82,9 +68,7 @@ export const TwoSegments: Story = {
     items: [
       { label: 'Company', value: 'company' },
       { label: 'My', value: 'my' }
-    ],
-    size: 'medium',
-    variant: 'default'
+    ]
   }
 }
 
@@ -104,50 +88,11 @@ export const TwoSegmentsWithDropdown: Story = {
         ]
       },
       { label: 'My', value: 'my' }
-    ],
-    size: 'medium',
-    variant: 'default'
+    ]
   }
 }
 
-// Small size
-export const Small: Story = {
-  args: {
-    modelValue: 'company',
-    items: [
-      { label: 'Company', value: 'company' },
-      { label: 'My', value: 'my' }
-    ],
-    size: 'small',
-    variant: 'default'
-  }
-}
 
-// Large size
-export const Large: Story = {
-  args: {
-    modelValue: 'company',
-    items: [
-      { label: 'Company', value: 'company' },
-      { label: 'My', value: 'my' }
-    ],
-    size: 'large',
-    variant: 'default'
-  }
-}
-
-// Outline variant
-export const Outline: Story = {
-  args: {
-    modelValue: 'company',
-    items: [
-      { label: 'Company', value: 'company' },
-      { label: 'My', value: 'my' }
-    ],
-    size: 'medium',
-    variant: 'outline'
-  }
-}
 
 // All variations showcase
 export const AllVariations: Story = {
