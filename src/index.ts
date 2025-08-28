@@ -20,6 +20,7 @@ import ModalCard from './components/ModalCard.vue'
 import ModalFooter from './components/ModalFooter.vue'
 import ModalHeader from './components/ModalHeader.vue'
 import SearchInput from './components/SearchInput.vue'
+import SegmentedControl from './components/SegmentedControl.vue'
 import SnackBar from './components/SnackBar.vue'
 
 // Import styles
@@ -46,6 +47,7 @@ export {
   ModalFooter,
   ModalHeader,
   SearchInput,
+  SegmentedControl,
   SnackBar
 }
 
@@ -71,6 +73,7 @@ export default {
     app.component('ModalFooter', ModalFooter)
     app.component('ModalHeader', ModalHeader)
     app.component('SearchInput', SearchInput)
+    app.component('SegmentedControl', SegmentedControl)
     app.component('SnackBar', SnackBar)
   }
 }
