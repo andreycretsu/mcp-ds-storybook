@@ -4,7 +4,8 @@
     :class="{
       'active': isActive,
       'inactive': !isActive,
-      'has-dropdown': hasDropdown
+      'has-dropdown': hasDropdown,
+      'fixed-width': fixedWidth
     }"
     @click="$emit('click')"
   >
@@ -43,6 +44,7 @@ interface Props {
   label: string
   isActive: boolean
   hasDropdown?: boolean
+  fixedWidth?: boolean
 }
 
 defineProps<Props>()
@@ -69,6 +71,10 @@ defineEmits<{
   min-height: 16px;
   min-width: fit-content;
   flex-shrink: 0;
+}
+
+.segment-item.fixed-width {
+  width: 72px;
 }
 
 .content {
@@ -142,7 +148,7 @@ defineEmits<{
 
 /* Hover effects */
 .segment-item:hover {
-  background: rgba(255, 255, 255, 0.8);
+  background: #d3dfeb;
 }
 
 .segment-item.inactive:hover .text {

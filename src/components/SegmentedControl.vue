@@ -6,6 +6,7 @@
           :label="item.label"
           :is-active="item.value === modelValue"
           :has-dropdown="item.dropdown"
+          :fixed-width="item.label === 'Company' || item.label === 'My'"
           @click="handleSegmentClick(item)"
           @mouseenter="handleSegmentHover(item)"
           @mouseleave="handleSegmentLeave"
@@ -21,6 +22,7 @@
       <div
         v-if="dropdownOpen && (activeDropdownItem || hoveredItem)"
         class="dropdown-menu"
+        :style="{ width: getDropdownWidth() }"
         @click.stop
         @mouseenter="isHoveringDropdown = true"
         @mouseleave="isHoveringDropdown = false"
@@ -79,6 +81,14 @@ const hasDropdown = computed(() => {
 const activeDropdownItem = computed(() => {
   return props.items.find(item => item.value === props.modelValue && item.dropdown)
 })
+
+const getDropdownWidth = () => {
+  const dropdownItem = hoveredItem.value || activeDropdownItem.value
+  if (dropdownItem && dropdownItem.label === 'Direct reports') {
+    return 'auto'
+  }
+  return '120px'
+}
 
 const handleSegmentClick = (item: SegmentedItem) => {
   if (item.dropdown) {
@@ -201,7 +211,7 @@ onUnmounted(() => {
   border-radius: 4px;
   box-shadow: 0px 1px 4px 0px rgba(9, 8, 61, 0.08);
   z-index: 1000;
-  min-width: 120px;
+  min-width: fit-content;
 }
 
 .dropdown-item {
