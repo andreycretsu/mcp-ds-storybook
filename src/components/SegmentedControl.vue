@@ -163,6 +163,7 @@ onUnmounted(() => {
   padding: 0;
   gap: 0;
   position: relative;
+  width: fit-content;
 }
 
 

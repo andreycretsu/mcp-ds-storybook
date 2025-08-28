@@ -67,7 +67,7 @@ defineEmits<{
   line-height: 1;
   white-space: nowrap;
   min-height: 16px;
-  flex: 1;
+  min-width: fit-content;
 }
 
 .content {
