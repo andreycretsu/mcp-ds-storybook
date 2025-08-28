@@ -56,7 +56,23 @@ export const ActiveWithDropdown: Story = {
     label: 'Direct reports',
     isActive: true,
     hasDropdown: true
-  }
+  },
+  render: (args) => ({
+    components: { SegmentItem },
+    setup() {
+      return { args }
+    },
+    template: `
+      <div style="position: relative;">
+        <SegmentItem v-bind="args" />
+        <div style="position: absolute; top: 100%; left: 0; margin-top: 4px; background: white; border: 1px solid #d3dfeb; border-radius: 4px; box-shadow: 0px 1px 4px 0px rgba(9,8,61,0.08); min-width: 120px; z-index: 1000;">
+          <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">Direct reports</div>
+          <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">Indirect reports</div>
+          <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">All reports</div>
+        </div>
+      </div>
+    `
+  })
 }
 
 // Inactive with dropdown
@@ -65,7 +81,23 @@ export const InactiveWithDropdown: Story = {
     label: 'Direct reports',
     isActive: false,
     hasDropdown: true
-  }
+  },
+  render: (args) => ({
+    components: { SegmentItem },
+    setup() {
+      return { args }
+    },
+    template: `
+      <div style="position: relative;">
+        <SegmentItem v-bind="args" />
+        <div style="position: absolute; top: 100%; left: 0; margin-top: 4px; background: white; border: 1px solid #d3dfeb; border-radius: 4px; box-shadow: 0px 1px 4px 0px rgba(9,8,61,0.08); min-width: 120px; z-index: 1000;">
+          <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">Direct reports</div>
+          <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">Indirect reports</div>
+          <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">All reports</div>
+        </div>
+      </div>
+    `
+  })
 }
 
 // All states showcase
@@ -78,7 +110,14 @@ export const AllStates: Story = {
           <h3 style="margin-bottom: 8px; color: #374151; font-size: 14px;">Active States</h3>
           <div style="display: flex; gap: 8px;">
             <SegmentItem label="Company" :is-active="true" :has-dropdown="false" />
-            <SegmentItem label="Direct reports" :is-active="true" :has-dropdown="true" />
+            <div style="position: relative;">
+              <SegmentItem label="Direct reports" :is-active="true" :has-dropdown="true" />
+              <div style="position: absolute; top: 100%; left: 0; margin-top: 4px; background: white; border: 1px solid #d3dfeb; border-radius: 4px; box-shadow: 0px 1px 4px 0px rgba(9,8,61,0.08); min-width: 120px; z-index: 1000;">
+                <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">Direct reports</div>
+                <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">Indirect reports</div>
+                <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">All reports</div>
+              </div>
+            </div>
             <SegmentItem label="My" :is-active="true" :has-dropdown="false" />
           </div>
         </div>
@@ -87,7 +126,14 @@ export const AllStates: Story = {
           <h3 style="margin-bottom: 8px; color: #374151; font-size: 14px;">Inactive States</h3>
           <div style="display: flex; gap: 8px;">
             <SegmentItem label="Company" :is-active="false" :has-dropdown="false" />
-            <SegmentItem label="Direct reports" :is-active="false" :has-dropdown="true" />
+            <div style="position: relative;">
+              <SegmentItem label="Direct reports" :is-active="false" :has-dropdown="true" />
+              <div style="position: absolute; top: 100%; left: 0; margin-top: 4px; background: white; border: 1px solid #d3dfeb; border-radius: 4px; box-shadow: 0px 1px 4px 0px rgba(9,8,61,0.08); min-width: 120px; z-index: 1000;">
+                <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">Direct reports</div>
+                <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">Indirect reports</div>
+                <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">All reports</div>
+              </div>
+            </div>
             <SegmentItem label="My" :is-active="false" :has-dropdown="false" />
           </div>
         </div>
@@ -183,17 +229,38 @@ export const FigmaSpecifications: Story = {
           <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="display: flex; gap: 8px;">
               <SegmentItem label="Company" :is-active="true" :has-dropdown="false" />
-              <SegmentItem label="Direct reports" :is-active="false" :has-dropdown="true" />
+              <div style="position: relative;">
+                <SegmentItem label="Direct reports" :is-active="false" :has-dropdown="true" />
+                <div style="position: absolute; top: 100%; left: 0; margin-top: 4px; background: white; border: 1px solid #d3dfeb; border-radius: 4px; box-shadow: 0px 1px 4px 0px rgba(9,8,61,0.08); min-width: 120px; z-index: 1000;">
+                  <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">Direct reports</div>
+                  <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">Indirect reports</div>
+                  <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">All reports</div>
+                </div>
+              </div>
               <SegmentItem label="My" :is-active="false" :has-dropdown="false" />
             </div>
             <div style="display: flex; gap: 8px;">
               <SegmentItem label="Company" :is-active="false" :has-dropdown="false" />
-              <SegmentItem label="Direct reports" :is-active="true" :has-dropdown="true" />
+              <div style="position: relative;">
+                <SegmentItem label="Direct reports" :is-active="true" :has-dropdown="true" />
+                <div style="position: absolute; top: 100%; left: 0; margin-top: 4px; background: white; border: 1px solid #d3dfeb; border-radius: 4px; box-shadow: 0px 1px 4px 0px rgba(9,8,61,0.08); min-width: 120px; z-index: 1000;">
+                  <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">Direct reports</div>
+                  <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">Indirect reports</div>
+                  <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">All reports</div>
+                </div>
+              </div>
               <SegmentItem label="My" :is-active="false" :has-dropdown="false" />
             </div>
             <div style="display: flex; gap: 8px;">
               <SegmentItem label="Company" :is-active="false" :has-dropdown="false" />
-              <SegmentItem label="Direct reports" :is-active="false" :has-dropdown="true" />
+              <div style="position: relative;">
+                <SegmentItem label="Direct reports" :is-active="false" :has-dropdown="true" />
+                <div style="position: absolute; top: 100%; left: 0; margin-top: 4px; background: white; border: 1px solid #d3dfeb; border-radius: 4px; box-shadow: 0px 1px 4px 0px rgba(9,8,61,0.08); min-width: 120px; z-index: 1000;">
+                  <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">Direct reports</div>
+                  <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">Indirect reports</div>
+                  <div style="padding: 4px 8px; font-size: 12px; font-weight: 500; color: #476887; cursor: pointer; font-family: 'Inter', sans-serif;">All reports</div>
+                </div>
+              </div>
               <SegmentItem label="My" :is-active="true" :has-dropdown="false" />
             </div>
           </div>

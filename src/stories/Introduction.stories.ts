@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 
 const meta: Meta = {
-  title: 'Documentation/Introduction',
+  title: 'Getting Started/Introduction',
   parameters: {
     layout: 'fullscreen',
     docs: {
