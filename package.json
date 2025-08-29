@@ -1,5 +1,5 @@
 {
-  "name": "@your-org/vue-design-system",
+  "name": "vue-design-system-storybook",
   "private": false,
   "version": "1.0.0",
   "description": "A comprehensive Vue 3 design system component library",
@@ -25,11 +25,11 @@
     "ui",
     "typescript"
   ],
-  "author": "Your Name",
+  "author": "Bright on Beach",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/vue-design-system.git"
+    "url": "https://github.com/andreycretsu/mcp-ds-storybook.git"
   },
   "scripts": {
     "dev": "vite",
