@@ -1,0 +1,11 @@
+[build]
+  publish = "storybook-static"
+  command = "npm run build-storybook"
+
+[build.environment]
+  NODE_VERSION = "18"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200 

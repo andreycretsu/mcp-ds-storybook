@@ -1,0 +1,172 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Design System/Design Tokens" />
+
+# Design Tokens
+
+Our design system is built on a foundation of consistent design tokens that ensure visual harmony across all components.
+
+## 🎨 Color Palette
+
+### Primary Colors
+
+**Primary Blue** - #338eea
+**Success Green** - #25bd5d
+**Warning Yellow** - #e3b212
+**Error Red** - #e42e2e
+**Info Blue** - #0072e5
+
+### Text Colors
+
+**Text Dark** - #000f30
+**Text Medium** - #476887
+
+### Background Colors
+
+**Background Light** - #f6f9fb
+**Border Light** - #e5ecf3
+
+## 📝 Typography
+
+### Font Family
+**Inter** - A modern, highly legible font designed for user interfaces.
+
+### Font Weights
+
+**Semi Bold (600) - 16px - Titles**
+**Regular (400) - 14px - Descriptions**
+**Semi Bold (600) - 12px - Button Text**
+**Medium (500) - 10px - Labels**
+
+### Typography Scale
+
+| Element | Font Size | Font Weight | Line Height | Use Case |
+|---------|-----------|-------------|-------------|----------|
+| Title | 16px | 600 (Semi Bold) | 1.25 | Modal titles, section headers |
+| Description | 14px | 400 (Regular) | 1.4 | Modal descriptions, body text |
+| Button Text | 12px | 600 (Semi Bold) | 1.2 | Button labels, action text |
+| Label | 10px | 500 (Medium) | 1.2 | Form labels, small text |
+
+## 📏 Spacing
+
+### Spacing Scale
+
+Our spacing system uses consistent increments:
+
+| Size | Value | Use Case |
+|------|-------|----------|
+| xs | 4px | Minimal spacing, tight layouts |
+| sm | 8px | Component internal spacing |
+| md | 12px | Footer padding, small gaps |
+| lg | 16px | Content padding, standard gaps |
+| xl | 20px | Header padding, large gaps |
+| xxl | 24px | Footer gaps, major spacing |
+
+### Component Spacing
+
+| Component | Padding | Gap |
+|-----------|---------|-----|
+| Modal Header | 20px | 8px |
+| Modal Content | 16px | 16px |
+| Modal Footer | 12px | 24px |
+
+## 🔲 Border Radius
+
+| Size | Value | Use Case |
+|------|-------|----------|
+| Small | 4px | Icons, small elements |
+| Medium | 6px | Buttons, form inputs |
+| Large | 10px | Modal cards, containers |
+
+## 📱 Responsive Breakpoints
+
+| Breakpoint | Value | Use Case |
+|------------|-------|----------|
+| Mobile | < 768px | Small screens, phones |
+| Tablet | 768px - 1024px | Medium screens, tablets |
+| Desktop | > 1024px | Large screens, desktops |
+
+### Responsive Behavior
+
+- **Mobile-first approach**: Components are designed for mobile first
+- **Fluid layouts**: Components adapt smoothly between breakpoints
+- **Touch-friendly**: Interactive elements are sized for touch input
+- **Readable text**: Typography scales appropriately for screen size
+
+## 🎯 Usage Guidelines
+
+### Color Usage
+
+- **Primary Blue**: Use for main actions, links, and primary buttons
+- **Success Green**: Use for success states, confirmations, and positive feedback
+- **Warning Yellow**: Use for warnings, caution states, and attention-grabbing elements
+- **Error Red**: Use for errors, destructive actions, and critical feedback
+- **Info Blue**: Use for informational messages and secondary actions
+
+### Typography Usage
+
+- **Titles**: Use for modal headers, section titles, and important headings
+- **Descriptions**: Use for explanatory text, modal descriptions, and body content
+- **Button Text**: Use for action labels and interactive element text
+- **Labels**: Use for form labels, small annotations, and secondary information
+
+### Spacing Usage
+
+- **Consistent spacing**: Use the spacing scale consistently across components
+- **Visual hierarchy**: Use larger spacing to separate major sections
+- **Touch targets**: Ensure interactive elements have adequate spacing for touch
+- **Readability**: Use appropriate spacing to improve text readability
+
+## 🔧 CSS Variables
+
+You can access these design tokens as CSS variables:
+
+```css
+:root {
+  /* Colors */
+  --color-primary: #338eea;
+  --color-success: #25bd5d;
+  --color-warning: #e3b212;
+  --color-error: #e42e2e;
+  --color-info: #0072e5;
+  
+  /* Text Colors */
+  --color-text-dark: #000f30;
+  --color-text-medium: #476887;
+  
+  /* Background Colors */
+  --color-bg-light: #f6f9fb;
+  --color-border-light: #e5ecf3;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 20px;
+  --spacing-xxl: 24px;
+  
+  /* Border Radius */
+  --radius-small: 4px;
+  --radius-medium: 6px;
+  --radius-large: 10px;
+}
+```
+
+## 🎨 Customization
+
+You can customize these design tokens by overriding the CSS variables in your application:
+
+```css
+/* Customize colors for your brand */
+:root {
+  --color-primary: #your-brand-color;
+  --color-success: #your-success-color;
+  --color-warning: #your-warning-color;
+  --color-error: #your-error-color;
+}
+```
+
+---
+
+**Ready to use these tokens?** Check out the individual component stories to see how these design tokens are applied in practice!

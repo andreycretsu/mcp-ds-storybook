@@ -1,0 +1,217 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Getting Started/Installation" />
+
+# Installation Guide
+
+Welcome to the Vue Design System! This guide will help you install and start using our component library in your Vue 3 projects.
+
+## 📦 Installation
+
+### NPM Package (Recommended)
+
+```bash
+npm install @your-org/vue-design-system
+```
+
+### Yarn
+
+```bash
+yarn add @your-org/vue-design-system
+```
+
+### PNPM
+
+```bash
+pnpm add @your-org/vue-design-system
+```
+
+## 🚀 Quick Start
+
+### Option 1: Global Installation (All Components)
+
+```javascript
+import { createApp } from 'vue'
+import VueDesignSystem from '@your-org/vue-design-system'
+import '@your-org/vue-design-system/style'
+
+const app = createApp(App)
+app.use(VueDesignSystem)
+app.mount('#app')
+```
+
+### Option 2: Individual Components
+
+```javascript
+import { Button, Avatar, Badge } from '@your-org/vue-design-system'
+import '@your-org/vue-design-system/style'
+
+export default {
+  components: {
+    Button,
+    Avatar,
+    Badge
+  }
+}
+```
+
+## 🎯 Usage Examples
+
+### Basic Button
+
+```vue
+<template>
+  <Button variant="primary" size="medium">
+    Click me
+  </Button>
+</template>
+```
+
+### Avatar Component
+
+```vue
+<template>
+  <Avatar 
+    src="/path/to/image.jpg" 
+    alt="User avatar" 
+    size="large" 
+  />
+</template>
+```
+
+### Badge Component
+
+```vue
+<template>
+  <Badge text="New" variant="success" />
+</template>
+```
+
+## 📚 Available Components
+
+| Component | Description | Import |
+|-----------|-------------|---------|
+| Avatar | User profile images | `import { Avatar }` |
+| Badge | Status indicators | `import { Badge }` |
+| Button | Interactive buttons | `import { Button }` |
+| DatePicker | Date selection | `import { DatePicker }` |
+| ModalCard | Modal dialogs | `import { ModalCard }` |
+| SearchInput | Search fields | `import { SearchInput }` |
+| SnackBar | Notifications | `import { SnackBar }` |
+| CloseAction | Close button | `import { CloseAction }` |
+| ColorPalette | Color selection | `import { ColorPalette }` |
+| ColorSwatch | Color swatches | `import { ColorSwatch }` |
+| ContentArea | Content container | `import { ContentArea }` |
+| Control | Form control | `import { Control }` |
+| ControlLine | Control layout | `import { ControlLine }` |
+| ControlTile | Tile control | `import { ControlTile }` |
+| HexColorInput | Hex color input | `import { HexColorInput }` |
+| Icon | Icon component | `import { Icon }` |
+| IconColorPicker | Icon with color picker | `import { IconColorPicker }` |
+| IconGrid | Icon grid layout | `import { IconGrid }` |
+| ModalFooter | Modal footer | `import { ModalFooter }` |
+| ModalHeader | Modal header | `import { ModalHeader }` |
+
+## 🎨 Component Props
+
+### Button Props
+
+```typescript
+interface ButtonProps {
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost'
+  size?: 'small' | 'medium' | 'large'
+  disabled?: boolean
+  loading?: boolean
+}
+```
+
+### Avatar Props
+
+```typescript
+interface AvatarProps {
+  src?: string
+  alt?: string
+  size?: 'small' | 'medium' | 'large'
+  shape?: 'circle' | 'square'
+}
+```
+
+### Badge Props
+
+```typescript
+interface BadgeProps {
+  text?: string
+  variant?: 'primary' | 'secondary' | 'success' | 'warning' | 'error'
+  size?: 'small' | 'medium' | 'large'
+}
+```
+
+## 🔧 Requirements
+
+- **Vue**: 3.x or higher
+- **Node.js**: 16+ (for installation)
+- **Package Manager**: npm, yarn, or pnpm
+
+## 🎨 Design Tokens
+
+Our design system includes consistent design tokens:
+
+### Colors
+- **Primary**: `#338eea`
+- **Success**: `#25bd5d`
+- **Warning**: `#e3b212`
+- **Error**: `#e42e2e`
+- **Info**: `#0072e5`
+
+### Typography
+- **Font Family**: Inter
+- **Title**: 16px, Semi Bold (600)
+- **Description**: 14px, Regular (400)
+- **Button Text**: 12px, Semi Bold (600)
+
+### Spacing
+- **Padding**: 20px (header), 16px (content), 12px (footer)
+- **Gap**: 8px (header), 16px (content), 24px (footer)
+- **Border Radius**: 10px (modal), 6px (buttons), 4px (icons)
+
+## 🆘 Troubleshooting
+
+### Installation Issues
+
+```bash
+# Clear cache and reinstall
+rm -rf node_modules package-lock.json
+npm install
+
+# Or with yarn
+rm -rf node_modules yarn.lock
+yarn install
+```
+
+### Component Not Loading
+
+1. Check that the component is properly imported
+2. Verify the component is registered in your Vue app
+3. Ensure styles are imported: `import '@your-org/vue-design-system/style'`
+
+### Styling Issues
+
+1. Make sure CSS is imported after component imports
+2. Check for CSS conflicts with your existing styles
+3. Verify FontAwesome is loading correctly
+
+## 📖 Additional Resources
+
+- **Storybook**: Interactive component examples
+- **GitHub Repository**: Source code and issues
+- **NPM Package**: Latest version and downloads
+
+## 🎉 Getting Help
+
+- **GitHub Issues**: Report bugs and request features
+- **Documentation**: Check component stories for detailed examples
+- **Community**: Join our community discussions
+
+---
+
+**Ready to get started?** Check out the individual component stories in the sidebar for detailed examples and interactive demos!
