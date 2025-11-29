@@ -157,7 +157,8 @@ const sizeConfig = computed(() => {
       iconSize: 'S-12', 
       gap: '2px', 
       spinnerSize: '12px',
-      labelPadding: '0px 2px'
+      labelPadding: '0px 2px',
+      borderRadius: '12px'
     },
     '32': { 
       height: '32px', 
@@ -169,7 +170,8 @@ const sizeConfig = computed(() => {
       iconSize: 'M-16', 
       gap: '2px', 
       spinnerSize: '16px', // 16px to match icon
-      labelPadding: '2px 4px'
+      labelPadding: '2px 4px',
+      borderRadius: '16px'
     },
     '36': { 
       height: '36px', 
@@ -181,7 +183,8 @@ const sizeConfig = computed(() => {
       iconSize: 'M-16', 
       gap: '2px', 
       spinnerSize: '20px',
-      labelPadding: '1px 4px'
+      labelPadding: '1px 4px',
+      borderRadius: '20px'
     },
     '40': { 
       height: '40px', 
@@ -193,7 +196,8 @@ const sizeConfig = computed(() => {
       iconSize: 'L-20', 
       gap: '4px', 
       spinnerSize: '20px',
-      labelPadding: '2px 4px'
+      labelPadding: '2px 4px',
+      borderRadius: '24px'
     }
   }
   
@@ -273,7 +277,8 @@ const buttonStyle = computed(() => {
     padding: `${config.paddingY} ${paddingX}`,
     fontSize: config.fontSize,
     fontWeight: config.fontWeight,
-    gap: config.gap
+    gap: config.gap,
+    borderRadius: config.borderRadius
   }
 
   // Success state uses solid background color, others use gradient
