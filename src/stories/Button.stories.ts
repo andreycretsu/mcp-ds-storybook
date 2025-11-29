@@ -16,8 +16,9 @@ const meta: Meta<typeof Button> = {
 | Size | Height | Padding X (L/R) | Padding Y (T/B) | Font Size | Icon Size | Gap | Border Radius | KBD Size |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **24** | 24px | 6px | 6px | 12px (Medium) | 12px | 2px | 12px | S-16 |
-| **32** | 32px | 8px | 8px | 12px (SemiBold) | 16px | 2px | 12px | S-16 |
-| **36** | 36px | 8px | 10px | 14px (SemiBold) | 16px | 2px | 12px | S-16 |
+| **28** | 28px | 8px | 6px | 12px (Medium) | 16px | 2px | 12px | S-16 |
+| **32** | 32px | 8px | 8px | 12px (SemiBold) | 20px | 2px | 12px | S-16 |
+| **36** | 36px | 8px | 10px | 14px (SemiBold) | 20px | 2px | 12px | S-16 |
 | **40** | 40px | 12px | 10px | 16px (SemiBold) | 20px | 4px | 12px | S-16 |
 `
       }
@@ -97,7 +98,7 @@ const meta: Meta<typeof Button> = {
     },
     size: {
       control: { type: 'select' },
-      options: ['24', '32', '36', '40'],
+      options: ['24', '28', '32', '36', '40'],
       description: 'Button size'
     }
   },
@@ -442,6 +443,14 @@ export const AllSizes: Story = {
           <div style="display: flex; gap: 12px; align-items: center;">
             <Button size="24" tone="primary" label="Button" :lIcon="true" :rIcon="true" />
             <Button size="24" tone="secondary" type="icon-only" :lIcon="true" />
+          </div>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 12px; color: #666; font-family: monospace;">Size 28</div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <Button size="28" tone="primary" label="Button" :lIcon="true" :rIcon="true" />
+            <Button size="28" tone="secondary" type="icon-only" :lIcon="true" />
           </div>
         </div>
         
