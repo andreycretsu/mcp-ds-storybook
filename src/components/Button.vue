@@ -157,7 +157,7 @@ const sizeConfig = computed(() => {
       gap: '2px', 
       spinnerSize: '12px',
       labelPadding: '0px 2px',
-      borderRadius: '12px'
+      borderRadius: '7px'
     },
     '32': { 
       height: '32px', 
@@ -170,7 +170,7 @@ const sizeConfig = computed(() => {
       gap: '2px', 
       spinnerSize: '16px', // 16px to match icon
       labelPadding: '2px 4px',
-      borderRadius: '16px'
+      borderRadius: '10px'
     },
     '36': { 
       height: '36px', 
@@ -183,7 +183,7 @@ const sizeConfig = computed(() => {
       gap: '2px', 
       spinnerSize: '20px',
       labelPadding: '1px 4px',
-      borderRadius: '20px'
+      borderRadius: '12px'
     },
     '40': { 
       height: '40px', 
@@ -196,7 +196,7 @@ const sizeConfig = computed(() => {
       gap: '4px', 
       spinnerSize: '20px',
       labelPadding: '2px 4px',
-      borderRadius: '24px'
+      borderRadius: '14px'
     }
   }
   
