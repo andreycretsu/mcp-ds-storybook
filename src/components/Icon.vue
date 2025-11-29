@@ -111,36 +111,52 @@ const computedStyle = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   /* No background or border for clean look */
 }
 
 .icon-XS-8 {
   width: 8px;
   height: 8px;
+  min-width: 8px;
+  min-height: 8px;
   font-size: 8px;
+  line-height: 1;
 }
 
 .icon-S-12 {
   width: 12px;
   height: 12px;
+  min-width: 12px;
+  min-height: 12px;
   font-size: 10px;
+  line-height: 1;
 }
 
 .icon-M-16 {
   width: 16px;
   height: 16px;
+  min-width: 16px;
+  min-height: 16px;
   font-size: 14px;
+  line-height: 1;
 }
 
 .icon-L-20 {
   width: 20px;
   height: 20px;
+  min-width: 20px;
+  min-height: 20px;
   font-size: 18px;
+  line-height: 1;
 }
 
 .icon-XL-24 {
   width: 24px;
   height: 24px;
+  min-width: 24px;
+  min-height: 24px;
   font-size: 22px;
+  line-height: 1;
 }
 </style> 
