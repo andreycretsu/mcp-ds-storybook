@@ -141,7 +141,7 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   type: 'default',
   tone: 'primary',
   state: 'default',
-  size: '24'
+  size: '32'
 })
 
 // Size configuration
@@ -202,7 +202,7 @@ const sizeConfig = computed(() => {
   }
   
   const sizeKey = String(props.size)
-  return sizeMap[sizeKey] || sizeMap['24']
+  return sizeMap[sizeKey] || sizeMap['32']
 })
 
 // Background colors based on tone and state

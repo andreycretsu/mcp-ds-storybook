@@ -122,7 +122,7 @@ const meta: Meta<typeof Button> = {
     type: 'default',
     tone: 'primary',
     state: 'default',
-    size: '24'
+    size: '32'
   }
 }
 
