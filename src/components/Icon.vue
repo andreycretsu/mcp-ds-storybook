@@ -16,7 +16,7 @@ import { computed } from 'vue'
 const props = defineProps<{
   icon?: string // e.g. 'fa-solid fa-user', 'fa-regular fa-user', 'fa-brands fa-github', etc.
   status?: 'default' | 'success' | 'warning' | 'info' | 'error'
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '12px' | '8px' | '10px' // Five sizes from MCP/Figma + custom sizes
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '12px' | '8px' | '10px' | '16px' // Five sizes from MCP/Figma + custom sizes
   color?: string
   spin?: boolean
   pulse?: boolean
@@ -36,6 +36,7 @@ const sizeClass = computed(() => {
     case '12px': return 'icon-12px'
     case '8px': return 'icon-8px'
     case '10px': return 'icon-10px'
+    case '16px': return 'icon-16px'
     default: return 'icon-md'
   }
 })
@@ -163,5 +164,11 @@ const computedStyle = computed(() => {
   width: 8px;
   height: 8px;
   font-size: 8px;
+}
+
+.icon-16px {
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
 }
 </style> 
