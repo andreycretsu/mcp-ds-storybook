@@ -153,7 +153,7 @@ const sizeConfig = computed(() => {
       paddingXIconOnly: '10px', 
       paddingY: '6px', 
       fontSize: '12px', 
-      fontWeight: '500',
+      fontWeight: '600',
       iconSize: '12px', 
       gap: '2px', 
       spinnerSize: '12px' 
@@ -164,7 +164,7 @@ const sizeConfig = computed(() => {
       paddingXIconOnly: '10px', 
       paddingY: '6px', 
       fontSize: '12px', 
-      fontWeight: '500',
+      fontWeight: '600',
       iconSize: '16px', 
       gap: '2px', 
       spinnerSize: '16px' 
