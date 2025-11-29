@@ -29,7 +29,10 @@ const meta: Meta<typeof Kbd> = {
   args: {
     combined: true,
     size: 'M-20',
-    value: '1'
+    value: '1',
+    icon1: 'circle-dashed',
+    icon2: 'circle-dashed',
+    icon3: 'circle-dashed'
   }
 }
 
@@ -136,7 +139,7 @@ const atomMeta: Meta<typeof KbdAtom> = {
     },
     icon: {
       control: { type: 'select' },
-      options: ['⌘ command', '⇧ shift', '⌫ delete-left', '⌥ option', '⌃ control', '← arrow-left', '→ arrow-right', '↑ arrow-up', '↓ arrow-down', 'windows', 'no'],
+      options: ['circle-dashed', '⌘ command', '⇧ shift', '⌫ delete-left', '⌥ option', '⌃ control', '← arrow-left', '→ arrow-right', '↑ arrow-up', '↓ arrow-down', 'windows', 'no'],
       description: 'Icon type'
     },
     text: {

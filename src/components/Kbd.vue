@@ -95,9 +95,9 @@ const props = withDefaults(defineProps<KbdProps>(), {
   combined: true,
   size: 'M-20',
   value: '1',
-  icon1: '⌘ command',
-  icon2: '⇧ shift',
-  icon3: '← arrow-left',
+  icon1: 'circle-dashed',
+  icon2: 'circle-dashed',
+  icon3: 'circle-dashed',
   modeIcon1: true,
   modeIcon2: true,
   modeIcon3: true
