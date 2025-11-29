@@ -60,7 +60,7 @@
     </div>
     
     <!-- Right Icon (always rendered when rIcon is true, hidden with opacity during loading/success) -->
-    <div v-if="rIcon && type !== 'icon-only' && state !== 'loading' && state !== 'success'" class="button__icon-right">
+    <div v-if="rIcon && !kbd && type !== 'icon-only' && state !== 'loading' && state !== 'success'" class="button__icon-right">
       <Icon 
         :icon="rIconName" 
         :size="sizeConfig.iconSize"
@@ -68,7 +68,7 @@
       />
     </div>
     <!-- Placeholder to maintain size during loading/success -->
-    <div v-else-if="rIcon && type !== 'icon-only'" class="button__icon-right" style="opacity: 0; pointer-events: none;">
+    <div v-else-if="rIcon && !kbd && type !== 'icon-only'" class="button__icon-right" style="opacity: 0; pointer-events: none;">
       <Icon 
         :icon="rIconName" 
         :size="sizeConfig.iconSize"
