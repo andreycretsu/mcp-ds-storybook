@@ -163,7 +163,7 @@ const sizeConfig = computed(() => {
       paddingX: '8px', 
       paddingXIconOnly: '12px', 
       paddingY: '8px', 
-      fontSize: '14px', 
+      fontSize: '12px', 
       fontWeight: '500',
       iconSize: '16px', 
       gap: '2px', 
