@@ -53,7 +53,7 @@
     </div>
     
     <!-- Label Container (always rendered to maintain size, hidden with opacity when loading) -->
-    <div v-if="type !== 'icon-only'" class="button__label-container">
+    <div v-if="type !== 'icon-only'" class="button__label-container" :style="{ padding: sizeConfig.labelPadding }">
       <div v-if="state === 'success' && successMessage" class="button__label">{{ successMessage }}</div>
       <div v-else-if="label && label.trim() !== ''" class="button__label">{{ label }}</div>
       <div v-else class="button__label" style="visibility: hidden;">{{ label || 'Button' }}</div>
@@ -156,7 +156,8 @@ const sizeConfig = computed(() => {
       fontWeight: '500',
       iconSize: 'S-12', 
       gap: '2px', 
-      spinnerSize: '12px' 
+      spinnerSize: '12px',
+      labelPadding: '0px 2px'
     },
     '32': { 
       height: '32px', 
@@ -167,7 +168,8 @@ const sizeConfig = computed(() => {
       fontWeight: '500',
       iconSize: 'M-16', 
       gap: '2px', 
-      spinnerSize: '16px' // 16px to match icon
+      spinnerSize: '16px', // 16px to match icon
+      labelPadding: '2px 4px'
     },
     '36': { 
       height: '36px', 
@@ -178,7 +180,8 @@ const sizeConfig = computed(() => {
       fontWeight: '500',
       iconSize: 'M-16', 
       gap: '2px', 
-      spinnerSize: '20px' 
+      spinnerSize: '20px',
+      labelPadding: '1px 4px'
     },
     '40': { 
       height: '40px', 
@@ -189,7 +192,8 @@ const sizeConfig = computed(() => {
       fontWeight: '500',
       iconSize: 'L-20', 
       gap: '4px', 
-      spinnerSize: '20px' 
+      spinnerSize: '20px',
+      labelPadding: '2px 4px'
     }
   }
   
@@ -345,7 +349,7 @@ const buttonStyle = computed(() => {
 .button__label-container {
   display: flex;
   align-items: center;
-  padding: 0 2px;
+  /* padding set dynamically via style binding */
   flex-shrink: 0;
 }
 
