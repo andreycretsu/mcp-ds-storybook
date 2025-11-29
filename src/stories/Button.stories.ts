@@ -35,7 +35,8 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     label: {
       control: 'text',
-      description: 'Button label text'
+      description: 'Button label text',
+      if: { arg: 'type', neq: 'icon-only' }
     },
     lIcon: {
       control: 'boolean',
@@ -43,7 +44,8 @@ const meta: Meta<typeof Button> = {
     },
     rIcon: {
       control: 'boolean',
-      description: 'Show right icon'
+      description: 'Show right icon',
+      if: { arg: 'type', neq: 'icon-only' }
     },
     lIconName: {
       control: 'text',
@@ -51,35 +53,51 @@ const meta: Meta<typeof Button> = {
     },
     rIconName: {
       control: 'text',
-      description: 'Right icon name (Font Awesome class)'
+      description: 'Right icon name (Font Awesome class)',
+      if: { arg: 'type', neq: 'icon-only' }
     },
     kbd: {
       control: 'boolean',
-      description: 'Show keyboard shortcut indicator'
+      description: 'Show keyboard shortcut indicator',
+      if: { arg: 'type', neq: 'icon-only' }
     },
     kbdValue: {
       control: { type: 'select' },
       options: ['1', '2', '3'],
-      description: 'Number of keys in keyboard shortcut (1, 2, or 3)'
+      description: 'Number of keys in keyboard shortcut (1, 2, or 3)',
+      if: { arg: 'type', neq: 'icon-only' }
     },
     kbdCombined: {
       control: 'boolean',
-      description: 'Show connector between keys (for 2 or 3 keys)'
+      description: 'Show connector between keys (for 2 or 3 keys)',
+      if: { arg: 'type', neq: 'icon-only' }
     },
-    kbdIcon1: { control: 'text' },
-    kbdIcon2: { control: 'text' },
-    kbdIcon3: { control: 'text' },
+    kbdIcon1: { 
+      control: 'text',
+      if: { arg: 'type', neq: 'icon-only' }
+    },
+    kbdIcon2: { 
+      control: 'text',
+      if: { arg: 'type', neq: 'icon-only' }
+    },
+    kbdIcon3: { 
+      control: 'text',
+      if: { arg: 'type', neq: 'icon-only' }
+    },
     kbdModeIcon1: { 
       control: 'boolean',
-      description: 'Toggle icon mode for key 1 (True: Auto/Icon, False: Text)'
+      description: 'Toggle icon mode for key 1 (True: Auto/Icon, False: Text)',
+      if: { arg: 'type', neq: 'icon-only' }
     },
     kbdModeIcon2: { 
       control: 'boolean',
-      description: 'Toggle icon mode for key 2 (True: Auto/Icon, False: Text)'
+      description: 'Toggle icon mode for key 2 (True: Auto/Icon, False: Text)',
+      if: { arg: 'type', neq: 'icon-only' }
     },
     kbdModeIcon3: { 
       control: 'boolean',
-      description: 'Toggle icon mode for key 3 (True: Auto/Icon, False: Text)'
+      description: 'Toggle icon mode for key 3 (True: Auto/Icon, False: Text)',
+      if: { arg: 'type', neq: 'icon-only' }
     },
     successMessage: {
       control: 'text',
