@@ -16,7 +16,7 @@ import { computed } from 'vue'
 const props = defineProps<{
   icon?: string // e.g. 'fa-solid fa-user', 'fa-regular fa-user', 'fa-brands fa-github', etc.
   status?: 'default' | 'success' | 'warning' | 'info' | 'error'
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '12px' | '8px' | '10px' | '16px' // Five sizes from MCP/Figma + custom sizes
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '8px' | '10px' | '12px' | '16px' | '20px' | '24px' // Five sizes from MCP/Figma + custom sizes
   color?: string
   spin?: boolean
   pulse?: boolean
@@ -33,10 +33,12 @@ const sizeClass = computed(() => {
     case 'md': return 'icon-md'
     case 'lg': return 'icon-lg'
     case 'xl': return 'icon-xl'
-    case '12px': return 'icon-12px'
     case '8px': return 'icon-8px'
     case '10px': return 'icon-10px'
+    case '12px': return 'icon-12px'
     case '16px': return 'icon-16px'
+    case '20px': return 'icon-20px'
+    case '24px': return 'icon-24px'
     default: return 'icon-md'
   }
 })
@@ -148,10 +150,10 @@ const computedStyle = computed(() => {
   font-size: 32px;
 }
 
-.icon-12px {
-  width: 12px;
-  height: 12px;
-  font-size: 10px;
+.icon-8px {
+  width: 8px;
+  height: 8px;
+  font-size: 8px;
 }
 
 .icon-10px {
@@ -160,15 +162,27 @@ const computedStyle = computed(() => {
   font-size: 10px;
 }
 
-.icon-8px {
-  width: 8px;
-  height: 8px;
-  font-size: 8px;
+.icon-12px {
+  width: 12px;
+  height: 12px;
+  font-size: 10px;
 }
 
 .icon-16px {
   width: 16px;
   height: 16px;
-  font-size: 16px;
+  font-size: 14px;
+}
+
+.icon-20px {
+  width: 20px;
+  height: 20px;
+  font-size: 18px;
+}
+
+.icon-24px {
+  width: 24px;
+  height: 24px;
+  font-size: 22px;
 }
 </style> 
