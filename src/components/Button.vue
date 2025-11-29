@@ -306,7 +306,8 @@ const buttonStyle = computed(() => {
     if (bg && bg.startsWith('linear-gradient')) {
       return {
         ...baseStyle,
-        backgroundImage: bg
+        backgroundImage: bg,
+        backgroundColor: 'transparent'
       }
     }
     
