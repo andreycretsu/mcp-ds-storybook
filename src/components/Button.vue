@@ -54,14 +54,6 @@
     
     <!-- Label Container (always rendered to maintain size, hidden with opacity when loading) -->
     <div v-if="type !== 'icon-only'" class="button__label-container" :style="{ padding: sizeConfig.labelPadding }">
-      <!-- In success state, we now keep the original label layout but hide it with opacity, 
-           and show success icon absolutely positioned. If user wants success message, that's different.
-           The requirement is: success state shouldn't change width. 
-           If we replace label with success message, width changes. 
-           If we just show check icon over existing content, width is preserved. 
-           But previously we replaced label with successMessage. 
-           Let's stick to preserving width: keep original content but opacity 0.
-      -->
       <div v-if="label && label.trim() !== ''" class="button__label">{{ label }}</div>
       <div v-else class="button__label" style="visibility: hidden;">{{ label || 'Button' }}</div>
     </div>
