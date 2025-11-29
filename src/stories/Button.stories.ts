@@ -13,7 +13,7 @@ const meta: Meta<typeof Button> = {
         component: `
 ### Sizes and Dimensions
 
-| Size | Height | Padding X (L/R) | Padding Y (T/B) | Font Size | Icon Size | Gap | Border Radius | KBD Size | Label Wrapper Padding |
+| Size | Height | Padding X (L/R) | Padding Y (T/B) | Font Size | Icon Size | Gap | Border Radius (Fallback) | KBD Size | Label Wrapper Padding |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **24** | 24px | 6px | 6px | 12px (Medium) | S-12 | 2px | 12px | S-16 | 0px 2px |
 | **32** | 32px | 8px | 8px | 12px (Medium) | M-16 | 2px | 16px | S-16 | 2px 4px |
