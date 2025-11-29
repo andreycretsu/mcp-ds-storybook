@@ -157,7 +157,7 @@ const sizeConfig = computed(() => {
       gap: '2px', 
       spinnerSize: '12px',
       labelPadding: '0px 2px',
-      borderRadius: '7px'
+      borderRadius: '8px'
     },
     '32': { 
       height: '32px', 
