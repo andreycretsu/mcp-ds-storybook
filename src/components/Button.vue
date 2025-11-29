@@ -307,11 +307,20 @@ const buttonStyle = computed(() => {
     borderRadius: config.borderRadius
   }
 
-  // Success state uses solid background color, others use gradient
+  // Success state uses solid background color (except when it's a gradient, handled below), others use gradient
   if (props.state === 'success') {
+    // Check if background is a gradient (starts with linear-gradient)
+    const bg = backgroundColor.value
+    if (bg && bg.startsWith('linear-gradient')) {
+      return {
+        ...baseStyle,
+        backgroundImage: bg
+      }
+    }
+    
     return {
       ...baseStyle,
-      backgroundColor: backgroundColor.value
+      backgroundColor: bg
     }
   }
   
