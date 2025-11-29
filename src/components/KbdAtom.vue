@@ -40,7 +40,7 @@ interface KbdAtomProps {
 const props = withDefaults(defineProps<KbdAtomProps>(), {
   textValue: 'Esc',
   size: '20',
-  icon: 'no',
+  icon: 'circle-dashed',
   text: true,
   modeIcon: true
 })
@@ -53,7 +53,7 @@ const isTextMode = computed(() => {
 
 // Text to display
 const displayText = computed(() => {
-  if (props.icon && props.icon !== 'no') {
+  if (props.icon && props.icon !== 'circle-dashed' && props.icon !== 'no') {
     return props.icon
   }
   return props.textValue
