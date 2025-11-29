@@ -15,7 +15,7 @@ const meta: Meta<typeof Button> = {
 
 | Size | Height | Padding X (L/R) | Padding Y (T/B) | Font Size | Icon Size | Gap | Border Radius (Fallback) | KBD Size | Label Wrapper Padding |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **24** | 24px | 6px | 6px | 12px (Medium) | S-12 | 2px | 12px | S-16 | 0px 2px |
+| **24** | 24px | 6px | 6px | 12px (Medium) | S-12 | 2px | 8px | S-16 | 0px 2px |
 | **32** | 32px | 8px | 8px | 12px (Medium) | M-16 | 2px | 16px | S-16 | 2px 4px |
 | **36** | 36px | 8px | 10px | 14px (Medium) | M-16 | 2px | 20px | S-16 | 1px 4px |
 | **40** | 40px | 12px | 10px | 16px (Medium) | L-20 | 4px | 24px | S-16 | 2px 4px |
