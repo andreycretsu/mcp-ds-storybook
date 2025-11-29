@@ -216,6 +216,11 @@ const backgroundColor = computed(() => {
     return getBackgroundColor('secondary', 'default')
   }
 
+  // For destructive tone, success state also uses secondary default background (as requested)
+  if (props.tone === 'destructive' && props.state === 'success') {
+    return getBackgroundColor('secondary', 'default')
+  }
+
   if (props.state === 'success') {
     return '#3d5c7a' // var(--color-neutral-dark-100)
   }
@@ -267,8 +272,8 @@ function getBackgroundColor(tone: string, state: string): string {
 // Icon color based on tone
 const iconColor = computed(() => {
   if (props.state === 'success') {
-    // If background is light (secondary or primary using secondary bg), use dark icon
-    if (props.tone === 'secondary' || props.tone === 'primary') {
+    // If background is light (secondary, primary, or destructive using secondary bg), use dark icon
+    if (props.tone === 'secondary' || props.tone === 'primary' || props.tone === 'destructive') {
       return '#000f30'
     }
     return '#ffffff'
@@ -431,14 +436,14 @@ const buttonStyle = computed(() => {
 
 /* Success state - always white text and icons, regardless of tone (EXCEPT when using light background) */
 .button--state-success .button__label,
-.button--state-success.button--tone-destructive .button__label,
 .button--state-success.button--tone-dark .button__label {
   color: #ffffff !important;
 }
 
-/* Primary and Secondary success states use light background, so dark text */
+/* Primary, Secondary, and Destructive success states use light background, so dark text */
 .button--state-success.button--tone-primary .button__label,
-.button--state-success.button--tone-secondary .button__label {
+.button--state-success.button--tone-secondary .button__label,
+.button--state-success.button--tone-destructive .button__label {
   color: #000f30 !important;
 }
 
