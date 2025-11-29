@@ -324,57 +324,72 @@ export const StateTransition: Story = {
   render: () => ({
     components: { Button },
     setup() {
-      const state = ref<'default' | 'hover' | 'press' | 'loading' | 'success'>('default')
-      let loadingTimeout: ReturnType<typeof setTimeout> | null = null
-      let successTimeout: ReturnType<typeof setTimeout> | null = null
+      const tones = ['primary', 'secondary', 'destructive', 'dark']
+      const types = ['default', 'stretched', 'icon-only']
       
-      const handleMouseEnter = () => {
-        if (state.value === 'default' || state.value === 'hover') {
-          state.value = 'hover'
+      // Create a reactive map for states
+      const states = ref<Record<string, 'default' | 'hover' | 'press' | 'loading' | 'success'>>({})
+      
+      // Initialize states
+      tones.forEach(tone => {
+        types.forEach(type => {
+          states.value[`${tone}-${type}`] = 'default'
+        })
+      })
+
+      const timeouts: Record<string, { loading: ReturnType<typeof setTimeout> | null, success: ReturnType<typeof setTimeout> | null }> = {}
+
+      const handleMouseEnter = (key: string) => {
+        if (states.value[key] === 'default' || states.value[key] === 'hover') {
+          states.value[key] = 'hover'
         }
       }
       
-      const handleMouseLeave = () => {
-        if (state.value === 'hover') {
-          state.value = 'default'
+      const handleMouseLeave = (key: string) => {
+        if (states.value[key] === 'hover') {
+          states.value[key] = 'default'
         }
       }
       
-      const handleMouseDown = () => {
-        if (state.value === 'hover' || state.value === 'default') {
-          state.value = 'press'
+      const handleMouseDown = (key: string) => {
+        if (states.value[key] === 'hover' || states.value[key] === 'default') {
+          states.value[key] = 'press'
         }
       }
       
-      const handleMouseUp = () => {
-        if (state.value === 'press') {
-          // Clear any existing timeouts
-          if (loadingTimeout) clearTimeout(loadingTimeout)
-          if (successTimeout) clearTimeout(successTimeout)
+      const handleMouseUp = (key: string) => {
+        if (states.value[key] === 'press') {
+          // Clear existing timeouts for this key
+          if (timeouts[key]) {
+            if (timeouts[key].loading) clearTimeout(timeouts[key].loading)
+            if (timeouts[key].success) clearTimeout(timeouts[key].success)
+          } else {
+            timeouts[key] = { loading: null, success: null }
+          }
           
-          // Transition to loading
-          state.value = 'loading'
+          states.value[key] = 'loading'
           
-          // After 1.5 seconds, transition to success
-          loadingTimeout = setTimeout(() => {
-            state.value = 'success'
+          timeouts[key].loading = setTimeout(() => {
+            states.value[key] = 'success'
             
-            // After 2 seconds, reset to default
-            successTimeout = setTimeout(() => {
-              state.value = 'default'
+            timeouts[key].success = setTimeout(() => {
+              states.value[key] = 'default'
             }, 2000)
           }, 1500)
         }
       }
       
-      // Cleanup on unmount
       onUnmounted(() => {
-        if (loadingTimeout) clearTimeout(loadingTimeout)
-        if (successTimeout) clearTimeout(successTimeout)
+        Object.values(timeouts).forEach(t => {
+          if (t.loading) clearTimeout(t.loading)
+          if (t.success) clearTimeout(t.success)
+        })
       })
       
       return { 
-        state,
+        tones,
+        types,
+        states,
         handleMouseEnter,
         handleMouseLeave,
         handleMouseDown,
@@ -382,31 +397,38 @@ export const StateTransition: Story = {
       }
     },
     template: `
-      <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-start;">
-        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
-          <div
-            @mouseenter="handleMouseEnter"
-            @mouseleave="handleMouseLeave"
-            @mousedown="handleMouseDown"
-            @mouseup="handleMouseUp"
-            style="display: inline-block; cursor: pointer;"
-          >
-            <Button 
-              tone="primary" 
-              label="Button" 
-              :state="state"
-              successMessage="Success"
-              :lIcon="true"
-              :rIcon="true"
-            />
-          </div>
+      <div style="display: flex; flex-direction: column; gap: 32px; width: 100%; max-width: 800px; padding: 20px;">
+        <div style="font-size: 14px; color: #666; margin-bottom: -16px;">
+          <strong>Interactive Demo:</strong> Hover and click any button to see the transition cycle (default → hover → press → loading → success).
         </div>
-        <div style="font-size: 12px; color: #666;">
-          Current state: <strong>{{ state }}</strong>
-          <br />
-          <span style="font-size: 11px; color: #999; margin-top: 4px; display: block;">
-            Hover to see hover state • Click to see press → loading → success
-          </span>
+        
+        <div v-for="tone in tones" :key="tone" style="display: flex; flex-direction: column; gap: 16px;">
+          <h3 style="font-family: sans-serif; text-transform: capitalize; margin: 0; color: #333; border-bottom: 1px solid #eee; padding-bottom: 8px;">{{ tone }}</h3>
+          
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div v-for="type in types" :key="type" style="display: flex; align-items: center; gap: 16px;">
+              <div 
+                @mouseenter="handleMouseEnter(tone + '-' + type)"
+                @mouseleave="handleMouseLeave(tone + '-' + type)"
+                @mousedown="handleMouseDown(tone + '-' + type)"
+                @mouseup="handleMouseUp(tone + '-' + type)"
+                style="display: inline-block; cursor: pointer;"
+              >
+                <Button 
+                  :tone="tone" 
+                  :type="type"
+                  :label="type === 'icon-only' ? undefined : 'Button'" 
+                  :state="states[tone + '-' + type]"
+                  successMessage="Success"
+                  :lIcon="true"
+                  :rIcon="type !== 'icon-only'"
+                />
+              </div>
+              <div style="font-size: 11px; color: #999; font-family: monospace; width: 150px;">
+                {{ type }} ({{ states[tone + '-' + type] }})
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     `
