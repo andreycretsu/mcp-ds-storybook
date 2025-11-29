@@ -163,11 +163,11 @@ const sizeConfig = computed(() => {
       paddingX: '8px', 
       paddingXIconOnly: '12px', 
       paddingY: '8px', 
-      fontSize: '12px', 
+      fontSize: '14px', 
       fontWeight: '500',
-      iconSize: '20px', 
+      iconSize: '16px', 
       gap: '2px', 
-      spinnerSize: '20px' // 20px to match icon
+      spinnerSize: '16px' // 16px to match icon
     },
     '36': { 
       height: '36px', 
