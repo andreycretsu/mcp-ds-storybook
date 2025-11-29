@@ -214,6 +214,16 @@ const sizeConfig = computed(() => {
 
 // Background colors based on tone and state
 const backgroundColor = computed(() => {
+  // For secondary tone, success state uses secondary default background
+  if (props.tone === 'secondary' && props.state === 'success') {
+    return getBackgroundColor('secondary', 'default')
+  }
+
+  // For primary tone, success state uses secondary default background
+  if (props.tone === 'primary' && props.state === 'success') {
+    return getBackgroundColor('secondary', 'default')
+  }
+
   if (props.state === 'success') {
     return '#3d5c7a' // var(--color-neutral-dark-100)
   }
@@ -231,6 +241,11 @@ const backgroundColor = computed(() => {
 })
 
 function getBackgroundColor(tone: string, state: string): string {
+  // Map loading and success states to default state for background lookup
+  // This ensures loading state keeps the button's original background style
+  // unless explicitly handled above (like success state logic)
+  const effectiveState = (state === 'loading' || state === 'success') ? 'default' : state
+
   const colors: Record<string, Record<string, string>> = {
     primary: {
       default: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.08) 100%), linear-gradient(90deg, rgb(44, 141, 255) 0%, rgb(44, 141, 255) 100%)',
@@ -254,12 +269,16 @@ function getBackgroundColor(tone: string, state: string): string {
     }
   }
   
-  return colors[tone]?.[state] || colors.primary.default
+  return colors[tone]?.[effectiveState] || colors.primary.default
 }
 
 // Icon color based on tone
 const iconColor = computed(() => {
   if (props.state === 'success') {
+    // If background is light (secondary or primary using secondary bg), use dark icon
+    if (props.tone === 'secondary' || props.tone === 'primary') {
+      return '#000f30'
+    }
     return '#ffffff'
   }
   
@@ -408,14 +427,17 @@ const buttonStyle = computed(() => {
   color: #ffffff;
 }
 
-/* Success state - always white text and icons, regardless of tone */
+/* Success state - always white text and icons, regardless of tone (EXCEPT when using light background) */
 .button--state-success .button__label,
-.button--state-success .button__icon-success,
-.button--state-success.button--tone-primary .button__label,
-.button--state-success.button--tone-secondary .button__label,
 .button--state-success.button--tone-destructive .button__label,
 .button--state-success.button--tone-dark .button__label {
   color: #ffffff !important;
+}
+
+/* Primary and Secondary success states use light background, so dark text */
+.button--state-success.button--tone-primary .button__label,
+.button--state-success.button--tone-secondary .button__label {
+  color: #000f30 !important;
 }
 
 /* Disabled state */
