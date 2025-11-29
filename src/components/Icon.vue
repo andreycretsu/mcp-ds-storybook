@@ -115,6 +115,15 @@ const computedStyle = computed(() => {
   /* No background or border for clean look */
 }
 
+/* Ensure the Font Awesome icon element fills the container and centers the glyph */
+.icon-container i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
 .icon-XS-8 {
   width: 8px;
   height: 8px;
