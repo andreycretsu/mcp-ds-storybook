@@ -12,8 +12,8 @@ const meta = {
     },
     size: {
       control: { type: 'select' },
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
-      description: 'Size of the icon (square container): xs, sm, md, lg, xl',
+      options: ['XS-8', 'S-12', 'M-16', 'L-20', 'XL-24'],
+      description: 'Size of the icon (square container): XS-8, S-12, M-16, L-20, XL-24',
     },
     color: {
       control: 'color',
@@ -52,7 +52,7 @@ type Story = StoryObj<typeof meta>;
 export const Solid: Story = {
   args: {
     icon: 'fa-solid fa-user',
-    size: 'md',
+    size: 'M-16',
     color: '#2563EB',
   },
 };
@@ -60,7 +60,7 @@ export const Solid: Story = {
 export const Regular: Story = {
   args: {
     icon: 'fa-regular fa-user',
-    size: 'md',
+    size: 'M-16',
     color: '#10B981',
   },
 };
@@ -68,7 +68,7 @@ export const Regular: Story = {
 export const Brands: Story = {
   args: {
     icon: 'fa-brands fa-github',
-    size: 'md',
+    size: 'M-16',
     color: '#111827',
   },
 };
@@ -76,7 +76,7 @@ export const Brands: Story = {
 export const Spin: Story = {
   args: {
     icon: 'fa-solid fa-sync',
-    size: 'md',
+    size: 'M-16',
     color: '#F59E42',
     spin: true,
   },
@@ -85,7 +85,7 @@ export const Spin: Story = {
 export const Pulse: Story = {
   args: {
     icon: 'fa-solid fa-heart',
-    size: 'md',
+    size: 'M-16',
     color: '#EF4444',
     pulse: true,
   },
@@ -94,7 +94,7 @@ export const Pulse: Story = {
 export const FixedWidth: Story = {
   args: {
     icon: 'fa-solid fa-align-left',
-    size: 'md',
+    size: 'M-16',
     color: '#6366F1',
     fixedWidth: true,
   },

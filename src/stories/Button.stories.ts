@@ -15,10 +15,10 @@ const meta: Meta<typeof Button> = {
 
 | Size | Height | Padding X (L/R) | Padding Y (T/B) | Font Size | Icon Size | Gap | Border Radius | KBD Size |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **24** | 24px | 6px | 6px | 12px (Medium) | 12px | 2px | 12px | S-16 |
-| **32** | 32px | 8px | 8px | 12px (Medium) | 16px | 2px | 12px | S-16 |
-| **36** | 36px | 8px | 10px | 14px (Medium) | 20px | 2px | 12px | S-16 |
-| **40** | 40px | 12px | 10px | 16px (Medium) | 20px | 4px | 12px | S-16 |
+| **24** | 24px | 6px | 6px | 12px (Medium) | S-12 | 2px | 12px | S-16 |
+| **32** | 32px | 8px | 8px | 12px (Medium) | M-16 | 2px | 12px | S-16 |
+| **36** | 36px | 8px | 10px | 14px (Medium) | L-20 | 2px | 12px | S-16 |
+| **40** | 40px | 12px | 10px | 16px (Medium) | L-20 | 4px | 12px | S-16 |
 `
       }
     }

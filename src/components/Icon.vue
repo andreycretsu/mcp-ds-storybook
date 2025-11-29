@@ -16,7 +16,7 @@ import { computed } from 'vue'
 const props = defineProps<{
   icon?: string // e.g. 'fa-solid fa-user', 'fa-regular fa-user', 'fa-brands fa-github', etc.
   status?: 'default' | 'success' | 'warning' | 'info' | 'error'
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '8px' | '10px' | '12px' | '16px' | '20px' | '24px' // Five sizes from MCP/Figma + custom sizes
+  size?: 'XS-8' | 'S-12' | 'M-16' | 'L-20' | 'XL-24' | string // Sizes from MCP/Figma
   color?: string
   spin?: boolean
   pulse?: boolean
@@ -28,18 +28,12 @@ const props = defineProps<{
 
 const sizeClass = computed(() => {
   switch (props.size) {
-    case 'xs': return 'icon-xs'
-    case 'sm': return 'icon-sm'
-    case 'md': return 'icon-md'
-    case 'lg': return 'icon-lg'
-    case 'xl': return 'icon-xl'
-    case '8px': return 'icon-8px'
-    case '10px': return 'icon-10px'
-    case '12px': return 'icon-12px'
-    case '16px': return 'icon-16px'
-    case '20px': return 'icon-20px'
-    case '24px': return 'icon-24px'
-    default: return 'icon-md'
+    case 'XS-8': return 'icon-XS-8'
+    case 'S-12': return 'icon-S-12'
+    case 'M-16': return 'icon-M-16'
+    case 'L-20': return 'icon-L-20'
+    case 'XL-24': return 'icon-XL-24'
+    default: return 'icon-M-16'
   }
 })
 
@@ -120,67 +114,31 @@ const computedStyle = computed(() => {
   /* No background or border for clean look */
 }
 
-.icon-xs {
-  width: 16px;
-  height: 16px;
-  font-size: 12px;
-}
-
-.icon-sm {
-  width: 24px;
-  height: 24px;
-  font-size: 16px;
-}
-
-.icon-md {
-  width: 32px;
-  height: 32px;
-  font-size: 20px;
-}
-
-.icon-lg {
-  width: 48px;
-  height: 48px;
-  font-size: 24px;
-}
-
-.icon-xl {
-  width: 64px;
-  height: 64px;
-  font-size: 32px;
-}
-
-.icon-8px {
+.icon-XS-8 {
   width: 8px;
   height: 8px;
   font-size: 8px;
 }
 
-.icon-10px {
-  width: 10px;
-  height: 10px;
-  font-size: 10px;
-}
-
-.icon-12px {
+.icon-S-12 {
   width: 12px;
   height: 12px;
   font-size: 10px;
 }
 
-.icon-16px {
+.icon-M-16 {
   width: 16px;
   height: 16px;
   font-size: 14px;
 }
 
-.icon-20px {
+.icon-L-20 {
   width: 20px;
   height: 20px;
   font-size: 18px;
 }
 
-.icon-24px {
+.icon-XL-24 {
   width: 24px;
   height: 24px;
   font-size: 22px;

@@ -154,7 +154,7 @@ const sizeConfig = computed(() => {
       paddingY: '6px', 
       fontSize: '12px', 
       fontWeight: '500',
-      iconSize: '12px', 
+      iconSize: 'S-12', 
       gap: '2px', 
       spinnerSize: '12px' 
     },
@@ -165,7 +165,7 @@ const sizeConfig = computed(() => {
       paddingY: '8px', 
       fontSize: '12px', 
       fontWeight: '500',
-      iconSize: '16px', 
+      iconSize: 'M-16', 
       gap: '2px', 
       spinnerSize: '16px' // 16px to match icon
     },
@@ -176,7 +176,7 @@ const sizeConfig = computed(() => {
       paddingY: '10px', 
       fontSize: '14px', 
       fontWeight: '500',
-      iconSize: '20px', 
+      iconSize: 'L-20', 
       gap: '2px', 
       spinnerSize: '20px' 
     },
@@ -187,7 +187,7 @@ const sizeConfig = computed(() => {
       paddingY: '10px', 
       fontSize: '16px', 
       fontWeight: '500',
-      iconSize: '20px', 
+      iconSize: 'L-20', 
       gap: '4px', 
       spinnerSize: '20px' 
     }

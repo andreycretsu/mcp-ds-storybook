@@ -62,7 +62,9 @@ const displayText = computed(() => {
 
 // Icon size based on atom size - Figma: 8px for 16, 10px for 20
 const iconSize = computed(() => {
-  return props.size === '16' ? '8px' : '10px'
+  // Use XS-8 for size 16 (8px icon)
+  // Use S-12 for size 20 (12px container, 10px font)
+  return props.size === '16' ? 'XS-8' : 'S-12'
 })
 
 // Icon color
