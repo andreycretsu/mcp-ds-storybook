@@ -19,7 +19,7 @@
     <div v-if="state === 'focus'" class="button__focus-effect"></div>
     
     <!-- Left Icon (always rendered when lIcon is true, hidden with opacity during loading/success) -->
-    <div v-if="lIcon && state !== 'loading' && state !== 'success'" class="button__icon-left">
+    <div v-if="lIcon && state !== 'loading'" class="button__icon-left">
       <Icon 
         :icon="lIconName" 
         :size="sizeConfig.iconSize"
@@ -43,7 +43,7 @@
       />
     </div>
     
-    <!-- Success Icon -->
+    <!-- Success Icon (centered when success) -->
     <div v-if="state === 'success'" class="button__icon-success">
       <Icon 
         icon="fa-solid fa-check" 
@@ -54,13 +54,20 @@
     
     <!-- Label Container (always rendered to maintain size, hidden with opacity when loading) -->
     <div v-if="type !== 'icon-only'" class="button__label-container" :style="{ padding: sizeConfig.labelPadding }">
-      <div v-if="state === 'success' && successMessage" class="button__label">{{ successMessage }}</div>
-      <div v-else-if="label && label.trim() !== ''" class="button__label">{{ label }}</div>
+      <!-- In success state, we now keep the original label layout but hide it with opacity, 
+           and show success icon absolutely positioned. If user wants success message, that's different.
+           The requirement is: success state shouldn't change width. 
+           If we replace label with success message, width changes. 
+           If we just show check icon over existing content, width is preserved. 
+           But previously we replaced label with successMessage. 
+           Let's stick to preserving width: keep original content but opacity 0.
+      -->
+      <div v-if="label && label.trim() !== ''" class="button__label">{{ label }}</div>
       <div v-else class="button__label" style="visibility: hidden;">{{ label || 'Button' }}</div>
     </div>
     
     <!-- Right Icon (always rendered when rIcon is true, hidden with opacity during loading/success) -->
-    <div v-if="rIcon && !kbd && type !== 'icon-only' && state !== 'loading' && state !== 'success'" class="button__icon-right">
+    <div v-if="rIcon && !kbd && type !== 'icon-only' && state !== 'loading'" class="button__icon-right">
       <Icon 
         :icon="rIconName" 
         :size="sizeConfig.iconSize"
@@ -78,7 +85,7 @@
     
     <!-- Keyboard Shortcut -->
     <Kbd 
-      v-if="kbd && type !== 'icon-only' && state !== 'loading' && state !== 'success'"
+      v-if="kbd && type !== 'icon-only' && state !== 'loading'"
       size="S-16"
       :value="kbdValue"
       :combined="kbdCombined"
@@ -343,7 +350,8 @@ const buttonStyle = computed(() => {
   padding: 0;
 }
 
-.button__loader {
+.button__loader,
+.button__icon-success {
   position: absolute;
   left: 50%;
   top: 50%;
@@ -417,10 +425,15 @@ const buttonStyle = computed(() => {
   pointer-events: none;
 }
 
-/* Loading state - hide other content with opacity but keep layout space */
+/* Loading and Success state - hide other content with opacity but keep layout space */
 .button--state-loading .button__icon-left,
 .button--state-loading .button__icon-right,
-.button--state-loading .button__label-container {
+.button--state-loading .button__label-container,
+.button--state-loading .button__kbd,
+.button--state-success .button__icon-left,
+.button--state-success .button__icon-right,
+.button--state-success .button__label-container,
+.button--state-success .button__kbd {
   opacity: 0;
   /* Keep elements in layout to maintain button size - don't remove from flow */
 }
