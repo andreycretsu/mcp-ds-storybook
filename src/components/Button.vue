@@ -176,7 +176,7 @@ const sizeConfig = computed(() => {
       paddingY: '10px', 
       fontSize: '14px', 
       fontWeight: '500',
-      iconSize: 'L-20', 
+      iconSize: 'M-16', 
       gap: '2px', 
       spinnerSize: '20px' 
     },
