@@ -134,6 +134,7 @@ const meta: Meta<typeof Button> = {
     rIcon: true,
     kbd: false,
     kbdValue: '1',
+    kbdCombined: true,
     kbdModeIcon1: true,
     kbdModeIcon2: true,
     kbdModeIcon3: true,
