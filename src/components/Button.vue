@@ -158,17 +158,6 @@ const sizeConfig = computed(() => {
       gap: '2px', 
       spinnerSize: '12px' 
     },
-    '28': { 
-      height: '28px', 
-      paddingX: '8px', 
-      paddingXIconOnly: '10px', 
-      paddingY: '6px', 
-      fontSize: '12px', 
-      fontWeight: '500',
-      iconSize: '16px', 
-      gap: '2px', 
-      spinnerSize: '16px' 
-    },
     '32': { 
       height: '32px', 
       paddingX: '8px', 
