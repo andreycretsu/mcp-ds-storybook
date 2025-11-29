@@ -80,6 +80,11 @@ const meta: Meta<typeof Button> = {
       control: { type: 'select' },
       options: ['default', 'hover', 'press', 'focus', 'disable', 'loading', 'success'],
       description: 'Button state'
+    },
+    size: {
+      control: { type: 'select' },
+      options: ['24', '32', '36', '40'],
+      description: 'Button size'
     }
   },
   args: {
@@ -93,7 +98,8 @@ const meta: Meta<typeof Button> = {
     successMessage: 'Success',
     type: 'default',
     tone: 'primary',
-    state: 'default'
+    state: 'default',
+    size: '24'
   }
 }
 
@@ -406,6 +412,47 @@ export const AllStates: Story = {
           <Button tone="primary" label="Button" state="disable" :lIcon="true" :rIcon="true" />
           <Button tone="primary" label="Button" state="loading" :lIcon="true" :rIcon="true" />
           <Button tone="primary" label="Button" state="success" successMessage="Success" />
+        </div>
+      </div>
+    `
+  })
+}
+
+export const AllSizes: Story = {
+  render: () => ({
+    components: { Button },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 24px; align-items: flex-start;">
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 12px; color: #666; font-family: monospace;">Size 24</div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <Button size="24" tone="primary" label="Button" :lIcon="true" :rIcon="true" />
+            <Button size="24" tone="secondary" type="icon-only" :lIcon="true" />
+          </div>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 12px; color: #666; font-family: monospace;">Size 32</div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <Button size="32" tone="primary" label="Button" :lIcon="true" :rIcon="true" />
+            <Button size="32" tone="secondary" type="icon-only" :lIcon="true" />
+          </div>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 12px; color: #666; font-family: monospace;">Size 36</div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <Button size="36" tone="primary" label="Button" :lIcon="true" :rIcon="true" />
+            <Button size="36" tone="secondary" type="icon-only" :lIcon="true" />
+          </div>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 12px; color: #666; font-family: monospace;">Size 40</div>
+          <div style="display: flex; gap: 12px; align-items: center;">
+            <Button size="40" tone="primary" label="Button" :lIcon="true" :rIcon="true" />
+            <Button size="40" tone="secondary" type="icon-only" :lIcon="true" />
+          </div>
         </div>
       </div>
     `

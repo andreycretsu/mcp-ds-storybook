@@ -5,13 +5,14 @@
       `button--type-${type}`,
       `button--tone-${tone}`,
       `button--state-${state}`,
+      `button--size-${size}`,
       {
         'button--disabled': state === 'disable',
         'button--loading': state === 'loading',
         'button--success': state === 'success'
       }
     ]"
-    :data-name="`type=${type}, tone=${tone}, state=${state}`"
+    :data-name="`type=${type}, tone=${tone}, state=${state}, size=${size}`"
     :style="buttonStyle"
   >
     <!-- Focus effect overlay -->
@@ -21,7 +22,7 @@
     <div v-if="lIcon && state !== 'loading' && state !== 'success'" class="button__icon-left">
       <Icon 
         :icon="lIconName" 
-        size="12px"
+        :size="sizeConfig.iconSize"
         :color="iconColor"
       />
     </div>
@@ -29,18 +30,16 @@
     <div v-else-if="lIcon" class="button__icon-left" style="opacity: 0; pointer-events: none;">
       <Icon 
         :icon="lIconName" 
-        size="12px"
+        :size="sizeConfig.iconSize"
         :color="iconColor"
       />
     </div>
     
     <!-- Loading Icon (centered when loading) -->
     <div v-if="state === 'loading'" class="button__loader">
-      <Icon 
-        icon="fa-solid fa-spinner" 
-        size="12px"
-        :color="iconColor"
-        :spin="true"
+      <Spinner 
+        :size="sizeConfig.spinnerSize"
+        :style="{ color: iconColor }"
       />
     </div>
     
@@ -48,7 +47,7 @@
     <div v-if="state === 'success'" class="button__icon-success">
       <Icon 
         icon="fa-solid fa-check" 
-        size="12px"
+        :size="sizeConfig.iconSize"
         :color="iconColor"
       />
     </div>
@@ -64,7 +63,7 @@
     <div v-if="rIcon && state !== 'loading' && state !== 'success'" class="button__icon-right">
       <Icon 
         :icon="rIconName" 
-        size="12px"
+        :size="sizeConfig.iconSize"
         :color="iconColor"
       />
     </div>
@@ -72,7 +71,7 @@
     <div v-else-if="rIcon" class="button__icon-right" style="opacity: 0; pointer-events: none;">
       <Icon 
         :icon="rIconName" 
-        size="12px"
+        :size="sizeConfig.iconSize"
         :color="iconColor"
       />
     </div>
@@ -98,6 +97,7 @@
 import { computed } from 'vue'
 import Icon from './Icon.vue'
 import Kbd from './Kbd.vue'
+import Spinner from './Spinner.vue'
 
 interface ButtonProps {
   lIcon?: boolean
@@ -119,6 +119,7 @@ interface ButtonProps {
   type?: 'default' | 'stretched' | 'icon-only'
   tone?: 'primary' | 'secondary' | 'destructive' | 'dark'
   state?: 'default' | 'hover' | 'press' | 'focus' | 'disable' | 'loading' | 'success'
+  size?: '24' | '32' | '36' | '40' | number | string
 }
 
 const props = withDefaults(defineProps<ButtonProps>(), {
@@ -139,7 +140,61 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   successMessage: 'Success',
   type: 'default',
   tone: 'primary',
-  state: 'default'
+  state: 'default',
+  size: '24'
+})
+
+// Size configuration
+const sizeConfig = computed(() => {
+  const sizeMap: Record<string, any> = {
+    '24': { 
+      height: '24px', 
+      paddingX: '6px', 
+      paddingXIconOnly: '10px', 
+      paddingY: '6px', 
+      fontSize: '12px', 
+      fontWeight: '500',
+      iconSize: '12px', 
+      gap: '2px', 
+      spinnerSize: '12px' 
+    },
+    '32': { 
+      height: '32px', 
+      paddingX: '8px', 
+      paddingXIconOnly: '12px', 
+      paddingY: '8px', 
+      fontSize: '12px', 
+      fontWeight: '600',
+      iconSize: '16px', 
+      gap: '2px', 
+      spinnerSize: '16px' // 16px to match icon
+    },
+    '36': { 
+      height: '36px', 
+      paddingX: '8px', 
+      paddingXIconOnly: '14px', 
+      paddingY: '10px', 
+      fontSize: '14px', 
+      fontWeight: '600',
+      iconSize: '16px', 
+      gap: '2px', 
+      spinnerSize: '16px' 
+    },
+    '40': { 
+      height: '40px', 
+      paddingX: '12px', 
+      paddingXIconOnly: '12px', 
+      paddingY: '10px', 
+      fontSize: '16px', 
+      fontWeight: '600',
+      iconSize: '20px', 
+      gap: '4px', 
+      spinnerSize: '20px' 
+    }
+  }
+  
+  const sizeKey = String(props.size)
+  return sizeMap[sizeKey] || sizeMap['24']
 })
 
 // Background colors based on tone and state
@@ -201,11 +256,26 @@ const iconColor = computed(() => {
 })
 
 
-// Button style with background
+// Button style with background and dynamic sizing
 const buttonStyle = computed(() => {
+  const config = sizeConfig.value
+  const isIconOnly = props.type === 'icon-only'
+  
+  const paddingX = isIconOnly ? config.paddingXIconOnly : config.paddingX
+  
+  const baseStyle: Record<string, string> = {
+    height: config.height,
+    maxHeight: config.height,
+    padding: `${config.paddingY} ${paddingX}`,
+    fontSize: config.fontSize,
+    fontWeight: config.fontWeight,
+    gap: config.gap
+  }
+
   // Success state uses solid background color, others use gradient
   if (props.state === 'success') {
     return {
+      ...baseStyle,
       backgroundColor: backgroundColor.value
     }
   }
@@ -213,11 +283,13 @@ const buttonStyle = computed(() => {
   // Dynamic primary also uses solid color if provided
   if (props.tone === 'primary' && props.dynamicPrimary) {
     return {
+      ...baseStyle,
       backgroundColor: backgroundColor.value
     }
   }
 
   return {
+    ...baseStyle,
     backgroundImage: backgroundColor.value
   }
 })
@@ -230,15 +302,11 @@ const buttonStyle = computed(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2px;
-  max-height: 24px;
-  padding: 6px;
+  /* Gap, height, padding, font-size are set dynamically via style binding */
   border-radius: 12px;
   border: none;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  font-size: 12px;
   line-height: 0;
   white-space: nowrap;
   box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.14);
@@ -252,15 +320,6 @@ const buttonStyle = computed(() => {
 /* Stretched type */
 .button--type-stretched {
   width: 320px;
-}
-
-/* Icon-only type */
-.button--type-icon-only {
-  padding: 6px 10px;
-}
-
-.button--type-icon-only:not(.button--state-loading):not(.button--state-success) {
-  padding: 6px 10px;
 }
 
 /* Icon containers */
@@ -292,8 +351,8 @@ const buttonStyle = computed(() => {
 
 .button__label {
   font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  font-size: 12px;
+  font-weight: inherit; /* Inherit from button container */
+  font-size: inherit; /* Inherit from button container */
   line-height: 0;
   white-space: nowrap;
   color: inherit;

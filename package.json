@@ -45,7 +45,8 @@
     "vue": "^3.0.0"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-pro": "^7.1.0"
+    "@fortawesome/fontawesome-pro": "^7.1.0",
+    "lucide-vue-next": "^0.555.0"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.6",
