@@ -296,8 +296,7 @@ onUnmounted(() => {
 .timer-pill-container {
   display: flex;
   align-items: flex-start;
-  /* gap: 12px; */ /* Removed gap to allow break timer wrapper to extend left freely? No, wrappers need space? */
-  gap: 12px;
+  /* gap: 12px; */ /* Removed gap as requested "remove the spacer between timer wrappers" */
   height: 100%;
 }
 
@@ -377,7 +376,7 @@ onUnmounted(() => {
 /* 2. Main Card Container */
 .main-card {
   position: relative; /* Relative to flow in flex column */
-  z-index: 2;
+  z-index: 4; /* "white card shouldmbe on top in terms of z index" - higher than status-pill (3) */
   flex: 1; /* Take remaining height (72px - 20px = 52px) */
   width: 100%;
   background: white;
