@@ -24,21 +24,29 @@
 
     <!-- Timer Pill (Right) -->
     <div class="timer-pill">
-      <transition name="fade">
-        <span 
-          v-if="status === 'break'" 
-          class="timer break-timer"
-        >
-          {{ formatTime(breakTime) }}
-        </span>
-      </transition>
+      <!-- Break Timer Background (Yellow) - Only visible when on break -->
+      <div 
+        class="break-timer-bg"
+        :style="{ opacity: status === 'break' ? 1 : 0 }"
+      ></div>
 
-      <span 
-        class="timer work-timer"
-        :class="{ 'dimmed': status === 'break' }"
-      >
-        {{ formatTime(workTime) }}
-      </span>
+      <div class="timer-content">
+        <transition name="fade">
+          <span 
+            v-if="status === 'break'" 
+            class="timer break-timer"
+          >
+            {{ formatTime(breakTime) }}
+          </span>
+        </transition>
+
+        <span 
+          class="timer work-timer"
+          :class="{ 'dimmed': status === 'break' }"
+        >
+          {{ formatTime(workTime) }}
+        </span>
+      </div>
     </div>
 
     <!-- Header Container (Spacer) -->
@@ -265,20 +273,15 @@ onUnmounted(() => {
   height: 100%;
   z-index: 1; /* Below main card (z-index 2) */
   
+  /* Container setup */
   display: flex;
-  align-items: flex-start;
-  padding-top: 4px;
-  
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(3px);
-  padding-left: 12px;
-  padding-right: 12px;
+  /* No direct padding or background on container anymore, handled by children/layers */
   
   /* Top-left and Top-right corners only */
   border-radius: var(--radius-28-fallback, 12px) var(--radius-28-fallback, 12px) 0 0;
   
   box-sizing: border-box;
+  overflow: hidden; /* Clip the background layer */
 }
 
 @supports (corner-shape: superellipse(2)) {
@@ -286,6 +289,47 @@ onUnmounted(() => {
     border-radius: var(--radius-28-ideal, 12px) var(--radius-28-ideal, 12px) 0 0;
     corner-shape: superellipse(var(--superK));
   }
+}
+
+/* Yellow background for break timer */
+.break-timer-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f8ecc4; /* Yellow */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+}
+
+.timer-content {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  align-items: flex-start;
+  padding-top: 4px;
+  gap: 12px;
+  padding-left: 12px;
+  padding-right: 12px;
+  
+  /* Default transparent white background when NOT on break? 
+     Wait, user said "At work we don't show that background on timer".
+     Does that mean transparency or the whitish blur?
+     "yes but it is only for second timer, the oine related to the break, and it is yellow... 
+     For At work we don't show that background on timer"
+     
+     Implies:
+     - Work state: Transparent? Or just no yellow?
+     - Break state: Yellow background.
+     
+     Let's assume Work state has the default semi-transparent white blur like the status pill, 
+     and Break state overlays the yellow.
+  */
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(3px);
 }
 
 .timer {
