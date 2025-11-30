@@ -291,7 +291,7 @@ onUnmounted(() => {
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-  padding-top: 4px;
+  /* padding-top: 4px; */ /* Remove top padding as requested "remove top margins from timers" */
   padding-right: 12px; /* Right padding from design */
 }
 
@@ -309,6 +309,7 @@ onUnmounted(() => {
   justify-content: center;
   padding: 0 12px;
   height: 20px; /* Fixed height for pill look */
+  margin-top: 4px; /* Add margin here instead of padding on container to position vertically */
   
   /* Top corners rounded logic or full pill? Design looks like full pill or top-rounded */
   /* Since they sit behind the card, bottom radius doesn't matter much visually, 
