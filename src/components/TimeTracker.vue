@@ -131,7 +131,7 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue'
 import Button from './Button.vue'
 import Icon from './Icon.vue'
-import { animate, spring } from 'motion'
+import { animate } from 'motion'
 
 const status = ref<'work' | 'break'>('work')
 const workTime = ref(0)
@@ -199,7 +199,7 @@ watch(isExpanded, (newValue) => {
     animate(
       trackerRef.value,
       { height: targetHeight },
-      { easing: spring({ stiffness: 500, damping: 30 }) }
+      { type: "spring", stiffness: 500, damping: 30 }
     )
   }
 })
