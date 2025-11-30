@@ -309,7 +309,7 @@ onUnmounted(() => {
   justify-content: center;
   padding: 0 12px;
   height: 20px; /* Fixed height for pill look */
-  margin-top: 4px; /* Add margin here instead of padding on container to position vertically */
+  /* margin-top: 4px; */ /* Remove margin as requested "remove mragings from timer wrpappers from both" */
   
   /* Top corners rounded logic or full pill? Design looks like full pill or top-rounded */
   /* Since they sit behind the card, bottom radius doesn't matter much visually, 
