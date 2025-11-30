@@ -106,7 +106,7 @@
             <div class="project-icon">
               <span>😂</span>
             </div>
-            <span class="project-name">Project name</span>
+            <span class="project-name">Website Redesign</span>
           </div>
 
           <!-- Right: Buttons -->
