@@ -1,5 +1,5 @@
 <template>
-  <div class="time-tracker" :class="status">
+  <div class="time-tracker" :class="{ 'is-collapsed': !isExpanded, [status]: true }">
     <!-- Background layers -->
     <div class="bg-layer work-bg"></div>
     <div 
@@ -8,56 +8,61 @@
       :style="{ opacity: 0 }"
     ></div>
 
-    <!-- Status Pill (Left) -->
-    <div 
-      class="status-pill"
-      :class="{ 'on-break': status === 'break' }"
-    >
-      <div class="status-content">
-        <div class="status-icon-wrapper">
-          <Icon 
-            :icon="status === 'work' ? 'briefcase' : 'mug'" 
-            size="S-12"
-            color="#000f30"
-          />
-        </div>
-        <span class="status-text">{{ status === 'work' ? 'At work' : 'On break' }}</span>
-      </div>
-    </div>
-
-    <!-- Timer Pill (Right) -->
-    <div class="timer-pill">
-      <div class="timer-pill-container">
-        <transition name="fade">
-          <!-- Break timer wrapper gets yellow background when on break -->
-          <div 
-            v-if="status === 'break'" 
-            class="timer-wrapper break-timer-wrapper"
-          >
-            <span class="timer break-timer">
-              {{ formatTime(breakTime) }}
-            </span>
-          </div>
-        </transition>
-
-        <!-- Work timer wrapper has NO background in either state -->
+    <!-- Header Elements (Hidden when collapsed) -->
+    <transition name="fade">
+      <div v-show="isExpanded" class="header-group">
+        <!-- Status Pill (Left) -->
         <div 
-          class="timer-wrapper work-timer-wrapper"
-          :class="{ 'dimmed': status === 'break' }"
+          class="status-pill"
+          :class="{ 'on-break': status === 'break' }"
         >
-          <span 
-            class="timer work-timer"
-          >
-            {{ formatTime(workTime) }}
-          </span>
+          <div class="status-content">
+            <div class="status-icon-wrapper">
+              <Icon 
+                :icon="status === 'work' ? 'briefcase' : 'mug'" 
+                size="S-12"
+                color="#000f30"
+              />
+            </div>
+            <span class="status-text">{{ status === 'work' ? 'At work' : 'On break' }}</span>
+          </div>
+        </div>
+
+        <!-- Timer Pill (Right) -->
+        <div class="timer-pill">
+          <div class="timer-pill-container">
+            <transition name="fade">
+              <!-- Break timer wrapper gets yellow background when on break -->
+              <div 
+                v-if="status === 'break'" 
+                class="timer-wrapper break-timer-wrapper"
+              >
+                <span class="timer break-timer">
+                  {{ formatTime(breakTime) }}
+                </span>
+              </div>
+            </transition>
+
+            <!-- Work timer wrapper has NO background in either state -->
+            <div 
+              class="timer-wrapper work-timer-wrapper"
+              :class="{ 'dimmed': status === 'break' }"
+            >
+              <span 
+                class="timer work-timer"
+              >
+                {{ formatTime(workTime) }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Header Container (Spacer) -->
+        <div class="tracker-header">
+          <!-- Spacer for layout balance -->
         </div>
       </div>
-    </div>
-
-    <!-- Header Container (Spacer) -->
-    <div class="tracker-header">
-      <!-- Spacer for layout balance -->
-    </div>
+    </transition>
 
     <!-- 2. White Card Container (Project Info + Actions) -->
     <div class="main-card">
@@ -72,33 +77,46 @@
 
         <!-- Right: Buttons -->
         <div class="actions">
-          <Button 
-            v-if="status === 'work'"
-            type="icon-only" 
-            size="24" 
-            tone="secondary" 
-            l-icon 
-            l-icon-name="mug"
-            @click="toggleBreak"
-          />
-          <Button 
-            v-else
-            type="icon-only" 
-            size="24" 
-            tone="secondary" 
-            l-icon 
-            l-icon-name="briefcase"
-            @click="toggleBreak"
-          />
-          
-          <Button 
-            type="icon-only" 
-            size="24" 
-            tone="secondary" 
-            l-icon 
-            l-icon-name="circle-stop"
-            @click="stop"
-          />
+          <template v-if="isExpanded">
+            <Button 
+              v-if="status === 'work'"
+              type="icon-only" 
+              size="24" 
+              tone="secondary" 
+              l-icon 
+              l-icon-name="mug"
+              @click="toggleBreak"
+            />
+            <Button 
+              v-else
+              type="icon-only" 
+              size="24" 
+              tone="secondary" 
+              l-icon 
+              l-icon-name="briefcase"
+              @click="toggleBreak"
+            />
+            
+            <Button 
+              type="icon-only" 
+              size="24" 
+              tone="secondary" 
+              l-icon 
+              l-icon-name="circle-stop"
+              @click="stop"
+            />
+          </template>
+          <template v-else>
+             <!-- Play button to expand/restart -->
+             <Button 
+              type="icon-only" 
+              size="24" 
+              tone="secondary" 
+              l-icon 
+              l-icon-name="circle-play"
+              @click="start"
+            />
+          </template>
         </div>
       </div>
     </div>
@@ -115,6 +133,7 @@ const status = ref<'work' | 'break'>('work')
 const workTime = ref(0)
 const breakTime = ref(0)
 const breakBg = ref<HTMLElement | null>(null)
+const isExpanded = ref(true)
 let timerInterval: number | null = null
 
 const formatTime = (seconds: number) => {
@@ -156,6 +175,17 @@ const stop = () => {
   if (breakBg.value) {
     animate(breakBg.value, { opacity: 0 }, { duration: 0.3 })
   }
+  // Collapse widget
+  isExpanded.value = false
+  
+  // Stop timer
+  if (timerInterval) clearInterval(timerInterval)
+  timerInterval = null
+}
+
+const start = () => {
+  isExpanded.value = true
+  startTimer()
 }
 
 onMounted(() => {
@@ -172,12 +202,12 @@ onUnmounted(() => {
 
 .time-tracker {
   width: 340px;
-  height: 72px;
+  height: 72px; /* Expanded height */
   position: relative;
   border-radius: var(--radius-20-fallback, 12px);
   overflow: hidden;
   font-family: 'Inter', sans-serif;
-  transition: all 0.3s ease;
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth height transition */
   
   /* Flex container to hold header and main-card vertically */
   display: flex;
@@ -185,6 +215,14 @@ onUnmounted(() => {
   
   /* Fix for clipping bugs in Safari/Chrome with overflow:hidden and border-radius */
   transform: translateZ(0);
+}
+
+.time-tracker.is-collapsed {
+  height: 52px; /* Collapsed height (Main card height + padding/border adjustments if any) */
+  /* Main card is flex: 1, so it fills the container. 
+     If header is hidden, main card is the only child.
+     52px is 72px - 20px header height.
+  */
 }
 
 @supports (corner-shape: superellipse(2)) {
@@ -213,6 +251,11 @@ onUnmounted(() => {
 .break-bg {
   background-color: #f8ecc4;
   opacity: 0;
+}
+
+/* Header Group Wrapper */
+.header-group {
+  /* Wrapper to group header elements for transition */
 }
 
 /* 1. Header Container */
