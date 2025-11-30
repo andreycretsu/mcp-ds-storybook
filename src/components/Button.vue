@@ -157,7 +157,8 @@ const sizeConfig = computed(() => {
       gap: '2px', 
       spinnerSize: '12px',
       labelPadding: '0px 2px',
-      borderRadius: '8px'
+      borderRadius: '14px',
+      fallbackBorderRadius: '8px'
     },
     '32': { 
       height: '32px', 
@@ -170,7 +171,8 @@ const sizeConfig = computed(() => {
       gap: '2px', 
       spinnerSize: '16px', // 16px to match icon
       labelPadding: '2px 4px',
-      borderRadius: '10px'
+      borderRadius: '18px',
+      fallbackBorderRadius: '10px'
     },
     '36': { 
       height: '36px', 
@@ -183,7 +185,8 @@ const sizeConfig = computed(() => {
       gap: '2px', 
       spinnerSize: '20px',
       labelPadding: '1px 4px',
-      borderRadius: '12px'
+      borderRadius: '22px',
+      fallbackBorderRadius: '12px'
     },
     '40': { 
       height: '40px', 
@@ -196,7 +199,8 @@ const sizeConfig = computed(() => {
       gap: '4px', 
       spinnerSize: '20px',
       labelPadding: '2px 4px',
-      borderRadius: '14px'
+      borderRadius: '26px',
+      fallbackBorderRadius: '14px'
     }
   }
   
@@ -301,7 +305,8 @@ const buttonStyle = computed(() => {
     fontSize: config.fontSize,
     fontWeight: config.fontWeight,
     gap: config.gap,
-    borderRadius: config.borderRadius
+    '--btn-border-radius': config.borderRadius,
+    '--btn-border-radius-fallback': config.fallbackBorderRadius,
   }
 
   // Success state uses solid background color (except when it's a gradient, handled below), others use gradient
@@ -345,7 +350,6 @@ const buttonStyle = computed(() => {
   align-items: center;
   justify-content: center;
   /* Gap, height, padding, font-size are set dynamically via style binding */
-  border-radius: 12px;
   border: none;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
@@ -353,10 +357,17 @@ const buttonStyle = computed(() => {
   white-space: nowrap;
   box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.14);
   
-  /* Superellipse corner shape */
-  corner-shape: superellipse(var(--superK));
-  /* Fallback for browsers that don't support corner-shape */
-  border-radius: 12px;
+  /* Use fallback border radius by default */
+  border-radius: var(--btn-border-radius-fallback);
+}
+
+/* Modern browsers with corner-shape support get the perfect pill radius */
+@supports (corner-shape: superellipse(2)) {
+  .button {
+    border-radius: var(--btn-border-radius);
+    /* Superellipse corner shape */
+    corner-shape: superellipse(var(--superK));
+  }
 }
 
 /* Stretched type */
