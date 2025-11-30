@@ -172,10 +172,19 @@ onUnmounted(() => {
   width: 340px;
   height: 72px;
   position: relative;
-  border-radius: 12px;
+  /* Use radius-28 token or fallback */
+  border-radius: var(--radius-28-fallback, 12px);
   overflow: hidden;
   font-family: 'Inter', sans-serif;
   transition: all 0.3s ease;
+}
+
+/* Modern browsers with corner-shape support */
+@supports (corner-shape: superellipse(2)) {
+  .time-tracker {
+    border-radius: var(--radius-28-ideal, 12px);
+    corner-shape: superellipse(var(--superK));
+  }
 }
 
 /* Backgrounds */
@@ -186,6 +195,7 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   transition: opacity 0.3s ease;
+  border-radius: inherit; /* Inherit radius from parent */
 }
 
 .work-bg {
@@ -228,11 +238,18 @@ onUnmounted(() => {
   backdrop-filter: blur(3px);
   padding: 0 12px; 
   /* Only rounded on bottom-right corner */
-  border-radius: 0 0 12px 0; 
+  border-radius: 0 0 var(--radius-28-fallback, 12px) 0; 
   
   width: fit-content;
   height: 20px; /* Fixed height matching screenshot inspection */
   box-sizing: border-box;
+}
+
+@supports (corner-shape: superellipse(2)) {
+  .status-pill {
+    border-radius: 0 0 var(--radius-28-ideal, 12px) 0;
+    corner-shape: superellipse(var(--superK));
+  }
 }
 
 .pill-connector {
@@ -241,11 +258,6 @@ onUnmounted(() => {
   /* Positioned to the right of the pill */
   display: flex;
   align-items: flex-start; /* Align top to match pill bottom edge logic */
-  /* Actually, since wrapper is flex-end, this sits at bottom. */
-  /* But the pill is now 20px high. The connector needs to sit at the top-right corner of the pill? */
-  /* No, the connector bridges the pill's right edge to the horizontal line. */
-  /* If pill height is reduced to 20px, connector logic remains same: it sits to the right. */
-  /* But the wrapper aligns items flex-end? No, let's align flex-start (top) */
 }
 
 .status-pill-wrapper {
@@ -292,10 +304,21 @@ onUnmounted(() => {
   width: 100%;
   height: calc(100% - 20px);
   background: white;
-  border-radius: 12px;
+  /* Apply radius to top-left, bottom-left, bottom-right */
+  /* Top-right is NOT rounded to blend with status bar? No, looking at design, main card is fully rounded? */
+  /* The design shows the white card sitting INSIDE the colored container? */
+  /* No, it seems the white card IS the main shape at the bottom. */
+  border-radius: var(--radius-28-fallback, 12px);
   padding: 12px;
   box-sizing: border-box;
   z-index: 2;
+}
+
+@supports (corner-shape: superellipse(2)) {
+  .main-card {
+    border-radius: var(--radius-28-ideal, 12px);
+    corner-shape: superellipse(var(--superK));
+  }
 }
 
 .card-content {
@@ -315,11 +338,18 @@ onUnmounted(() => {
   width: 28px;
   height: 28px;
   background: #f8cbcb; /* var(--additional/red/100) */
-  border-radius: 8px;
+  border-radius: var(--radius-18-fallback, 8px);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 12px;
+}
+
+@supports (corner-shape: superellipse(2)) {
+  .project-icon {
+    border-radius: var(--radius-18-ideal, 8px);
+    corner-shape: superellipse(var(--superK));
+  }
 }
 
 .project-name {
