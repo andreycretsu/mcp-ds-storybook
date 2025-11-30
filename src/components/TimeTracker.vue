@@ -10,15 +10,28 @@
 
     <!-- Status Bar (Top) -->
     <div class="status-bar">
-      <div class="status-content">
-        <div class="status-icon-wrapper">
-          <Icon 
-            :icon="status === 'work' ? 'briefcase' : 'mug-hot'" 
-            size="S-12"
-            color="#000f30"
-          />
+      <!-- Status Pill Container -->
+      <div class="status-pill-wrapper">
+        <div class="status-pill">
+          <div class="status-icon-wrapper">
+            <Icon 
+              :icon="status === 'work' ? 'briefcase' : 'mug-hot'" 
+              size="S-12"
+              color="#000f30"
+            />
+          </div>
+          <span class="status-text">{{ status === 'work' ? 'At work' : 'On break' }}</span>
         </div>
-        <span class="status-text">{{ status === 'work' ? 'At work' : 'On break' }}</span>
+        <!-- SVG Connector for the smooth corner transition -->
+        <div class="pill-connector">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- This path draws the inverse curve to make it look connected like a tab -->
+            <path 
+              d="M0 12C0 5.37258 5.37258 0 12 0V12H0Z" 
+              fill="rgba(255, 255, 255, 0.4)"
+            />
+          </svg>
+        </div>
       </div>
 
       <!-- Timers (Right aligned in status bar) -->
@@ -199,7 +212,14 @@ onUnmounted(() => {
   align-items: flex-start; /* Align items to top */
 }
 
-.status-content {
+.status-pill-wrapper {
+  display: flex;
+  align-items: flex-end; /* Align connector to bottom of pill */
+  position: relative;
+  /* Adjust margin-top if needed to vertically center pill in top section? No, it's top-aligned in design */
+}
+
+.status-pill {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -207,11 +227,24 @@ onUnmounted(() => {
   /* Glassmorphism effect from design */
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(3px);
-  padding: 4px 12px; 
-  border-radius: 0 0 12px 0; /* Rounded only bottom-right corner */
+  padding: 0 12px 0 12px; /* Right padding matches left */
+  /* Only rounded on bottom-right corner */
+  border-radius: 0 0 12px 0; 
+  
   width: fit-content;
-  height: 20px; 
+  height: 28px; /* Taller height to look like a tab */
   box-sizing: border-box;
+}
+
+.pill-connector {
+  width: 12px;
+  height: 12px;
+  /* Positioned to the right of the pill */
+  /* The SVG inside handles the curve */
+  display: flex;
+  align-items: flex-end;
+  /* Shift up slightly if needed to match the bottom edge perfectly? */
+  /* Since align-items is flex-end on wrapper, it should sit on the bottom line */
 }
 
 .status-icon-wrapper {
@@ -249,7 +282,14 @@ onUnmounted(() => {
 /* Main Card */
 .main-card {
   position: absolute;
-  top: 20px;
+  top: 20px; /* Matches original design */
+  /* Wait, if the pill is 28px high, the card should be pushed down? */
+  /* In Figma design: The main card starts at Y=20px. The pill overlaps? */
+  /* Let's check the Figma again. The main white card seems to have a standard top margin. */
+  /* Actually, the "At work" tab seems to be visually ON TOP of the blue background, but BEHIND the white card? */
+  /* No, looking at layers, the white card is on top. The tab sticks out from top-left. */
+  /* So top: 20px is correct for the white card. */
+  
   left: 0;
   width: 100%;
   height: calc(100% - 20px);
