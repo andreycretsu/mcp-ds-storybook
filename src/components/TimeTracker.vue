@@ -13,8 +13,8 @@
     ></div>
 
     <!-- Header Elements (Hidden when collapsed) -->
-    <transition name="fade">
-      <div v-show="isExpanded" class="header-group">
+    <!-- <transition name="fade"> -->
+      <div v-show="isExpanded" class="header-group" ref="headerGroup">
         <!-- Status Pill (Left) -->
         <div 
           class="status-pill"
@@ -66,7 +66,7 @@
           <!-- Spacer for layout balance -->
         </div>
       </div>
-    </transition>
+    <!-- </transition> -->
 
     <!-- 2. White Card Container (Project Info + Actions) -->
     <div class="main-card">
@@ -81,46 +81,48 @@
 
         <!-- Right: Buttons -->
         <div class="actions">
-          <template v-if="isExpanded">
-            <Button 
-              v-if="status === 'work'"
-              type="icon-only" 
-              size="24" 
-              tone="secondary" 
-              l-icon 
-              l-icon-name="mug"
-              @click="toggleBreak"
-            />
-            <Button 
-              v-else
-              type="icon-only" 
-              size="24" 
-              tone="secondary" 
-              l-icon 
-              l-icon-name="briefcase"
-              @click="toggleBreak"
-            />
-            
-            <Button 
-              type="icon-only" 
-              size="24" 
-              tone="secondary" 
-              l-icon 
-              l-icon-name="circle-stop"
-              @click="stop"
-            />
-          </template>
-          <template v-else>
-             <!-- Play button to expand/restart -->
-             <Button 
-              type="icon-only" 
-              size="24" 
-              tone="secondary" 
-              l-icon 
-              l-icon-name="circle-play"
-              @click="start"
-            />
-          </template>
+          <transition name="fade" mode="out-in">
+            <div v-if="isExpanded" class="actions-group">
+              <Button 
+                v-if="status === 'work'"
+                type="icon-only" 
+                size="24" 
+                tone="secondary" 
+                l-icon 
+                l-icon-name="mug"
+                @click="toggleBreak"
+              />
+              <Button 
+                v-else
+                type="icon-only" 
+                size="24" 
+                tone="secondary" 
+                l-icon 
+                l-icon-name="briefcase"
+                @click="toggleBreak"
+              />
+              
+              <Button 
+                type="icon-only" 
+                size="24" 
+                tone="secondary" 
+                l-icon 
+                l-icon-name="circle-stop"
+                @click="stop"
+              />
+            </div>
+            <div v-else class="actions-group">
+               <!-- Play button to expand/restart -->
+               <Button 
+                type="icon-only" 
+                size="24" 
+                tone="secondary" 
+                l-icon 
+                l-icon-name="circle-play"
+                @click="start"
+              />
+            </div>
+          </transition>
         </div>
       </div>
     </div>
@@ -138,6 +140,7 @@ const workTime = ref(0)
 const breakTime = ref(0)
 const breakBg = ref<HTMLElement | null>(null)
 const trackerRef = ref<HTMLElement | null>(null)
+const headerGroup = ref<HTMLElement | null>(null)
 const isExpanded = ref(true)
 let timerInterval: number | null = null
 
@@ -200,6 +203,15 @@ watch(isExpanded, (newValue) => {
       trackerRef.value,
       { height: targetHeight },
       { type: "spring", stiffness: 500, damping: 30 }
+    )
+  }
+  
+  if (headerGroup.value) {
+    const targetOpacity = newValue ? 1 : 0
+    animate(
+      headerGroup.value,
+      { opacity: targetOpacity },
+      { duration: 0.2, easing: "ease-out" }
     )
   }
 })
@@ -491,6 +503,11 @@ onUnmounted(() => {
 }
 
 .actions {
+  display: flex;
+  gap: 8px;
+}
+
+.actions-group {
   display: flex;
   gap: 8px;
 }
