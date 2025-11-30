@@ -33,6 +33,7 @@
       ref="trackerRef"
       class="time-tracker" 
       :class="{ 'is-collapsed': !isExpanded, [status]: true }"
+      :style="{ opacity: isDrawerOpen ? 0.5 : 1, transition: 'opacity 0.3s ease' }"
     >
       <!-- Background layers -->
       <div class="bg-layer work-bg"></div>
@@ -291,7 +292,7 @@ onUnmounted(() => {
   background: white;
   border-radius: var(--radius-20-fallback, 12px);
   margin-bottom: 8px; /* Spacing from trigger/widget */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Optional shadow for drawer */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Lighter shadow as requested */
   overflow: hidden;
   transform-origin: bottom center;
   z-index: 10; /* Ensure it's on top */
@@ -306,31 +307,24 @@ onUnmounted(() => {
 
 .drawer-trigger {
   position: absolute;
-  top: -20px; /* 4px padding above widget + height of trigger roughly */
+  top: -16px; /* Position just above */
   left: 50%;
   transform: translateX(-50%);
-  width: 24px;
-  height: 16px; /* Small touch area */
+  width: 32px; /* Smaller width */
+  height: 12px; /* Smaller height */
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(107, 114, 128, 0.5); /* Gray semi-transparent */
   backdrop-filter: blur(4px); /* Optional: add some blur */
-  border-radius: 8px 8px 0 0; /* Rounded top */
+  border-radius: 12px; /* Capsule shape */
   cursor: pointer;
   z-index: 5;
   box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 4px; /* Add gap from widget */
 }
 
-/* Adjust positioning to be "above the widget 4px padding" */
-.drawer-trigger {
-  top: -16px; /* Position just above */
-  border-radius: 12px; /* Capsule shape */
-  height: 12px;
-  width: 32px;
-  padding: 4px;
-  margin-bottom: 4px;
-}
+/* Remove the duplicated drawer-trigger rule that was overriding this */
 
 .time-tracker {
   width: 340px;
