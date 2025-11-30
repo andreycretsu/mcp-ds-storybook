@@ -1,5 +1,9 @@
 <template>
-  <div class="time-tracker" :class="{ 'is-collapsed': !isExpanded, [status]: true }">
+  <div 
+    ref="trackerRef"
+    class="time-tracker" 
+    :class="{ 'is-collapsed': !isExpanded, [status]: true }"
+  >
     <!-- Background layers -->
     <div class="bg-layer work-bg"></div>
     <div 
@@ -124,15 +128,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue'
 import Button from './Button.vue'
 import Icon from './Icon.vue'
-import { animate } from 'motion'
+import { animate, spring } from 'motion'
 
 const status = ref<'work' | 'break'>('work')
 const workTime = ref(0)
 const breakTime = ref(0)
 const breakBg = ref<HTMLElement | null>(null)
+const trackerRef = ref<HTMLElement | null>(null)
 const isExpanded = ref(true)
 let timerInterval: number | null = null
 
@@ -188,6 +193,17 @@ const start = () => {
   startTimer()
 }
 
+watch(isExpanded, (newValue) => {
+  if (trackerRef.value) {
+    const targetHeight = newValue ? "72px" : "52px"
+    animate(
+      trackerRef.value,
+      { height: targetHeight },
+      { easing: spring({ stiffness: 500, damping: 30 }) }
+    )
+  }
+})
+
 onMounted(() => {
   startTimer()
 })
@@ -202,12 +218,12 @@ onUnmounted(() => {
 
 .time-tracker {
   width: 340px;
-  height: 72px; /* Expanded height */
+  height: 72px; /* Initial Expanded height */
   position: relative;
   border-radius: var(--radius-20-fallback, 12px);
   overflow: hidden;
   font-family: 'Inter', sans-serif;
-  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth height transition */
+  /* transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1); */ /* Disabled CSS transition for motion spring */
   
   /* Flex container to hold header and main-card vertically */
   display: flex;
@@ -218,11 +234,7 @@ onUnmounted(() => {
 }
 
 .time-tracker.is-collapsed {
-  height: 52px; /* Collapsed height (Main card height + padding/border adjustments if any) */
-  /* Main card is flex: 1, so it fills the container. 
-     If header is hidden, main card is the only child.
-     52px is 72px - 20px header height.
-  */
+  /* Height is now controlled by JS animation */
 }
 
 @supports (corner-shape: superellipse(2)) {
