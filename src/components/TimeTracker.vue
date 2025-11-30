@@ -304,6 +304,22 @@ onUnmounted(() => {
   z-index: 0;
 }
 
+/* Overlap Header BG - Special yellow bg that extends to left */
+.break-overlap-bg {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  /* Extend very far to the left to cover the header space */
+  width: 200%; 
+  background-color: #f8ecc4;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 0;
+  /* Start from right edge of timer pill and go left */
+  transform-origin: right center;
+}
+
 .timer-content {
   position: relative;
   z-index: 1;
@@ -315,21 +331,132 @@ onUnmounted(() => {
   padding-left: 12px;
   padding-right: 12px;
   
-  /* Default transparent white background when NOT on break? 
-     Wait, user said "At work we don't show that background on timer".
-     Does that mean transparency or the whitish blur?
-     "yes but it is only for second timer, the oine related to the break, and it is yellow... 
-     For At work we don't show that background on timer"
+  /* Background logic:
+     - Work state: Transparent (shows through to blue/white layers below)
+     - Break state: Transparent (shows through to yellow layer below)
      
-     Implies:
-     - Work state: Transparent? Or just no yellow?
-     - Break state: Yellow background.
+     Actually, user says: "the widget bg is always blue, but when the break timer is true than we have anpther yellow background overlapping the whole header except the work timer"
      
-     Let's assume Work state has the default semi-transparent white blur like the status pill, 
-     and Break state overlays the yellow.
+     Wait, "overlapping the whole header except the work timer".
+     If it overlaps the whole header, it should be behind everything in the header area?
+     
+     Let's look at the provided image.
+     It shows a yellow background covering the "On break" pill AND extending to the right, covering the break timer area.
+     The Work timer seems to have a different background (blue/white).
+     
+     Wait, "except the work timer".
+     
+     If I look at the image:
+     [On break (Yellow)] ------------------- [Break Timer (Yellow)] [Work Timer (Blue/White)]
+     
+     So the yellow background seems to be:
+     1. Under the status pill (left)
+     2. Under the break timer (right, first item)
+     
+     But NOT under the work timer (right, second item)?
+     
+     Re-reading user: "the widget bg is always blue, but when the break timer is true than we have anpther yellow background overlapping the whole header except the work timer"
+     
+     This implies:
+     - The main widget background is blue (we have .work-bg).
+     - When on break, a yellow background overlaps the "header" area.
+     - BUT "except the work timer".
+     
+     So the work timer sits on top of the blue/white, while the break timer and status pill sit on yellow?
+     
+     If so, I need a yellow background layer that covers the top area, but is masked out or pushed behind the work timer?
+     
+     Or maybe the work timer has its OWN background that sits on top of the yellow?
+     
+     Let's try to handle the timer pill background specifically.
+     
+     If the yellow background is "overlapping the whole header", it might be the .break-bg layer we already have which covers the whole widget?
+     But user said "overlapping the whole header".
+     
+     Let's adjust the .timer-content background.
+     If I remove the blur/white bg from .timer-content, it will be transparent.
+     Then I can put the yellow bg behind specific parts.
+     
+     But user said "For At work we don't show that background on timer".
+     
+     Let's make .timer-content transparent.
+     And add backgrounds to individual timer elements? No, they are text.
+     
+     Maybe the structure is:
+     [Yellow Header BG] (Visible on break)
+     [Work Timer Pill] (Always Blue/White)
+     
+     If I separate the timers?
+     
+     Let's try to interpret "except the work timer".
+     Maybe the work timer is in its own container with a white/blue background?
+     
+     Let's look at the image again.
+     The work timer has a distinct blue/white rounded background.
+     The break timer is just text on the yellow background.
+     
+     So:
+     1. Break Timer (Left in pill): Text on Yellow.
+     2. Work Timer (Right in pill): Text in a Pill with Blue/White BG.
+     
+     So the .timer-pill container shouldn't have a background.
+     The .work-timer should have its own background.
+     And the .break-timer should just be text.
+     And the yellow background should be behind everything (except work timer).
+     
+     Let's try:
+     - Remove .timer-pill background.
+     - Add background to .work-timer (white/blue).
+     - Ensure .break-bg (yellow) covers the header area.
+     
+     But .break-bg currently covers the WHOLE widget.
+     "overlapping the whole header" - implies maybe just the top part?
+     "as in my figma, the widget bg is always blue, but when the break timer is true than we have anpther yellow background overlapping the whole header"
+     
+     Okay, so if .break-bg is visible, it covers the blue .work-bg.
+     And the work timer needs to sit ON TOP of that yellow background, retaining the blue/white look?
+     
+     Let's try giving .work-timer a specific background style.
+     And removing the general pill background.
   */
-  background: rgba(255, 255, 255, 0.4);
-  backdrop-filter: blur(3px);
+  background: transparent; 
+}
+
+.work-timer {
+  /* Give work timer its own pill look if needed, or just let it sit on top if it has a bg */
+  /* From image: The work timer has a light blue background when on break? */
+  /* "For At work we don't show that background on timer" - means transparent on work? */
+  
+  position: relative;
+  z-index: 2; /* Above yellow bg */
+  padding: 0 8px; /* Add some padding if it has a bg */
+  border-radius: 4px; /* Small radius? */
+  
+  /* When on break, it needs to look different? */
+  /* User says: "For At work we don't show that background on timer" */
+  /* Implies: Work state -> No special bg. Break state -> Yellow bg everywhere EXCEPT work timer. */
+  /* So Work timer needs to mask out the yellow? or have a blue bg? */
+  
+  /* Let's try giving it the .work-bg color when on break? */
+  transition: background-color 0.3s ease;
+}
+
+.work-timer.dimmed {
+   /* When on break (dimmed is true) */
+   /* It should have the blue background to stand out from yellow? */
+   /* "overlapping the whole header except the work timer" */
+   background-color: #d1e6fa; /* Match work-bg */
+   border-radius: 12px; /* Match pill radius or smaller? */
+   height: 20px;
+   display: flex;
+   align-items: center;
+   opacity: 1; /* Reset opacity since we are styling it */
+   color: #1b1a18; /* Text color */
+}
+
+/* We need to override the .dimmed opacity: 0.5 if we use it for styling */
+.timer.work-timer.dimmed {
+  opacity: 1;
 }
 
 .timer {
