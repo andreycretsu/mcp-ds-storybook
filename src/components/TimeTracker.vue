@@ -10,14 +10,16 @@
 
     <!-- Status Pill (Moved out of header to be full height) -->
     <div class="status-pill">
-      <div class="status-icon-wrapper">
-        <Icon 
-          :icon="status === 'work' ? 'briefcase' : 'mug'" 
-          size="S-12"
-          color="#000f30"
-        />
+      <div class="status-content">
+        <div class="status-icon-wrapper">
+          <Icon 
+            :icon="status === 'work' ? 'briefcase' : 'mug'" 
+            size="S-12"
+            color="#000f30"
+          />
+        </div>
+        <span class="status-text">{{ status === 'work' ? 'At work' : 'On break' }}</span>
       </div>
-      <span class="status-text">{{ status === 'work' ? 'At work' : 'On break' }}</span>
     </div>
 
     <!-- 1. Header Container (Timers) -->
@@ -217,10 +219,9 @@ onUnmounted(() => {
   z-index: 1; /* Below main card (z-index 2) */
   
   display: flex;
-  align-items: flex-start; /* Text at top */
+  align-items: flex-start; /* Align content wrapper to top */
   padding-top: 4px; /* Vertical alignment for 20px header area */
   
-  gap: 4px;
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(3px);
   padding-left: 12px;
@@ -237,6 +238,12 @@ onUnmounted(() => {
     border-radius: var(--radius-28-ideal, 12px) var(--radius-28-ideal, 12px) 0 0;
     corner-shape: superellipse(var(--superK));
   }
+}
+
+.status-content {
+  display: flex;
+  align-items: center; /* Center icon and text relative to each other */
+  gap: 4px;
 }
 
 .status-icon-wrapper {
