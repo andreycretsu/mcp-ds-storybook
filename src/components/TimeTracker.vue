@@ -216,7 +216,6 @@ onUnmounted(() => {
   display: flex;
   align-items: flex-end; /* Align connector to bottom of pill */
   position: relative;
-  /* Adjust margin-top if needed to vertically center pill in top section? No, it's top-aligned in design */
 }
 
 .status-pill {
@@ -227,12 +226,12 @@ onUnmounted(() => {
   /* Glassmorphism effect from design */
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(3px);
-  padding: 0 12px 0 12px; /* Right padding matches left */
+  padding: 0 12px; 
   /* Only rounded on bottom-right corner */
   border-radius: 0 0 12px 0; 
   
   width: fit-content;
-  height: 28px; /* Taller height to look like a tab */
+  height: 20px; /* Fixed height matching screenshot inspection */
   box-sizing: border-box;
 }
 
@@ -240,11 +239,17 @@ onUnmounted(() => {
   width: 12px;
   height: 12px;
   /* Positioned to the right of the pill */
-  /* The SVG inside handles the curve */
   display: flex;
-  align-items: flex-end;
-  /* Shift up slightly if needed to match the bottom edge perfectly? */
-  /* Since align-items is flex-end on wrapper, it should sit on the bottom line */
+  align-items: flex-start; /* Align top to match pill bottom edge logic */
+  /* Actually, since wrapper is flex-end, this sits at bottom. */
+  /* But the pill is now 20px high. The connector needs to sit at the top-right corner of the pill? */
+  /* No, the connector bridges the pill's right edge to the horizontal line. */
+  /* If pill height is reduced to 20px, connector logic remains same: it sits to the right. */
+  /* But the wrapper aligns items flex-end? No, let's align flex-start (top) */
+}
+
+.status-pill-wrapper {
+  align-items: flex-start; /* Align to top */
 }
 
 .status-icon-wrapper {
@@ -283,13 +288,6 @@ onUnmounted(() => {
 .main-card {
   position: absolute;
   top: 20px; /* Matches original design */
-  /* Wait, if the pill is 28px high, the card should be pushed down? */
-  /* In Figma design: The main card starts at Y=20px. The pill overlaps? */
-  /* Let's check the Figma again. The main white card seems to have a standard top margin. */
-  /* Actually, the "At work" tab seems to be visually ON TOP of the blue background, but BEHIND the white card? */
-  /* No, looking at layers, the white card is on top. The tab sticks out from top-left. */
-  /* So top: 20px is correct for the white card. */
-  
   left: 0;
   width: 100%;
   height: calc(100% - 20px);
