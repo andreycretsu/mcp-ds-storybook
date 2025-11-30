@@ -29,19 +29,19 @@ export const Default: Story = {
     components: { TimeTracker },
     template: `
       <style>
-        /* Force Storybook Docs wrapper to be full width */
+        /* Force Storybook Docs wrapper to fixed width as requested */
         .sbdocs-wrapper, .sbdocs-content {
           max-width: none !important;
-          width: 100% !important;
+          width: 1200px !important;
           padding: 0 !important;
-          margin: 0 !important;
+          margin: 0 auto !important;
         }
         .sbdocs-preview {
           margin: 0 !important;
           border: none !important;
         }
       </style>
-      <div style="display: flex; justify-content: center; align-items: center; background: #f6f9fb; width: 1600px; height: 800px; overflow: hidden;">
+      <div style="display: flex; justify-content: center; align-items: center; background: #f6f9fb; width: 100%; height: 800px; overflow: hidden;">
         <div style="transform: scale(1.5); transform-origin: center;">
           <TimeTracker />
         </div>
