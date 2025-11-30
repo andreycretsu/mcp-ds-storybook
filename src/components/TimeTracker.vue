@@ -1,6 +1,7 @@
 <template>
   <div 
     class="tracker-container" 
+    ref="containerRef"
     @mouseenter="isHovered = true" 
     @mouseleave="isHovered = false"
   >
@@ -172,6 +173,7 @@ const breakBg = ref<HTMLElement | null>(null)
 const trackerRef = ref<HTMLElement | null>(null)
 const headerGroup = ref<HTMLElement | null>(null)
 const drawerRef = ref<HTMLElement | null>(null)
+const containerRef = ref<HTMLElement | null>(null)
 const isExpanded = ref(true)
 const isHovered = ref(false)
 const isDrawerOpen = ref(false)
@@ -233,6 +235,12 @@ const toggleDrawer = () => {
   isDrawerOpen.value = !isDrawerOpen.value
 }
 
+const handleClickOutside = (event: MouseEvent) => {
+  if (isDrawerOpen.value && containerRef.value && !containerRef.value.contains(event.target as Node)) {
+    isDrawerOpen.value = false
+  }
+}
+
 watch(isDrawerOpen, (newValue) => {
   if (drawerRef.value) {
     const targetHeight = newValue ? "216px" : "0px" // 3x height of widget (72px * 3)
@@ -268,10 +276,12 @@ watch(isExpanded, (newValue) => {
 
 onMounted(() => {
   startTimer()
+  document.addEventListener('click', handleClickOutside)
 })
 
 onUnmounted(() => {
   if (timerInterval) clearInterval(timerInterval)
+  document.removeEventListener('click', handleClickOutside)
 })
 </script>
 
@@ -324,7 +334,15 @@ onUnmounted(() => {
   margin-bottom: 4px; /* Add gap from widget */
 }
 
-/* Remove the duplicated drawer-trigger rule that was overriding this */
+/* Adjust positioning to be "above the widget 4px padding" */
+.drawer-trigger {
+  top: -16px; /* Position just above */
+  border-radius: 12px; /* Capsule shape */
+  height: 12px;
+  width: 32px;
+  padding: 4px;
+  margin-bottom: 4px;
+}
 
 .time-tracker {
   width: 340px;
@@ -344,6 +362,7 @@ onUnmounted(() => {
   -webkit-mask-image: -webkit-radial-gradient(white, black); /* Safari overflow fix */
   background: white; /* Ensure it has background */
   z-index: 2;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Main widget shadow */
 }
 
 .time-tracker.is-collapsed {
