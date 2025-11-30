@@ -69,27 +69,27 @@
 
   /* Radius 30 */
   --radius-30-ideal: 30px;
-  --radius-30-fallback: 15px;
+  --radius-30-fallback: 14px;
 
   /* Radius 32 */
   --radius-32-ideal: 32px;
-  --radius-32-fallback: 16px;
+  --radius-32-fallback: 15px;
 
   /* Radius 36 */
   --radius-36-ideal: 36px;
-  --radius-36-fallback: 17px;
+  --radius-36-fallback: 16px;
 
   /* Radius 40 */
   --radius-40-ideal: 40px;
-  --radius-40-fallback: 19px;
+  --radius-40-fallback: 17px;
 
   /* Radius 44 */
   --radius-44-ideal: 44px;
-  --radius-44-fallback: 20px;
+  --radius-44-fallback: 18px;
 
   /* Radius 48 */
   --radius-48-ideal: 48px;
-  --radius-48-fallback: 21px;
+  --radius-48-fallback: 19px;
 
 
   /* =========================================
