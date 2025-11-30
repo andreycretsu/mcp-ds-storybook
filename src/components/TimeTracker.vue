@@ -39,10 +39,12 @@
           </div>
         </transition>
 
-        <div class="timer-wrapper work-timer-wrapper">
+        <div 
+          class="timer-wrapper work-timer-wrapper"
+          :class="{ 'dimmed': status === 'break' }"
+        >
           <span 
             class="timer work-timer"
-            :class="{ 'dimmed': status === 'break' }"
           >
             {{ formatTime(workTime) }}
           </span>
@@ -327,6 +329,16 @@ onUnmounted(() => {
   /* Always glass/blueish */
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(3px);
+  transition: background-color 0.3s ease;
+}
+
+.work-timer-wrapper.dimmed {
+  /* When on break, work timer gets specific solid background to contrast with break bg if needed? 
+     Or stay the same?
+     "Style work timer to have blue background when on break" - implies solid blue
+  */
+  background-color: #d1e6fa; /* Solid blue when on break */
+  /* Ensure text opacity is full */
 }
 
 .timer {
