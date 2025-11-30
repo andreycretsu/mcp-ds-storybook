@@ -25,7 +25,7 @@
 
   /* Radius 04 */
   --radius-04-ideal: 4px;
-  --radius-04-fallback: 2px;
+  --radius-04-fallback: 3px;
 
   /* Radius 06 */
   --radius-06-ideal: 6px;
@@ -37,7 +37,7 @@
 
   /* Radius 12 */
   --radius-12-ideal: 12px;
-  --radius-12-fallback: 6px;
+  --radius-12-fallback: 7px;
 
   /* Radius 14 */
   --radius-14-ideal: 14px;
@@ -45,7 +45,7 @@
 
   /* Radius 16 */
   --radius-16-ideal: 16px;
-  --radius-16-fallback: 8px;
+  --radius-16-fallback: 9px;
 
   /* Radius 18 */
   --radius-18-ideal: 18px;
@@ -53,7 +53,7 @@
 
   /* Radius 20 */
   --radius-20-ideal: 20px;
-  --radius-20-fallback: 12px;
+  --radius-20-fallback: 11px;
 
   /* Radius 22 */
   --radius-22-ideal: 22px;
@@ -61,35 +61,56 @@
 
   /* Radius 24 */
   --radius-24-ideal: 24px;
-  --radius-24-fallback: 14px;
+  --radius-24-fallback: 13px;
 
   /* Radius 26 */
   --radius-26-ideal: 26px;
-  --radius-26-fallback: 14px;
+  --radius-26-fallback: 13px;
 
   /* Radius 30 */
   --radius-30-ideal: 30px;
-  --radius-30-fallback: 16px;
+  --radius-30-fallback: 15px;
 
   /* Radius 32 */
   --radius-32-ideal: 32px;
-  --radius-32-fallback: 18px;
+  --radius-32-fallback: 16px;
 
   /* Radius 36 */
   --radius-36-ideal: 36px;
-  --radius-36-fallback: 20px;
+  --radius-36-fallback: 17px;
 
   /* Radius 40 */
   --radius-40-ideal: 40px;
-  --radius-40-fallback: 22px;
+  --radius-40-fallback: 19px;
 
   /* Radius 44 */
   --radius-44-ideal: 44px;
-  --radius-44-fallback: 24px;
+  --radius-44-fallback: 20px;
 
   /* Radius 48 */
   --radius-48-ideal: 48px;
-  --radius-48-fallback: 26px;
+  --radius-48-fallback: 21px;
+
+
+  /* =========================================
+     Component Aliases
+     ========================================= */
+
+  /* Button Size 24 (Ideal 14px -> Radius 14) */
+  --radius-btn-24-ideal: var(--radius-14-ideal);
+  --radius-btn-24-fallback: var(--radius-14-fallback);
+  
+  /* Button Size 32 (Ideal 18px -> Radius 18) */
+  --radius-btn-32-ideal: var(--radius-18-ideal);
+  --radius-btn-32-fallback: var(--radius-18-fallback);
+  
+  /* Button Size 36 (Ideal 22px -> Radius 22) */
+  --radius-btn-36-ideal: var(--radius-22-ideal);
+  --radius-btn-36-fallback: var(--radius-22-fallback);
+  
+  /* Button Size 40 (Ideal 26px -> Radius 26) */
+  --radius-btn-40-ideal: var(--radius-26-ideal);
+  --radius-btn-40-fallback: var(--radius-26-fallback);
 }
 
 a {
