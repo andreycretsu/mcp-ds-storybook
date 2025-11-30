@@ -296,13 +296,6 @@ onUnmounted(() => {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Main widget shadow moved here to avoid clipping */
 }
 
-@supports (corner-shape: superellipse(2)) {
-  .tracker-container {
-    border-radius: var(--radius-20-ideal, 12px);
-    corner-shape: superellipse(var(--superK));
-  }
-}
-
 .drawer-section {
   position: absolute;
   bottom: 100%; /* Positioned above the widget */
@@ -326,11 +319,11 @@ onUnmounted(() => {
 
 .drawer-trigger {
   position: absolute;
-  top: -12px; /* 8px height + 4px gap */
+  top: -14px; /* 10px height + 4px gap */
   left: 50%;
   transform: translateX(-50%);
-  width: 26px; /* Smaller width */
-  height: 8px; /* Smaller height */
+  width: 28px; /* Slightly larger width */
+  height: 10px; /* Slightly larger height */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -340,6 +333,7 @@ onUnmounted(() => {
   cursor: pointer;
   z-index: 5;
   box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
+  margin-bottom: 4px; /* Add gap from widget */
 }
 
 /* Adjust positioning to be "above the widget 4px padding" */
