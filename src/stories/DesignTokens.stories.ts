@@ -297,18 +297,12 @@ export const BorderRadius: Story = {
     return {
       components: { BorderRadiusChart, BorderRadiusPlayground },
       template: `
-      <div style="padding: 20px; max-width: 1200px;">
+      <div style="padding: 20px; max-width: 1200px; width: 100%; margin: 0 auto;">
         <h1>🔲 Border Radius</h1>
         
         <p style="margin-bottom: 24px; color: #666;">
           Visualizing the border radius system with both ideal (if supported) and fallback values.
         </p>
-        
-        <!-- Interactive Playground -->
-        <div style="margin-bottom: 48px;">
-          <h2 style="font-size: 20px; margin-bottom: 16px;">Interactive Playground</h2>
-          <BorderRadiusPlayground />
-        </div>
 
         <!-- Chart.js Component -->
         <div style="margin-bottom: 48px; padding: 20px; background: #fcfcfc; border: 1px solid #eee; border-radius: 8px;">
@@ -346,6 +340,12 @@ export const BorderRadius: Story = {
             `).join('')}
           </tbody>
         </table>
+
+        <!-- Interactive Playground -->
+        <div style="margin-bottom: 48px;">
+          <h2 style="font-size: 20px; margin-bottom: 16px;">Interactive Playground</h2>
+          <BorderRadiusPlayground />
+        </div>
       </div>
     `
     };

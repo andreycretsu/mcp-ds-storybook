@@ -1,21 +1,27 @@
 <template>
   <div class="playground-container">
     <div class="controls">
-      <div class="control-group">
-        <label>Shape Width: {{ width }}px</label>
-        <input type="range" v-model.number="width" min="20" max="400" />
-      </div>
-      <div class="control-group">
-        <label>Shape Height: {{ height }}px</label>
-        <input type="range" v-model.number="height" min="20" max="400" />
-      </div>
-      <div class="control-group">
-        <label>Radius Token</label>
-        <select v-model="selectedToken">
-          <option v-for="token in tokens" :key="token.name" :value="token">
-            radius-{{ token.name }} ({{ token.ideal }}px / {{ token.fallback }}px)
-          </option>
-        </select>
+      <div class="shape-controls">
+        <div
+          v-for="(shape, index) in shapes"
+          :key="shape.id"
+          class="shape-control"
+        >
+          <div class="shape-control__header">
+            <span>Shape {{ index + 1 }}</span>
+            <span class="size-readout">{{ shape.width }} × {{ shape.height }}px</span>
+          </div>
+          <label>Radius Token</label>
+          <select v-model="shape.tokenName">
+            <option v-for="token in tokens" :key="token.name" :value="token.name">
+              radius-{{ token.name }} ({{ token.ideal }}px / {{ token.fallback }}px)
+            </option>
+          </select>
+          <label>Width</label>
+          <input type="range" v-model.number="shape.width" min="40" max="320" />
+          <label>Height</label>
+          <input type="range" v-model.number="shape.height" min="40" max="320" />
+        </div>
       </div>
     </div>
 
@@ -25,13 +31,13 @@
         <p class="subtitle">corner-shape: superellipse(2)</p>
         <div class="shapes-container">
           <div
-            v-for="n in 5"
-            :key="'ideal-' + n"
+            v-for="shape in shapes"
+            :key="'ideal-' + shape.id"
             class="shape ideal-shape"
             :style="{
-              width: width + 'px',
-              height: height + 'px',
-              borderRadius: `var(--radius-${selectedToken.name}-ideal)`
+              width: shape.width + 'px',
+              height: shape.height + 'px',
+              borderRadius: `var(--radius-${getToken(shape.tokenName).name}-ideal)`
             }"
           ></div>
         </div>
@@ -42,13 +48,13 @@
         <p class="subtitle">Standard border-radius</p>
         <div class="shapes-container">
           <div
-            v-for="n in 5"
-            :key="'fallback-' + n"
+            v-for="shape in shapes"
+            :key="'fallback-' + shape.id"
             class="shape fallback-shape"
             :style="{
-              width: width + 'px',
-              height: height + 'px',
-              borderRadius: `var(--radius-${selectedToken.name}-fallback)`
+              width: shape.width + 'px',
+              height: shape.height + 'px',
+              borderRadius: `var(--radius-${getToken(shape.tokenName).name}-fallback)`
             }"
           ></div>
         </div>
@@ -59,9 +65,6 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-
-const width = ref(100)
-const height = ref(100)
 
 const tokens = [
   { name: '02', ideal: 2, fallback: 2 },
@@ -90,7 +93,21 @@ const tokens = [
   { name: '48', ideal: 48, fallback: 18 }
 ]
 
-const selectedToken = ref(tokens[7]) // Default to radius-16
+const tokenMap = tokens.reduce<Record<string, (typeof tokens)[number]>>((acc, token) => {
+  acc[token.name] = token
+  return acc
+}, {})
+
+const shapes = ref<{ id: number; width: number; height: number; tokenName: string }[]>(
+  Array.from({ length: 5 }, (_, index) => ({
+    id: index,
+    width: 100,
+    height: 100,
+    tokenName: '16'
+  }))
+)
+
+const getToken = (tokenName: string) => tokenMap[tokenName] ?? tokens[0]
 </script>
 
 <style scoped>
@@ -108,7 +125,7 @@ const selectedToken = ref(tokens[7]) // Default to radius-16
 .controls {
   display: flex;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 16px;
   padding-bottom: 24px;
   border-bottom: 1px solid #eee;
 }
@@ -137,6 +154,45 @@ const selectedToken = ref(tokens[7]) // Default to radius-16
   border: 1px solid #ddd;
   background-color: white;
   font-size: 14px;
+}
+
+.shape-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  flex: 1 1 100%;
+}
+
+.shape-control {
+  display: grid;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: white;
+}
+
+.shape-control select {
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  background-color: white;
+  font-size: 14px;
+}
+
+.shape-control__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  color: #333;
+  font-size: 13px;
+}
+
+.size-readout {
+  font-weight: 500;
+  color: #666;
+  font-size: 12px;
 }
 
 .preview-grid {
@@ -191,4 +247,3 @@ const selectedToken = ref(tokens[7]) // Default to radius-16
   opacity: 0.8;
 }
 </style>
-
