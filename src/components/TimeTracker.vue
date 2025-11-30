@@ -22,15 +22,6 @@
           </div>
           <span class="status-text">{{ status === 'work' ? 'At work' : 'On break' }}</span>
         </div>
-        <!-- SVG Connector -->
-        <div class="pill-connector">
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path 
-              d="M0 12C0 5.37258 5.37258 0 12 0V12H0Z" 
-              fill="rgba(255, 255, 255, 0.4)"
-            />
-          </svg>
-        </div>
       </div>
 
       <!-- Right: Timers -->
@@ -241,13 +232,6 @@ onUnmounted(() => {
     border-radius: 0 0 var(--radius-28-ideal, 12px) 0;
     corner-shape: superellipse(var(--superK));
   }
-}
-
-.pill-connector {
-  width: 12px;
-  height: 12px;
-  display: flex;
-  align-items: flex-start;
 }
 
 .status-icon-wrapper {
