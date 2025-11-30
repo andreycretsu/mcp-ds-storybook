@@ -222,14 +222,15 @@ onUnmounted(() => {
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(3px);
   padding: 0 12px;
-  border-radius: 0 0 var(--radius-28-fallback, 12px) 0;
+  /* Top-left and Top-right corners only */
+  border-radius: var(--radius-28-fallback, 12px) var(--radius-28-fallback, 12px) 0 0;
   height: 20px;
   box-sizing: border-box;
 }
 
 @supports (corner-shape: superellipse(2)) {
   .status-pill {
-    border-radius: 0 0 var(--radius-28-ideal, 12px) 0;
+    border-radius: var(--radius-28-ideal, 12px) var(--radius-28-ideal, 12px) 0 0;
     corner-shape: superellipse(var(--superK));
   }
 }
