@@ -292,6 +292,15 @@ onUnmounted(() => {
   position: relative;
   width: 340px;
   /* Allows drawer to expand upwards absolutely */
+  border-radius: var(--radius-20-fallback, 12px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Main widget shadow moved here to avoid clipping */
+}
+
+@supports (corner-shape: superellipse(2)) {
+  .tracker-container {
+    border-radius: var(--radius-20-ideal, 12px);
+    corner-shape: superellipse(var(--superK));
+  }
 }
 
 .drawer-section {
@@ -362,7 +371,7 @@ onUnmounted(() => {
   -webkit-mask-image: -webkit-radial-gradient(white, black); /* Safari overflow fix */
   background: white; /* Ensure it has background */
   z-index: 2;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Main widget shadow */
+  /* box-shadow moved to container to avoid clipping by mask-image */
 }
 
 .time-tracker.is-collapsed {
