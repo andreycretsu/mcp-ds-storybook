@@ -9,6 +9,9 @@ const meta: Meta<typeof TimeTracker> = {
   },
   parameters: {
     layout: 'fullscreen',
+    viewport: {
+      defaultViewport: 'responsive',
+    },
   }
 };
 
@@ -19,7 +22,7 @@ export const Default: Story = {
   render: () => ({
     components: { TimeTracker },
     template: `
-      <div style="padding: 40px; display: flex; justify-content: center; align-items: center; background: #f6f9fb; width: 100vw; height: 100vh; min-height: 600px;">
+      <div style="padding: 40px; display: flex; justify-content: center; align-items: center; background: #f6f9fb; width: 100vw; height: 100vh; min-height: 600px; transform: scale(1.5); transform-origin: center;">
         <TimeTracker />
       </div>
     `,

@@ -347,6 +347,7 @@ onUnmounted(() => {
   
   /* Fix for clipping bugs in Safari/Chrome with overflow:hidden and border-radius */
   transform: translateZ(0);
+  -webkit-mask-image: -webkit-radial-gradient(white, black); /* Safari overflow fix */
   background: white; /* Ensure it has background */
   z-index: 2;
 }
@@ -370,8 +371,15 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   transition: opacity 0.3s ease;
-  border-radius: inherit;
+  border-radius: var(--radius-20-fallback, 12px); /* Explicit radius matching parent */
   z-index: 0;
+}
+
+@supports (corner-shape: superellipse(2)) {
+  .bg-layer {
+    border-radius: var(--radius-20-ideal, 12px);
+    corner-shape: superellipse(var(--superK));
+  }
 }
 
 .work-bg {
