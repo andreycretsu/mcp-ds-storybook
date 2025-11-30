@@ -56,157 +56,6 @@ Our design system is built on a foundation of consistent design tokens that ensu
 
 Our design system uses a dual-value border radius system to support advanced corner smoothing (superellipse) on modern browsers while providing graceful fallbacks for others.
 
-### Radius Curve Chart
-
-This chart visualizes the relationship between the **Ideal Radius** (blue) and the **Fallback Radius** (light blue overlay).
-
-<div style="display: flex; align-items: flex-end; gap: 8px; height: 160px; padding: 20px 0; margin-bottom: 32px; overflow-x: auto;">
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 6px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 2px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 6px; background: #338eea; border-radius: 2px;" title="Fallback: 2px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">02</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 12px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 4px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 6px; background: #338eea; border-radius: 2px;" title="Fallback: 2px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">04</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 18px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 6px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 12px; background: #338eea; border-radius: 2px;" title="Fallback: 4px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">06</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 24px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 8px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 12px; background: #338eea; border-radius: 2px;" title="Fallback: 4px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">08</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 30px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 10px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 12px; background: #338eea; border-radius: 2px;" title="Fallback: 4px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">10</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 36px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 12px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 18px; background: #338eea; border-radius: 2px;" title="Fallback: 6px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">12</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 42px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 14px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 18px; background: #338eea; border-radius: 2px;" title="Fallback: 6px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">14</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 48px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 16px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 18px; background: #338eea; border-radius: 2px;" title="Fallback: 6px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">16</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 54px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 18px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 24px; background: #338eea; border-radius: 2px;" title="Fallback: 8px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">18</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 60px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 20px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 24px; background: #338eea; border-radius: 2px;" title="Fallback: 8px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">20</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 66px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 22px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 24px; background: #338eea; border-radius: 2px;" title="Fallback: 8px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">22</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 72px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 24px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 30px; background: #338eea; border-radius: 2px;" title="Fallback: 10px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">24</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 78px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 26px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 30px; background: #338eea; border-radius: 2px;" title="Fallback: 10px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">26</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 84px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 28px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 36px; background: #338eea; border-radius: 2px;" title="Fallback: 12px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">28</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 90px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 30px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 36px; background: #338eea; border-radius: 2px;" title="Fallback: 12px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">30</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 96px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 32px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 36px; background: #338eea; border-radius: 2px;" title="Fallback: 12px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">32</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 102px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 34px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 42px; background: #338eea; border-radius: 2px;" title="Fallback: 14px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">34</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 108px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 36px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 42px; background: #338eea; border-radius: 2px;" title="Fallback: 14px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">36</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 114px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 38px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 42px; background: #338eea; border-radius: 2px;" title="Fallback: 14px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">38</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 120px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 40px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 48px; background: #338eea; border-radius: 2px;" title="Fallback: 16px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">40</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 126px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 42px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 48px; background: #338eea; border-radius: 2px;" title="Fallback: 16px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">42</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 132px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 44px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 48px; background: #338eea; border-radius: 2px;" title="Fallback: 16px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">44</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 138px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 46px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 54px; background: #338eea; border-radius: 2px;" title="Fallback: 18px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">46</span>
-  </div>
-  <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-    <div style="position: relative; width: 12px; height: 144px; background: #e0f2fe; border-radius: 2px;" title="Ideal: 48px">
-      <div style="position: absolute; bottom: 0; width: 100%; height: 54px; background: #338eea; border-radius: 2px;" title="Fallback: 18px"></div>
-    </div>
-    <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">48</span>
-  </div>
-</div>
-
 ### Radius Tokens
 
 | Token Name | Ideal Radius (Corner Shape) | Fallback Radius |
@@ -415,8 +264,68 @@ export const Spacing: Story = {
 };
 
 export const BorderRadius: Story = {
-  render: () => ({
-    template: `
+  render: () => {
+    const tokens = [
+      { name: '02', ideal: 2, fallback: 2 },
+      { name: '04', ideal: 4, fallback: 2 },
+      { name: '06', ideal: 6, fallback: 4 },
+      { name: '08', ideal: 8, fallback: 4 },
+      { name: '10', ideal: 10, fallback: 4 },
+      { name: '12', ideal: 12, fallback: 6 },
+      { name: '14', ideal: 14, fallback: 6 },
+      { name: '16', ideal: 16, fallback: 6 },
+      { name: '18', ideal: 18, fallback: 8 },
+      { name: '20', ideal: 20, fallback: 8 },
+      { name: '22', ideal: 22, fallback: 8 },
+      { name: '24', ideal: 24, fallback: 10 },
+      { name: '26', ideal: 26, fallback: 10 },
+      { name: '28', ideal: 28, fallback: 12 },
+      { name: '30', ideal: 30, fallback: 12 },
+      { name: '32', ideal: 32, fallback: 12 },
+      { name: '34', ideal: 34, fallback: 14 },
+      { name: '36', ideal: 36, fallback: 14 },
+      { name: '38', ideal: 38, fallback: 14 },
+      { name: '40', ideal: 40, fallback: 16 },
+      { name: '42', ideal: 42, fallback: 16 },
+      { name: '44', ideal: 44, fallback: 16 },
+      { name: '46', ideal: 46, fallback: 18 },
+      { name: '48', ideal: 48, fallback: 18 }
+    ];
+
+    const width = 800;
+    const height = 300;
+    const padding = { top: 40, right: 40, bottom: 40, left: 40 };
+    const chartWidth = width - padding.left - padding.right;
+    const chartHeight = height - padding.top - padding.bottom;
+    
+    const maxY = 60; // Set max Y value slightly above max ideal (48)
+
+    const getX = (index: number) => padding.left + (index / (tokens.length - 1)) * chartWidth;
+    const getY = (value: number) => height - padding.bottom - (value / maxY) * chartHeight;
+
+    const idealPoints = tokens.map((t, i) => \`\${getX(i)},\${getY(t.ideal)}\`).join(' ');
+    const fallbackPoints = tokens.map((t, i) => \`\${getX(i)},\${getY(t.fallback)}\`).join(' ');
+
+    // Grid lines
+    const gridLines = [];
+    for (let i = 0; i <= maxY; i += 10) {
+      const y = getY(i);
+      gridLines.push(\`<line x1="\${padding.left}" y1="\${y}" x2="\${width - padding.right}" y2="\${y}" stroke="#eee" stroke-dasharray="4 4" />\`);
+      gridLines.push(\`<text x="\${padding.left - 10}" y="\${y + 4}" text-anchor="end" font-size="10" fill="#999">\${i}</text>\`);
+    }
+
+    // X-axis labels
+    const xLabels = tokens.map((t, i) => {
+      const x = getX(i);
+      return \`<text x="\${x}" y="\${height - padding.bottom + 20}" text-anchor="middle" font-size="10" fill="#999">\${t.name}</text>\`;
+    }).join('');
+
+    // Dots
+    const idealDots = tokens.map((t, i) => \`<circle cx="\${getX(i)}" cy="\${getY(t.ideal)}" r="4" fill="#3f8643" stroke="white" stroke-width="2"><title>Ideal: \${t.ideal}px</title></circle>\`).join('');
+    const fallbackDots = tokens.map((t, i) => \`<circle cx="\${getX(i)}" cy="\${getY(t.fallback)}" r="4" fill="#e43838" stroke="white" stroke-width="2"><title>Fallback: \${t.fallback}px</title></circle>\`).join('');
+
+    return {
+      template: `
       <div style="padding: 20px; max-width: 800px;">
         <h1>🔲 Border Radius</h1>
         
@@ -424,44 +333,36 @@ export const BorderRadius: Story = {
           Visualizing the border radius system with both ideal (if supported) and fallback values.
         </p>
         
-        <!-- Simple CSS Bar Chart -->
+        <!-- SVG Line Chart -->
         <div style="margin-bottom: 48px; padding: 20px; background: #fcfcfc; border: 1px solid #eee; border-radius: 8px;">
-          <h3 style="margin-top: 0; margin-bottom: 20px; font-size: 14px; color: #444;">Ideal vs Fallback Curve</h3>
-          <div style="display: flex; align-items: flex-end; gap: 8px; height: 160px; overflow-x: auto; padding-bottom: 10px;">
-            ${[
-              { name: '02', ideal: 2, fallback: 2 },
-              { name: '04', ideal: 4, fallback: 2 },
-              { name: '06', ideal: 6, fallback: 4 },
-              { name: '08', ideal: 8, fallback: 4 },
-              { name: '10', ideal: 10, fallback: 4 },
-              { name: '12', ideal: 12, fallback: 6 },
-              { name: '14', ideal: 14, fallback: 6 },
-              { name: '16', ideal: 16, fallback: 6 },
-              { name: '18', ideal: 18, fallback: 8 },
-              { name: '20', ideal: 20, fallback: 8 },
-              { name: '22', ideal: 22, fallback: 8 },
-              { name: '24', ideal: 24, fallback: 10 },
-              { name: '26', ideal: 26, fallback: 10 },
-              { name: '28', ideal: 28, fallback: 12 },
-              { name: '30', ideal: 30, fallback: 12 },
-              { name: '32', ideal: 32, fallback: 12 },
-              { name: '34', ideal: 34, fallback: 14 },
-              { name: '36', ideal: 36, fallback: 14 },
-              { name: '38', ideal: 38, fallback: 14 },
-              { name: '40', ideal: 40, fallback: 16 },
-              { name: '42', ideal: 42, fallback: 16 },
-              { name: '44', ideal: 44, fallback: 16 },
-              { name: '46', ideal: 46, fallback: 18 },
-              { name: '48', ideal: 48, fallback: 18 }
-            ].map(t => `
-              <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 20px;">
-                <div style="position: relative; width: 12px; height: ${t.ideal * 3}px; background: #e0f2fe; border-radius: 2px;" title="Ideal: ${t.ideal}px">
-                  <div style="position: absolute; bottom: 0; width: 100%; height: ${t.fallback * 3}px; background: #338eea; border-radius: 2px;" title="Fallback: ${t.fallback}px"></div>
-                </div>
-                <span style="font-size: 9px; color: #666; writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap;">${t.name}</span>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h3 style="margin: 0; font-size: 14px; color: #444;">Ideal Superellipse vs Smooth Fallback Curve</h3>
+            <div style="display: flex; gap: 16px; font-size: 12px;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <div style="width: 12px; height: 12px; background: #3f8643; border-radius: 2px;"></div>
+                <span>Ideal (superellipse)</span>
               </div>
-            `).join('')}
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <div style="width: 12px; height: 12px; background: #e43838; border-radius: 2px;"></div>
+                <span>Fallback (smooth curve)</span>
+              </div>
+            </div>
           </div>
+          
+          <svg viewBox="0 0 ${width} ${height}" style="width: 100%; height: auto;">
+            ${gridLines.join('')}
+            ${xLabels}
+            
+            <!-- Ideal Line -->
+            <polyline points="${idealPoints}" fill="none" stroke="#3f8643" stroke-width="3" />
+            
+            <!-- Fallback Line -->
+            <polyline points="${fallbackPoints}" fill="none" stroke="#e43838" stroke-width="3" />
+            
+            <!-- Dots -->
+            ${idealDots}
+            ${fallbackDots}
+          </svg>
         </div>
         
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 32px;">
@@ -474,40 +375,15 @@ export const BorderRadius: Story = {
             </tr>
           </thead>
           <tbody>
-            ${[
-              { name: '--radius-02', ideal: 2, fallback: 2 },
-              { name: '--radius-04', ideal: 4, fallback: 2 },
-              { name: '--radius-06', ideal: 6, fallback: 4 },
-              { name: '--radius-08', ideal: 8, fallback: 4 },
-              { name: '--radius-10', ideal: 10, fallback: 4 },
-              { name: '--radius-12', ideal: 12, fallback: 6 },
-              { name: '--radius-14', ideal: 14, fallback: 6 },
-              { name: '--radius-16', ideal: 16, fallback: 6 },
-              { name: '--radius-18', ideal: 18, fallback: 8 },
-              { name: '--radius-20', ideal: 20, fallback: 8 },
-              { name: '--radius-22', ideal: 22, fallback: 8 },
-              { name: '--radius-24', ideal: 24, fallback: 10 },
-              { name: '--radius-26', ideal: 26, fallback: 10 },
-              { name: '--radius-28', ideal: 28, fallback: 12 },
-              { name: '--radius-30', ideal: 30, fallback: 12 },
-              { name: '--radius-32', ideal: 32, fallback: 12 },
-              { name: '--radius-34', ideal: 34, fallback: 14 },
-              { name: '--radius-36', ideal: 36, fallback: 14 },
-              { name: '--radius-38', ideal: 38, fallback: 14 },
-              { name: '--radius-40', ideal: 40, fallback: 16 },
-              { name: '--radius-42', ideal: 42, fallback: 16 },
-              { name: '--radius-44', ideal: 44, fallback: 16 },
-              { name: '--radius-46', ideal: 46, fallback: 18 },
-              { name: '--radius-48', ideal: 48, fallback: 18 }
-            ].map(t => `
+            ${tokens.map(t => `
               <tr>
-                <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>${t.name}</code></td>
+                <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-${t.name}</code></td>
                 <td style="padding: 12px; border: 1px solid #e5ecf3;">${t.ideal}px</td>
                 <td style="padding: 12px; border: 1px solid #e5ecf3;">${t.fallback}px</td>
                 <td style="padding: 12px; border: 1px solid #e5ecf3;">
                   <div style="display: flex; gap: 16px; align-items: center;">
-                    <div title="Ideal" style="width: 40px; height: 40px; background: #338eea; border-radius: var(${t.name}-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
-                    <div title="Fallback" style="width: 40px; height: 40px; background: #338eea; opacity: 0.6; border-radius: var(${t.name}-fallback);"></div>
+                    <div title="Ideal" style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-${t.name}-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
+                    <div title="Fallback" style="width: 40px; height: 40px; background: #338eea; opacity: 0.6; border-radius: var(--radius-${t.name}-fallback);"></div>
                   </div>
                 </td>
               </tr>
@@ -516,5 +392,6 @@ export const BorderRadius: Story = {
         </table>
       </div>
     `
-  })
+    };
+  }
 };
