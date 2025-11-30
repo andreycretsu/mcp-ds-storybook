@@ -57,7 +57,7 @@ export const Default: Story = {
       });
     },
     template: `
-      <div style="display: flex; justify-content: center; align-items: center; background: #f6f9fb; width: 100%; height: 800px; overflow: hidden;">
+      <div style="display: flex; justify-content: center; align-items: center; background: #f6f9fb; width: 1200px; height: 800px; overflow: hidden;">
         <div style="transform: scale(1.5); transform-origin: center;">
           <TimeTracker />
         </div>
