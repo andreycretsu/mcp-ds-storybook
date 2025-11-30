@@ -227,7 +227,7 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   height: 100%;
-  z-index: 1; /* Below main card (z-index 2) */
+  z-index: 3; /* Higher than timer wrappers (which are in .timer-pill z-index 1) */
   
   display: flex;
   align-items: flex-start; /* Align content wrapper to top */
@@ -247,9 +247,7 @@ onUnmounted(() => {
 }
 
 .status-pill.on-break {
-  background-color: #f8ecc4; /* Yellow on break */
-  /* "on breaqk pill also white with blured semi transparejt" */
-  background-color: rgba(255, 255, 255, 0.4); /* Revert to white blur */
+  background-color: rgba(255, 255, 255, 0.4); /* Keep white blurred even on break */
 }
 
 @supports (corner-shape: superellipse(2)) {
@@ -298,6 +296,7 @@ onUnmounted(() => {
 .timer-pill-container {
   display: flex;
   align-items: flex-start;
+  /* gap: 12px; */ /* Removed gap to allow break timer wrapper to extend left freely? No, wrappers need space? */
   gap: 12px;
   height: 100%;
 }
@@ -317,6 +316,7 @@ onUnmounted(() => {
   border-radius: var(--radius-28-fallback, 12px) var(--radius-28-fallback, 12px) 0 0;
   
   box-sizing: border-box;
+  position: relative; /* For z-index stacking */
 }
 
 @supports (corner-shape: superellipse(2)) {
@@ -327,61 +327,27 @@ onUnmounted(() => {
 }
 
 .break-timer-wrapper {
-  /* Second timer full width background till the left edge? */
-  /* "seond timer full width backdgorund till the left edge" */
-  /* Wait, does user mean extend to left edge of the component? */
-  /* "seond timer full width backdgorund till the left edge" */
-  /* If it extends to the left edge, it would cover the status pill? */
-  /* Or does it mean just "full width of its own container"? */
-  /* Looking at the image: The break timer has a yellow background. */
-  /* If user says "full width backdgorund till the left edge", maybe they mean it extends BEHIND the status pill? */
-  /* Or maybe they mean it fills the space between status pill and right edge? */
-  
-  /* Re-reading: "seond timer full width backdgorund till the left edge" */
-  /* Maybe user means the yellow background should span from the right edge (where timer is) all the way to the left edge of the WIDGET? */
-  /* But "overlapping the whole header except the work timer" in previous message suggests this. */
-  /* And "For pill get back white blurred background" suggests status pill sits on top of it. */
-  
-  /* So:
-     1. Yellow background spans whole header width (except work timer area).
-     2. Status pill (white blur) sits on top of Yellow background.
-     3. Break timer sits on Yellow background.
-     
-     So we need a yellow background that covers everything BUT is masked or layered correctly.
-     
-     Since the status pill is on the left, and break timer is on the right (to the left of work timer).
-     If we put a yellow background on the break timer wrapper and extend it left:
-  */
-  background-color: #f8ecc4; /* Yellow */
-  
-  /* To extend to left edge: */
-  /* We can't easily extend a flex child to the left edge of the parent's parent without absolute positioning. */
-  /* Or we use the previous approach of a global header background? */
-  
-  /* But user said "when on break just add another wrapper for second timer and make it yellow". */
-  /* And now "seond timer full width backdgorund till the left edge". */
-  
-  /* Let's assume for now just the wrapper is yellow, unless "till the left edge" means something else. */
-  /* Ah, "till the left edge" might mean left edge of the TIMER PILL container? */
-  /* Or left edge of the WIDGET. */
-  
-  /* If I look at the provided image in the previous turn: */
-  /* The yellow bg starts from the left of the break timer text, and goes LEFT behind the "On break" pill. */
-  
-  /* So yes, global header yellow background is needed. */
-  /* But user previously rejected global background saying "when on break just add another wrapper for second timer and make it yellow". */
-  /* Contradictory instructions? */
-  
-  /* Let's try to interpret "seond timer full width backdgorund till the left edge" as: */
-  /* The break timer wrapper itself should be wide enough? */
-  
-  /* Actually, if I make the break timer wrapper very wide to the left, and position it absolutely? */
-  /* Or maybe revert to the `break-overlap-bg` idea but attached to the break timer? */
-  
-  /* Let's stick to the wrapper being yellow for now as strictly requested, 
-     but "till the left edge" is tricky. */
-     
-  /* Maybe "left edge" means left edge of the timer pill group? */
+  background-color: transparent; /* Wrapper itself transparent */
+}
+
+/* Extend yellow background to the left using pseudo-element */
+.break-timer-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0; /* Anchor to right of wrapper */
+  height: 100%;
+  width: 340px; /* Arbitrary large width to cover the header area */
+  background-color: #f8ecc4;
+  z-index: -1; /* Behind the text content of this wrapper */
+  border-radius: var(--radius-28-fallback, 12px) var(--radius-28-fallback, 12px) 0 0;
+}
+
+@supports (corner-shape: superellipse(2)) {
+  .break-timer-wrapper::before {
+    border-radius: var(--radius-28-ideal, 12px) var(--radius-28-ideal, 12px) 0 0;
+    corner-shape: superellipse(var(--superK));
+  }
 }
 
 .work-timer-wrapper {
@@ -389,6 +355,7 @@ onUnmounted(() => {
   background: transparent; 
   backdrop-filter: none;
   transition: background-color 0.3s ease;
+  z-index: 2; /* Ensure work timer sits on top of any extending yellow bg */
 }
 
 .work-timer-wrapper.dimmed {
