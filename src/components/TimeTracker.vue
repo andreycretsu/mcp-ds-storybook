@@ -304,10 +304,7 @@ onUnmounted(() => {
   width: 100%;
   height: calc(100% - 20px);
   background: white;
-  /* Apply radius to top-left, bottom-left, bottom-right */
-  /* Top-right is NOT rounded to blend with status bar? No, looking at design, main card is fully rounded? */
-  /* The design shows the white card sitting INSIDE the colored container? */
-  /* No, it seems the white card IS the main shape at the bottom. */
+  /* Same radius logic as the main container */
   border-radius: var(--radius-28-fallback, 12px);
   padding: 12px;
   box-sizing: border-box;
