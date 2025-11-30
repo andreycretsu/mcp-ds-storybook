@@ -54,11 +54,16 @@ Our design system is built on a foundation of consistent design tokens that ensu
 
 ## Border Radius
 
-| Size | Value | Use Case |
-|------|-------|----------|
-| Small | 4px | Icons, small elements |
-| Medium | 6px | Buttons, form inputs |
-| Large | 10px | Modal cards, containers |
+Our design system uses a dual-value border radius system to support advanced corner smoothing (superellipse) on modern browsers while providing graceful fallbacks for others.
+
+### Button Radius Tokens
+
+| Size | Token Name | Ideal Radius (Corner Shape) | Fallback Radius |
+| :--- | :--- | :--- | :--- |
+| **24** | \`--radius-24\` | 14px | 8px |
+| **32** | \`--radius-32\` | 18px | 10px |
+| **36** | \`--radius-36\` | 22px | 12px |
+| **40** | \`--radius-40\` | 26px | 14px |
 
 ## CSS Variables
 
@@ -90,9 +95,21 @@ You can access these design tokens as CSS variables:
   --spacing-xxl: 24px;
   
   /* Border Radius */
-  --radius-small: 4px;
-  --radius-medium: 6px;
-  --radius-large: 10px;
+  /* Size 24 */
+  --radius-24-ideal: 14px;
+  --radius-24-fallback: 8px;
+  
+  /* Size 32 */
+  --radius-32-ideal: 18px;
+  --radius-32-fallback: 10px;
+  
+  /* Size 36 */
+  --radius-36-ideal: 22px;
+  --radius-36-fallback: 12px;
+  
+  /* Size 40 */
+  --radius-40-ideal: 26px;
+  --radius-40-fallback: 14px;
 }
 \`\`\`
         `
@@ -253,19 +270,70 @@ export const Spacing: Story = {
             <span><strong>xxl</strong> - 24px - Footer gaps, major spacing</span>
           </div>
         </div>
+      </div>
+    `
+  })
+};
+
+export const BorderRadius: Story = {
+  render: () => ({
+    template: `
+      <div style="padding: 20px; max-width: 800px;">
+        <h1>🔲 Border Radius</h1>
         
-        <h2>Border Radius</h2>
-        <div style="display: flex; gap: 16px; margin: 16px 0;">
-          <div style="background: #f6f9fb; border: 2px solid #e5ecf3; border-radius: 4px; padding: 16px; text-align: center;">
-            <strong>Small</strong><br>4px
-          </div>
-          <div style="background: #f6f9fb; border: 2px solid #e5ecf3; border-radius: 6px; padding: 16px; text-align: center;">
-            <strong>Medium</strong><br>6px
-          </div>
-          <div style="background: #f6f9fb; border: 2px solid #e5ecf3; border-radius: 10px; padding: 16px; text-align: center;">
-            <strong>Large</strong><br>10px
-          </div>
-        </div>
+        <p style="margin-bottom: 24px; color: #666;">
+          Visualizing the border radius system with both ideal (if supported) and fallback values.
+        </p>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 32px;">
+          <thead>
+            <tr style="background: #f6f9fb; text-align: left;">
+              <th style="padding: 12px; border: 1px solid #e5ecf3;">Size</th>
+              <th style="padding: 12px; border: 1px solid #e5ecf3;">Token</th>
+              <th style="padding: 12px; border: 1px solid #e5ecf3;">Ideal (Corner Shape)</th>
+              <th style="padding: 12px; border: 1px solid #e5ecf3;">Fallback</th>
+              <th style="padding: 12px; border: 1px solid #e5ecf3;">Visual</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><strong>24</strong></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-24</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">14px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">8px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="width: 40px; height: 24px; background: #338eea; border-radius: var(--radius-24-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-24-ideal); corner-shape: superellipse(2); }"></div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><strong>32</strong></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-32</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">18px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">10px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="width: 48px; height: 32px; background: #338eea; border-radius: var(--radius-32-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-32-ideal); corner-shape: superellipse(2); }"></div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><strong>36</strong></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-36</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">22px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">12px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="width: 54px; height: 36px; background: #338eea; border-radius: var(--radius-36-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-36-ideal); corner-shape: superellipse(2); }"></div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><strong>40</strong></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-40</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">26px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">14px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="width: 60px; height: 40px; background: #338eea; border-radius: var(--radius-40-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-40-ideal); corner-shape: superellipse(2); }"></div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     `
   })
