@@ -63,21 +63,27 @@ Our design system uses a dual-value border radius system to support advanced cor
 | \`--radius-02\` | 2px | 2px |
 | \`--radius-04\` | 4px | 2px |
 | \`--radius-06\` | 6px | 4px |
-| \`--radius-10\` | 10px | 6px |
+| \`--radius-08\` | 8px | 4px |
+| \`--radius-10\` | 10px | 4px |
 | \`--radius-12\` | 12px | 6px |
-| \`--radius-14\` | 14px | 8px |
-| \`--radius-16\` | 16px | 8px |
-| \`--radius-18\` | 18px | 10px |
-| \`--radius-20\` | 20px | 12px |
-| \`--radius-22\` | 22px | 12px |
-| \`--radius-24\` | 24px | 14px |
-| \`--radius-26\` | 26px | 14px |
-| \`--radius-30\` | 30px | 14px |
-| \`--radius-32\` | 32px | 15px |
-| \`--radius-36\` | 36px | 16px |
-| \`--radius-40\` | 40px | 17px |
-| \`--radius-44\` | 44px | 18px |
-| \`--radius-48\` | 48px | 19px |
+| \`--radius-14\` | 14px | 6px |
+| \`--radius-16\` | 16px | 6px |
+| \`--radius-18\` | 18px | 8px |
+| \`--radius-20\` | 20px | 8px |
+| \`--radius-22\` | 22px | 8px |
+| \`--radius-24\` | 24px | 10px |
+| \`--radius-26\` | 26px | 10px |
+| \`--radius-28\` | 28px | 12px |
+| \`--radius-30\` | 30px | 12px |
+| \`--radius-32\` | 32px | 12px |
+| \`--radius-34\` | 34px | 14px |
+| \`--radius-36\` | 36px | 14px |
+| \`--radius-38\` | 38px | 14px |
+| \`--radius-40\` | 40px | 16px |
+| \`--radius-42\` | 42px | 16px |
+| \`--radius-44\` | 44px | 16px |
+| \`--radius-46\` | 46px | 18px |
+| \`--radius-48\` | 48px | 18px |
 
 ## CSS Variables
 
@@ -291,7 +297,7 @@ export const BorderRadius: Story = {
             <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-04</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">4px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">3px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">2px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-04-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -311,9 +317,20 @@ export const BorderRadius: Story = {
               </td>
             </tr>
             <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-08</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">8px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">4px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="display: flex; gap: 16px; align-items: center;">
+                  <div title="Ideal" style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-08-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
+                  <div title="Fallback" style="width: 40px; height: 40px; background: #338eea; opacity: 0.6; border-radius: var(--radius-08-fallback);"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-10</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">10px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">6px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">4px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-10-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -324,7 +341,7 @@ export const BorderRadius: Story = {
             <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-12</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">12px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">7px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">6px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-12-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -335,7 +352,7 @@ export const BorderRadius: Story = {
             <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-14</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">14px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">8px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">6px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-14-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -346,7 +363,7 @@ export const BorderRadius: Story = {
             <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-16</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">16px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">9px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">6px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-16-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -357,7 +374,7 @@ export const BorderRadius: Story = {
             <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-18</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">18px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">10px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">8px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-18-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -368,7 +385,7 @@ export const BorderRadius: Story = {
             <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-20</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">20px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">11px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">8px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-20-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -379,7 +396,7 @@ export const BorderRadius: Story = {
             <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-22</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">22px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">12px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">8px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-22-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -390,7 +407,7 @@ export const BorderRadius: Story = {
             <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-24</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">24px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">13px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">10px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 60px; height: 60px; background: #338eea; border-radius: var(--radius-24-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -401,7 +418,7 @@ export const BorderRadius: Story = {
             <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-26</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">26px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">13px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">10px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 60px; height: 60px; background: #338eea; border-radius: var(--radius-26-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -410,9 +427,20 @@ export const BorderRadius: Story = {
               </td>
             </tr>
             <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-28</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">28px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">12px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="display: flex; gap: 16px; align-items: center;">
+                  <div title="Ideal" style="width: 60px; height: 60px; background: #338eea; border-radius: var(--radius-28-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
+                  <div title="Fallback" style="width: 60px; height: 60px; background: #338eea; opacity: 0.6; border-radius: var(--radius-28-fallback);"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-30</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">30px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">14px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">12px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 60px; height: 60px; background: #338eea; border-radius: var(--radius-30-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -423,7 +451,7 @@ export const BorderRadius: Story = {
             <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-32</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">32px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">15px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">12px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 60px; height: 60px; background: #338eea; border-radius: var(--radius-32-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -432,9 +460,20 @@ export const BorderRadius: Story = {
               </td>
             </tr>
             <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-34</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">34px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">14px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="display: flex; gap: 16px; align-items: center;">
+                  <div title="Ideal" style="width: 60px; height: 60px; background: #338eea; border-radius: var(--radius-34-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
+                  <div title="Fallback" style="width: 60px; height: 60px; background: #338eea; opacity: 0.6; border-radius: var(--radius-34-fallback);"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-36</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">36px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">16px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">14px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 60px; height: 60px; background: #338eea; border-radius: var(--radius-36-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -443,9 +482,20 @@ export const BorderRadius: Story = {
               </td>
             </tr>
             <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-38</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">38px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">14px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="display: flex; gap: 16px; align-items: center;">
+                  <div title="Ideal" style="width: 60px; height: 60px; background: #338eea; border-radius: var(--radius-38-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
+                  <div title="Fallback" style="width: 60px; height: 60px; background: #338eea; opacity: 0.6; border-radius: var(--radius-38-fallback);"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-40</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">40px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">17px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">16px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 60px; height: 60px; background: #338eea; border-radius: var(--radius-40-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -454,9 +504,20 @@ export const BorderRadius: Story = {
               </td>
             </tr>
             <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-42</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">42px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">16px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="display: flex; gap: 16px; align-items: center;">
+                  <div title="Ideal" style="width: 60px; height: 60px; background: #338eea; border-radius: var(--radius-42-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
+                  <div title="Fallback" style="width: 60px; height: 60px; background: #338eea; opacity: 0.6; border-radius: var(--radius-42-fallback);"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-44</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">44px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">18px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">16px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 60px; height: 60px; background: #338eea; border-radius: var(--radius-44-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -465,9 +526,20 @@ export const BorderRadius: Story = {
               </td>
             </tr>
             <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-46</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">46px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">18px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="display: flex; gap: 16px; align-items: center;">
+                  <div title="Ideal" style="width: 60px; height: 60px; background: #338eea; border-radius: var(--radius-46-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
+                  <div title="Fallback" style="width: 60px; height: 60px; background: #338eea; opacity: 0.6; border-radius: var(--radius-46-fallback);"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
               <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-48</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">48px</td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;">19px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">18px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
                 <div style="display: flex; gap: 16px; align-items: center;">
                   <div title="Ideal" style="width: 60px; height: 60px; background: #338eea; border-radius: var(--radius-48-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
@@ -475,9 +547,3 @@ export const BorderRadius: Story = {
                 </div>
               </td>
             </tr>
-          </tbody>
-        </table>
-      </div>
-    `
-  })
-};
