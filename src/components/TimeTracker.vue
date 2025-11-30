@@ -596,12 +596,15 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   height: 100%;
+  gap: 8px; /* Ensure 8px gap before buttons */
 }
 
 .project-info {
   display: flex;
   align-items: center;
   gap: 9px;
+  flex: 1; /* Take available space */
+  min-width: 0; /* Allow shrinking */
 }
 
 .project-icon {
@@ -628,12 +631,13 @@ onUnmounted(() => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100px;
+  min-width: 0;
 }
 
 .actions {
   display: flex;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .actions-group {
