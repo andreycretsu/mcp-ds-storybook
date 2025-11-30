@@ -1,5 +1,9 @@
 <template>
-  <div 
+  <component 
+    :is="tag"
+    :href="url"
+    :target="url ? method : undefined"
+    :type="!url ? 'button' : undefined"
     :class="[
       'button',
       `button--type-${type}`,
@@ -14,6 +18,7 @@
     ]"
     :data-name="`type=${type}, tone=${tone}, state=${state}, size=${size}`"
     :style="buttonStyle"
+    @click="handleClick"
   >
     <!-- Focus effect overlay -->
     <div v-if="state === 'focus'" class="button__focus-effect"></div>
@@ -89,7 +94,7 @@
       :modeIcon3="kbdModeIcon3"
       class="button__kbd"
     />
-  </div>
+  </component>
 </template>
 
 <script setup lang="ts">
@@ -99,6 +104,8 @@ import Kbd from './Kbd.vue'
 import Spinner from './Spinner.vue'
 
 interface ButtonProps {
+  url?: string
+  method?: string
   lIcon?: boolean
   rIcon?: boolean
   lIconName?: string
@@ -122,6 +129,8 @@ interface ButtonProps {
 }
 
 const props = withDefaults(defineProps<ButtonProps>(), {
+  url: undefined,
+  method: undefined, // Used as 'target' for links (e.g., _blank)
   lIcon: false,
   rIcon: false,
   lIconName: 'circle-dashed',
@@ -142,6 +151,19 @@ const props = withDefaults(defineProps<ButtonProps>(), {
   state: 'default',
   size: '32'
 })
+
+const emit = defineEmits(['click'])
+
+// Determine if we render a <button> or an <a> tag
+const tag = computed(() => props.url ? 'a' : 'button')
+
+const handleClick = (event: MouseEvent) => {
+  if (props.state === 'disable' || props.state === 'loading') {
+    event.preventDefault()
+    return
+  }
+  emit('click', event)
+}
 
 // Size configuration
 const sizeConfig = computed(() => {
@@ -356,6 +378,10 @@ const buttonStyle = computed(() => {
   line-height: 0;
   white-space: nowrap;
   box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.14);
+  text-decoration: none; /* Reset for <a> tags */
+  -webkit-appearance: none; /* Reset for <button> tags */
+  appearance: none;
+  background: transparent; /* Reset default button bg */
   
   /* Use fallback border radius by default */
   border-radius: var(--btn-border-radius-fallback);
