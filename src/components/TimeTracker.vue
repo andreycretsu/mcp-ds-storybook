@@ -214,7 +214,7 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   height: 100%;
-  z-index: 3; /* Above main card (z-index 2) */
+  z-index: 1; /* Below main card (z-index 2) */
   
   display: flex;
   align-items: flex-start; /* Text at top */
