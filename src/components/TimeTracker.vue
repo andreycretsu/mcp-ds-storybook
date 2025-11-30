@@ -293,7 +293,7 @@ onUnmounted(() => {
   justify-content: flex-end;
   align-items: flex-start;
   /* padding-top: 4px; */ /* Remove top padding as requested "remove top margins from timers" */
-  padding-right: 12px; /* Right padding from design */
+  /* padding-right: 12px; */ /* Remove right padding as requested "remove right green padding from this div" */
 }
 
 .timer-pill-container {
@@ -339,7 +339,7 @@ onUnmounted(() => {
   top: 0;
   right: 0; /* Anchor to right of wrapper */
   height: 100%;
-  width: 200%; /* Increase width significantly to ensure full coverage across the header */
+  width: 360px; /* Fixed width larger than widget (340px) to ensure it reaches left edge */
   background-color: #f8ecc4;
   z-index: -1; /* Behind the text content of this wrapper */
   border-radius: var(--radius-20-fallback, 12px) var(--radius-20-fallback, 12px) 0 0;
