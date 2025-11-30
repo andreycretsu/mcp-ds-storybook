@@ -8,7 +8,7 @@
       :style="{ opacity: status === 'break' ? 1 : 0 }"
     ></div>
 
-    <!-- Status Pill (Moved out of header to be full height) -->
+    <!-- Status Pill (Left) -->
     <div class="status-pill">
       <div class="status-content">
         <div class="status-icon-wrapper">
@@ -22,28 +22,28 @@
       </div>
     </div>
 
-    <!-- 1. Header Container (Timers) -->
-    <div class="tracker-header">
-      <!-- Spacer for layout balance if needed, or just flex-end -->
-      
-      <!-- Right: Timers -->
-      <div class="timers">
-        <transition name="fade">
-          <span 
-            v-if="status === 'break'" 
-            class="timer break-timer"
-          >
-            {{ formatTime(breakTime) }}
-          </span>
-        </transition>
-
+    <!-- Timer Pill (Right) -->
+    <div class="timer-pill">
+      <transition name="fade">
         <span 
-          class="timer work-timer"
-          :class="{ 'dimmed': status === 'break' }"
+          v-if="status === 'break'" 
+          class="timer break-timer"
         >
-          {{ formatTime(workTime) }}
+          {{ formatTime(breakTime) }}
         </span>
-      </div>
+      </transition>
+
+      <span 
+        class="timer work-timer"
+        :class="{ 'dimmed': status === 'break' }"
+      >
+        {{ formatTime(workTime) }}
+      </span>
+    </div>
+
+    <!-- Header Container (Spacer) -->
+    <div class="tracker-header">
+      <!-- Spacer for layout balance -->
     </div>
 
     <!-- 2. White Card Container (Project Info + Actions) -->
@@ -204,13 +204,10 @@ onUnmounted(() => {
   z-index: 1;
   height: 20px; /* Fixed height for header area */
   width: 100%;
-  display: flex;
-  justify-content: flex-end; /* Right aligned */
-  align-items: flex-start;
-  /* No padding needed if children handle spacing, but timers need right padding */
+  /* No content needed, just spacing */
 }
 
-/* Status Pill - Now absolute and full height */
+/* Status Pill - Left */
 .status-pill {
   position: absolute;
   top: 0;
@@ -260,12 +257,35 @@ onUnmounted(() => {
   line-height: 1;
 }
 
-.timers {
+/* Timer Pill - Right (New) */
+.timer-pill {
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  z-index: 1; /* Below main card (z-index 2) */
+  
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  padding-top: 4px;
+  
   gap: 12px;
-  height: 20px; /* Match header height */
-  padding-right: 12px; /* Right padding for timers */
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(3px);
+  padding-left: 12px;
+  padding-right: 12px;
+  
+  /* Top-left and Top-right corners only */
+  border-radius: var(--radius-28-fallback, 12px) var(--radius-28-fallback, 12px) 0 0;
+  
+  box-sizing: border-box;
+}
+
+@supports (corner-shape: superellipse(2)) {
+  .timer-pill {
+    border-radius: var(--radius-28-ideal, 12px) var(--radius-28-ideal, 12px) 0 0;
+    corner-shape: superellipse(var(--superK));
+  }
 }
 
 .timer {
