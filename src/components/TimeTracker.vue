@@ -326,11 +326,11 @@ onUnmounted(() => {
 
 .drawer-trigger {
   position: absolute;
-  top: -16px; /* Position just above */
+  top: -12px; /* 8px height + 4px gap */
   left: 50%;
   transform: translateX(-50%);
-  width: 32px; /* Smaller width */
-  height: 12px; /* Smaller height */
+  width: 26px; /* Smaller width */
+  height: 8px; /* Smaller height */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -340,18 +340,10 @@ onUnmounted(() => {
   cursor: pointer;
   z-index: 5;
   box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
-  margin-bottom: 4px; /* Add gap from widget */
 }
 
 /* Adjust positioning to be "above the widget 4px padding" */
-.drawer-trigger {
-  top: -16px; /* Position just above */
-  border-radius: 12px; /* Capsule shape */
-  height: 12px;
-  width: 32px;
-  padding: 4px;
-  margin-bottom: 4px;
-}
+/* .drawer-trigger rule is defined above */
 
 .time-tracker {
   width: 340px;
