@@ -28,7 +28,7 @@ export const Default: Story = {
   render: () => ({
     components: { TimeTracker },
     template: `
-      <div style="display: flex; justify-content: center; align-items: center; background: #f6f9fb; width: 100vw; height: 100vh; overflow: hidden;">
+      <div style="display: flex; justify-content: center; align-items: center; background: #f6f9fb; width: 1600px; height: 800px; overflow: hidden;">
         <div style="transform: scale(1.5); transform-origin: center;">
           <TimeTracker />
         </div>
