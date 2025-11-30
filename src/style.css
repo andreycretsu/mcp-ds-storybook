@@ -15,22 +15,76 @@
   /* Superellipse corner shape variable */
   --superK: 2;
 
-  /* Border Radius Tokens */
-  /* Size 24 */
-  --radius-24-ideal: 14px;
-  --radius-24-fallback: 8px;
+  /* =========================================
+     Border Radius System
+     Logic: Ideal = max(Fallback, 2 * Fallback - 2)
+     Naming: --radius-{fallback_value}
+     ========================================= */
   
-  /* Size 32 */
-  --radius-32-ideal: 18px;
-  --radius-32-fallback: 10px;
+  /* XS */
+  --radius-02-ideal: 2px;
+  --radius-02-fallback: 2px;
+
+  /* SM */
+  --radius-04-ideal: 6px;
+  --radius-04-fallback: 4px;
+
+  /* MD */
+  --radius-06-ideal: 10px;
+  --radius-06-fallback: 6px;
+
+  /* LG (Matches Button Size 24) */
+  --radius-08-ideal: 14px;
+  --radius-08-fallback: 8px;
+
+  /* XL (Matches Button Size 32) */
+  --radius-10-ideal: 18px;
+  --radius-10-fallback: 10px;
+
+  /* 2XL (Matches Button Size 36) */
+  --radius-12-ideal: 22px;
+  --radius-12-fallback: 12px;
+
+  /* 3XL (Matches Button Size 40) */
+  --radius-14-ideal: 26px;
+  --radius-14-fallback: 14px;
+
+  /* 4XL */
+  --radius-16-ideal: 30px;
+  --radius-16-fallback: 16px;
+
+  /* 5XL */
+  --radius-18-ideal: 34px;
+  --radius-18-fallback: 18px;
+
+  /* 6XL */
+  --radius-20-ideal: 38px;
+  --radius-20-fallback: 20px;
+
+  /* 7XL */
+  --radius-24-system-ideal: 46px;
+  --radius-24-system-fallback: 24px;
+
+
+  /* =========================================
+     Component Aliases
+     ========================================= */
+
+  /* Button Size 24 */
+  --radius-24-ideal: var(--radius-08-ideal);
+  --radius-24-fallback: var(--radius-08-fallback);
   
-  /* Size 36 */
-  --radius-36-ideal: 22px;
-  --radius-36-fallback: 12px;
+  /* Button Size 32 */
+  --radius-32-ideal: var(--radius-10-ideal);
+  --radius-32-fallback: var(--radius-10-fallback);
   
-  /* Size 40 */
-  --radius-40-ideal: 26px;
-  --radius-40-fallback: 14px;
+  /* Button Size 36 */
+  --radius-36-ideal: var(--radius-12-ideal);
+  --radius-36-fallback: var(--radius-12-fallback);
+  
+  /* Button Size 40 */
+  --radius-40-ideal: var(--radius-14-ideal);
+  --radius-40-fallback: var(--radius-14-fallback);
 }
 
 a {

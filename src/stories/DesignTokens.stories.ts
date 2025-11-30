@@ -54,16 +54,23 @@ Our design system is built on a foundation of consistent design tokens that ensu
 
 ## Border Radius
 
-Our design system uses a dual-value border radius system to support advanced corner smoothing (superellipse) on modern browsers while providing graceful fallbacks for others.
+Our design system uses a dual-value border radius system to support advanced corner smoothing (superellipse) on modern browsers while providing graceful fallbacks for others. The system is based on a consistent logic where the ideal radius is derived from the fallback radius (approx. \`2 * Fallback - 2\`).
 
-### Button Radius Tokens
+### Radius Tokens
 
-| Size | Token Name | Ideal Radius (Corner Shape) | Fallback Radius |
+| Token Name | Ideal Radius (Corner Shape) | Fallback Radius | Use Case |
 | :--- | :--- | :--- | :--- |
-| **24** | \`--radius-24\` | 14px | 8px |
-| **32** | \`--radius-32\` | 18px | 10px |
-| **36** | \`--radius-36\` | 22px | 12px |
-| **40** | \`--radius-40\` | 26px | 14px |
+| \`--radius-02\` | 2px | 2px | Minimal rounding, inner elements |
+| \`--radius-04\` | 6px | 4px | Small items, tags |
+| \`--radius-06\` | 10px | 6px | Cards, inputs |
+| \`--radius-08\` | 14px | 8px | Buttons (Size 24), dialogs |
+| \`--radius-10\` | 18px | 10px | Buttons (Size 32), large cards |
+| \`--radius-12\` | 22px | 12px | Buttons (Size 36), modals |
+| \`--radius-14\` | 26px | 14px | Buttons (Size 40), heavy rounding |
+| \`--radius-16\` | 30px | 16px | Extra large containers |
+| \`--radius-18\` | 34px | 18px | Display elements |
+| \`--radius-20\` | 38px | 20px | Huge corners |
+| \`--radius-24\` | 46px | 24px | Maximum rounding |
 
 ## CSS Variables
 
@@ -73,43 +80,20 @@ You can access these design tokens as CSS variables:
 :root {
   /* Colors */
   --color-primary: #338eea;
-  --color-success: #25bd5d;
-  --color-warning: #e3b212;
-  --color-error: #e42e2e;
-  --color-info: #0072e5;
+  /* ... other colors ... */
   
-  /* Text Colors */
-  --color-text-dark: #000f30;
-  --color-text-medium: #476887;
-  
-  /* Background Colors */
-  --color-bg-light: #f6f9fb;
-  --color-border-light: #e5ecf3;
-  
-  /* Spacing */
-  --spacing-xs: 4px;
-  --spacing-sm: 8px;
-  --spacing-md: 12px;
-  --spacing-lg: 16px;
-  --spacing-xl: 20px;
-  --spacing-xxl: 24px;
-  
-  /* Border Radius */
-  /* Size 24 */
-  --radius-24-ideal: 14px;
-  --radius-24-fallback: 8px;
-  
-  /* Size 32 */
-  --radius-32-ideal: 18px;
-  --radius-32-fallback: 10px;
-  
-  /* Size 36 */
-  --radius-36-ideal: 22px;
-  --radius-36-fallback: 12px;
-  
-  /* Size 40 */
-  --radius-40-ideal: 26px;
-  --radius-40-fallback: 14px;
+  /* Border Radius System */
+  --radius-02-ideal: 2px;   --radius-02-fallback: 2px;
+  --radius-04-ideal: 6px;   --radius-04-fallback: 4px;
+  --radius-06-ideal: 10px;  --radius-06-fallback: 6px;
+  --radius-08-ideal: 14px;  --radius-08-fallback: 8px;
+  --radius-10-ideal: 18px;  --radius-10-fallback: 10px;
+  --radius-12-ideal: 22px;  --radius-12-fallback: 12px;
+  --radius-14-ideal: 26px;  --radius-14-fallback: 14px;
+  --radius-16-ideal: 30px;  --radius-16-fallback: 16px;
+  --radius-18-ideal: 34px;  --radius-18-fallback: 18px;
+  --radius-20-ideal: 38px;  --radius-20-fallback: 20px;
+  --radius-24-system-ideal: 46px; --radius-24-system-fallback: 24px;
 }
 \`\`\`
         `
@@ -288,48 +272,99 @@ export const BorderRadius: Story = {
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 32px;">
           <thead>
             <tr style="background: #f6f9fb; text-align: left;">
-              <th style="padding: 12px; border: 1px solid #e5ecf3;">Size</th>
               <th style="padding: 12px; border: 1px solid #e5ecf3;">Token</th>
-              <th style="padding: 12px; border: 1px solid #e5ecf3;">Ideal (Corner Shape)</th>
+              <th style="padding: 12px; border: 1px solid #e5ecf3;">Ideal</th>
               <th style="padding: 12px; border: 1px solid #e5ecf3;">Fallback</th>
               <th style="padding: 12px; border: 1px solid #e5ecf3;">Visual</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;"><strong>24</strong></td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-24</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-02</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">2px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">2px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-02-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-02-ideal); corner-shape: superellipse(2); }"></div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-04</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">6px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">4px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-04-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-04-ideal); corner-shape: superellipse(2); }"></div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-06</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">10px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">6px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-06-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-06-ideal); corner-shape: superellipse(2); }"></div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-08</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">14px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">8px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
-                <div style="width: 40px; height: 24px; background: #338eea; border-radius: var(--radius-24-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-24-ideal); corner-shape: superellipse(2); }"></div>
+                <div style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-08-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-08-ideal); corner-shape: superellipse(2); }"></div>
               </td>
             </tr>
             <tr>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;"><strong>32</strong></td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-32</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-10</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">18px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">10px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
-                <div style="width: 48px; height: 32px; background: #338eea; border-radius: var(--radius-32-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-32-ideal); corner-shape: superellipse(2); }"></div>
+                <div style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-10-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-10-ideal); corner-shape: superellipse(2); }"></div>
               </td>
             </tr>
             <tr>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;"><strong>36</strong></td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-36</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-12</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">22px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">12px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
-                <div style="width: 54px; height: 36px; background: #338eea; border-radius: var(--radius-36-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-36-ideal); corner-shape: superellipse(2); }"></div>
+                <div style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-12-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-12-ideal); corner-shape: superellipse(2); }"></div>
               </td>
             </tr>
             <tr>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;"><strong>40</strong></td>
-              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-40</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-14</code></td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">26px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">14px</td>
               <td style="padding: 12px; border: 1px solid #e5ecf3;">
-                <div style="width: 60px; height: 40px; background: #338eea; border-radius: var(--radius-40-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-40-ideal); corner-shape: superellipse(2); }"></div>
+                <div style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-14-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-14-ideal); corner-shape: superellipse(2); }"></div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-16</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">30px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">16px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-16-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-16-ideal); corner-shape: superellipse(2); }"></div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-18</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">34px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">18px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-18-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-18-ideal); corner-shape: superellipse(2); }"></div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-20</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">38px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">20px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-20-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-20-ideal); corner-shape: superellipse(2); }"></div>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;"><code>--radius-24</code></td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">46px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">24px</td>
+              <td style="padding: 12px; border: 1px solid #e5ecf3;">
+                <div style="width: 60px; height: 60px; background: #338eea; border-radius: var(--radius-24-system-fallback); @supports (corner-shape: superellipse(2)) { border-radius: var(--radius-24-system-ideal); corner-shape: superellipse(2); }"></div>
               </td>
             </tr>
           </tbody>
