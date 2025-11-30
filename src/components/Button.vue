@@ -264,10 +264,10 @@ const backgroundColor = computed(() => {
 })
 
 function getBackgroundColor(tone: string, state: string): string {
-  // Map loading and success states to default state for background lookup
+  // Map loading, success, and focus states to default state for background lookup
   // This ensures loading state keeps the button's original background style
   // unless explicitly handled above (like success state logic)
-  const effectiveState = (state === 'loading' || state === 'success') ? 'default' : state
+  const effectiveState = (state === 'loading' || state === 'success' || state === 'focus') ? 'default' : state
 
   const colors: Record<string, Record<string, string>> = {
     primary: {
