@@ -331,8 +331,8 @@ export const BorderRadius: Story = {
                 <td style="padding: 12px; border: 1px solid #e5ecf3;">${t.fallback}px</td>
                 <td style="padding: 12px; border: 1px solid #e5ecf3;">
                   <div style="display: flex; gap: 16px; align-items: center;">
-                    <div title="Ideal" style="width: 40px; height: 40px; background: #338eea; border-radius: var(--radius-${t.name}-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
-                    <div title="Fallback" style="width: 40px; height: 40px; background: #338eea; opacity: 0.6; border-radius: var(--radius-${t.name}-fallback);"></div>
+                    <div title="Ideal" style="width: 100px; height: 100px; background: #338eea; border-radius: var(--radius-${t.name}-ideal); corner-shape: superellipse(var(--superK)); -webkit-corner-shape: superellipse(var(--superK));"></div>
+                    <div title="Fallback" style="width: 100px; height: 100px; background: #338eea; opacity: 0.6; border-radius: var(--radius-${t.name}-fallback);"></div>
                   </div>
                 </td>
               </tr>
