@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 import BorderRadiusChart from '../components/BorderRadiusChart.vue';
+import BorderRadiusPlayground from '../components/BorderRadiusPlayground.vue';
 
 const meta: Meta = {
   title: 'Design System/Design Tokens',
@@ -294,7 +295,7 @@ export const BorderRadius: Story = {
     ];
 
     return {
-      components: { BorderRadiusChart },
+      components: { BorderRadiusChart, BorderRadiusPlayground },
       template: `
       <div style="padding: 20px; max-width: 1200px;">
         <h1>🔲 Border Radius</h1>
@@ -303,6 +304,12 @@ export const BorderRadius: Story = {
           Visualizing the border radius system with both ideal (if supported) and fallback values.
         </p>
         
+        <!-- Interactive Playground -->
+        <div style="margin-bottom: 48px;">
+          <h2 style="font-size: 20px; margin-bottom: 16px;">Interactive Playground</h2>
+          <BorderRadiusPlayground />
+        </div>
+
         <!-- Chart.js Component -->
         <div style="margin-bottom: 48px; padding: 20px; background: #fcfcfc; border: 1px solid #eee; border-radius: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
