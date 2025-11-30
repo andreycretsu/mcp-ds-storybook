@@ -382,6 +382,7 @@ const buttonStyle = computed(() => {
   -webkit-appearance: none; /* Reset for <button> tags */
   appearance: none;
   background: transparent; /* Reset default button bg */
+  outline: none;
   
   /* Use fallback border radius by default */
   border-radius: var(--btn-border-radius-fallback);
@@ -509,11 +510,17 @@ const buttonStyle = computed(() => {
   position: absolute;
   inset: 0;
   background: rgba(255, 255, 255, 0);
-  border-radius: 4px;
+  border-radius: inherit;
   box-shadow: 
     0px 0px 0px 1px rgba(114, 1, 229, 0.1),
     0px 0px 0px 1px #ffffff,
     0px 0px 0px 2px #7201e5;
   pointer-events: none;
+}
+
+@supports (corner-shape: superellipse(2)) {
+  .button__focus-effect {
+    corner-shape: superellipse(var(--superK));
+  }
 }
 </style>
