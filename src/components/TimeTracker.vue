@@ -190,13 +190,13 @@ onUnmounted(() => {
   top: 0;
   left: 0;
   width: 100%;
-  height: 20px; /* Top section height */
-  padding: 4px 12px;
+  height: 100%; /* Fill full height so backgrounds are visible */
+  padding: 4px 12px 0 0; /* Top padding for alignment, no left padding for full width background strip */
   box-sizing: border-box;
   z-index: 1;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start; /* Align items to top */
 }
 
 .status-content {
@@ -208,9 +208,9 @@ onUnmounted(() => {
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(3px);
   padding: 4px 12px; 
-  border-radius: 12px;
+  border-radius: 0 0 12px 0; /* Rounded only bottom-right corner */
   width: fit-content;
-  height: 20px; /* Ensure height matches content */
+  height: 20px; 
   box-sizing: border-box;
 }
 
@@ -232,6 +232,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 12px; /* Spacing between timers */
+  margin-top: 4px; /* Align vertically with status pill */
 }
 
 .timer {
