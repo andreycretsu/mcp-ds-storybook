@@ -157,8 +157,8 @@ const sizeConfig = computed(() => {
       gap: '2px', 
       spinnerSize: '12px',
       labelPadding: '0px 2px',
-      borderRadius: 'var(--radius-24-ideal)',
-      fallbackBorderRadius: 'var(--radius-24-fallback)'
+      borderRadius: 'var(--radius-14-ideal)',
+      fallbackBorderRadius: 'var(--radius-14-fallback)'
     },
     '32': { 
       height: '32px', 
@@ -171,8 +171,8 @@ const sizeConfig = computed(() => {
       gap: '2px', 
       spinnerSize: '16px', // 16px to match icon
       labelPadding: '2px 4px',
-      borderRadius: 'var(--radius-32-ideal)',
-      fallbackBorderRadius: 'var(--radius-32-fallback)'
+      borderRadius: 'var(--radius-18-ideal)',
+      fallbackBorderRadius: 'var(--radius-18-fallback)'
     },
     '36': { 
       height: '36px', 
@@ -185,8 +185,8 @@ const sizeConfig = computed(() => {
       gap: '2px', 
       spinnerSize: '20px',
       labelPadding: '1px 4px',
-      borderRadius: 'var(--radius-36-ideal)',
-      fallbackBorderRadius: 'var(--radius-36-fallback)'
+      borderRadius: 'var(--radius-22-ideal)',
+      fallbackBorderRadius: 'var(--radius-22-fallback)'
     },
     '40': { 
       height: '40px', 
@@ -199,8 +199,8 @@ const sizeConfig = computed(() => {
       gap: '4px', 
       spinnerSize: '20px',
       labelPadding: '2px 4px',
-      borderRadius: 'var(--radius-40-ideal)',
-      fallbackBorderRadius: 'var(--radius-40-fallback)'
+      borderRadius: 'var(--radius-26-ideal)',
+      fallbackBorderRadius: 'var(--radius-26-fallback)'
     }
   }
   

@@ -17,74 +17,79 @@
 
   /* =========================================
      Border Radius System
-     Logic: Ideal = max(Fallback, 2 * Fallback - 2)
-     Naming: --radius-{fallback_value}
      ========================================= */
   
-  /* XS */
+  /* Radius 02 */
   --radius-02-ideal: 2px;
   --radius-02-fallback: 2px;
 
-  /* SM */
-  --radius-04-ideal: 6px;
-  --radius-04-fallback: 4px;
+  /* Radius 04 */
+  --radius-04-ideal: 4px;
+  --radius-04-fallback: 2px;
 
-  /* MD */
-  --radius-06-ideal: 10px;
-  --radius-06-fallback: 6px;
+  /* Radius 06 */
+  --radius-06-ideal: 6px;
+  --radius-06-fallback: 4px;
 
-  /* LG (Matches Button Size 24) */
-  --radius-08-ideal: 14px;
-  --radius-08-fallback: 8px;
+  /* Radius 10 */
+  --radius-10-ideal: 10px;
+  --radius-10-fallback: 6px;
 
-  /* XL (Matches Button Size 32) */
-  --radius-10-ideal: 18px;
-  --radius-10-fallback: 10px;
+  /* Radius 12 */
+  --radius-12-ideal: 12px;
+  --radius-12-fallback: 6px;
 
-  /* 2XL (Matches Button Size 36) */
-  --radius-12-ideal: 22px;
-  --radius-12-fallback: 12px;
+  /* Radius 14 */
+  --radius-14-ideal: 14px;
+  --radius-14-fallback: 8px;
 
-  /* 3XL (Matches Button Size 40) */
-  --radius-14-ideal: 26px;
-  --radius-14-fallback: 14px;
+  /* Radius 16 */
+  --radius-16-ideal: 16px;
+  --radius-16-fallback: 8px;
 
-  /* 4XL */
-  --radius-16-ideal: 30px;
-  --radius-16-fallback: 16px;
+  /* Radius 18 */
+  --radius-18-ideal: 18px;
+  --radius-18-fallback: 10px;
 
-  /* 5XL */
-  --radius-18-ideal: 34px;
-  --radius-18-fallback: 18px;
+  /* Radius 20 */
+  --radius-20-ideal: 20px;
+  --radius-20-fallback: 12px;
 
-  /* 6XL */
-  --radius-20-ideal: 38px;
-  --radius-20-fallback: 20px;
+  /* Radius 22 */
+  --radius-22-ideal: 22px;
+  --radius-22-fallback: 12px;
 
-  /* 7XL */
-  --radius-24-system-ideal: 46px;
-  --radius-24-system-fallback: 24px;
+  /* Radius 24 */
+  --radius-24-ideal: 24px;
+  --radius-24-fallback: 14px;
 
+  /* Radius 26 */
+  --radius-26-ideal: 26px;
+  --radius-26-fallback: 14px;
 
-  /* =========================================
-     Component Aliases
-     ========================================= */
+  /* Radius 30 */
+  --radius-30-ideal: 30px;
+  --radius-30-fallback: 16px;
 
-  /* Button Size 24 */
-  --radius-24-ideal: var(--radius-08-ideal);
-  --radius-24-fallback: var(--radius-08-fallback);
-  
-  /* Button Size 32 */
-  --radius-32-ideal: var(--radius-10-ideal);
-  --radius-32-fallback: var(--radius-10-fallback);
-  
-  /* Button Size 36 */
-  --radius-36-ideal: var(--radius-12-ideal);
-  --radius-36-fallback: var(--radius-12-fallback);
-  
-  /* Button Size 40 */
-  --radius-40-ideal: var(--radius-14-ideal);
-  --radius-40-fallback: var(--radius-14-fallback);
+  /* Radius 32 */
+  --radius-32-ideal: 32px;
+  --radius-32-fallback: 18px;
+
+  /* Radius 36 */
+  --radius-36-ideal: 36px;
+  --radius-36-fallback: 20px;
+
+  /* Radius 40 */
+  --radius-40-ideal: 40px;
+  --radius-40-fallback: 22px;
+
+  /* Radius 44 */
+  --radius-44-ideal: 44px;
+  --radius-44-fallback: 24px;
+
+  /* Radius 48 */
+  --radius-48-ideal: 48px;
+  --radius-48-fallback: 26px;
 }
 
 a {
