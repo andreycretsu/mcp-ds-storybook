@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
+import BorderRadiusChart from '../components/BorderRadiusChart.vue';
 
 const meta: Meta = {
   title: 'Design System/Design Tokens',
@@ -292,39 +293,8 @@ export const BorderRadius: Story = {
       { name: '48', ideal: 48, fallback: 18 }
     ];
 
-    const width = 800;
-    const height = 300;
-    const padding = { top: 40, right: 40, bottom: 40, left: 40 };
-    const chartWidth = width - padding.left - padding.right;
-    const chartHeight = height - padding.top - padding.bottom;
-    
-    const maxY = 60; // Set max Y value slightly above max ideal (48)
-
-    const getX = (index: number) => padding.left + (index / (tokens.length - 1)) * chartWidth;
-    const getY = (value: number) => height - padding.bottom - (value / maxY) * chartHeight;
-
-    const idealPoints = tokens.map((t, i) => \`\${getX(i)},\${getY(t.ideal)}\`).join(' ');
-    const fallbackPoints = tokens.map((t, i) => \`\${getX(i)},\${getY(t.fallback)}\`).join(' ');
-
-    // Grid lines
-    const gridLines = [];
-    for (let i = 0; i <= maxY; i += 10) {
-      const y = getY(i);
-      gridLines.push(\`<line x1="\${padding.left}" y1="\${y}" x2="\${width - padding.right}" y2="\${y}" stroke="#eee" stroke-dasharray="4 4" />\`);
-      gridLines.push(\`<text x="\${padding.left - 10}" y="\${y + 4}" text-anchor="end" font-size="10" fill="#999">\${i}</text>\`);
-    }
-
-    // X-axis labels
-    const xLabels = tokens.map((t, i) => {
-      const x = getX(i);
-      return \`<text x="\${x}" y="\${height - padding.bottom + 20}" text-anchor="middle" font-size="10" fill="#999">\${t.name}</text>\`;
-    }).join('');
-
-    // Dots
-    const idealDots = tokens.map((t, i) => \`<circle cx="\${getX(i)}" cy="\${getY(t.ideal)}" r="4" fill="#3f8643" stroke="white" stroke-width="2"><title>Ideal: \${t.ideal}px</title></circle>\`).join('');
-    const fallbackDots = tokens.map((t, i) => \`<circle cx="\${getX(i)}" cy="\${getY(t.fallback)}" r="4" fill="#e43838" stroke="white" stroke-width="2"><title>Fallback: \${t.fallback}px</title></circle>\`).join('');
-
     return {
+      components: { BorderRadiusChart },
       template: `
       <div style="padding: 20px; max-width: 800px;">
         <h1>🔲 Border Radius</h1>
@@ -333,36 +303,15 @@ export const BorderRadius: Story = {
           Visualizing the border radius system with both ideal (if supported) and fallback values.
         </p>
         
-        <!-- SVG Line Chart -->
+        <!-- Chart.js Component -->
         <div style="margin-bottom: 48px; padding: 20px; background: #fcfcfc; border: 1px solid #eee; border-radius: 8px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
             <h3 style="margin: 0; font-size: 14px; color: #444;">Ideal Superellipse vs Smooth Fallback Curve</h3>
-            <div style="display: flex; gap: 16px; font-size: 12px;">
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <div style="width: 12px; height: 12px; background: #3f8643; border-radius: 2px;"></div>
-                <span>Ideal (superellipse)</span>
-              </div>
-              <div style="display: flex; align-items: center; gap: 6px;">
-                <div style="width: 12px; height: 12px; background: #e43838; border-radius: 2px;"></div>
-                <span>Fallback (smooth curve)</span>
-              </div>
-            </div>
           </div>
           
-          <svg viewBox="0 0 ${width} ${height}" style="width: 100%; height: auto;">
-            ${gridLines.join('')}
-            ${xLabels}
-            
-            <!-- Ideal Line -->
-            <polyline points="${idealPoints}" fill="none" stroke="#3f8643" stroke-width="3" />
-            
-            <!-- Fallback Line -->
-            <polyline points="${fallbackPoints}" fill="none" stroke="#e43838" stroke-width="3" />
-            
-            <!-- Dots -->
-            ${idealDots}
-            ${fallbackDots}
-          </svg>
+          <div style="height: 300px;">
+            <BorderRadiusChart />
+          </div>
         </div>
         
         <table style="width: 100%; border-collapse: collapse; margin-bottom: 32px;">
