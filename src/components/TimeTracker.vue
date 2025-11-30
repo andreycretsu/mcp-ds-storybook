@@ -8,22 +8,22 @@
       :style="{ opacity: status === 'break' ? 1 : 0 }"
     ></div>
 
-    <!-- 1. Header Container (Status + Timers) -->
-    <div class="tracker-header">
-      <!-- Left: Status Pill -->
-      <div class="status-pill-wrapper">
-        <div class="status-pill">
-          <div class="status-icon-wrapper">
-            <Icon 
-              :icon="status === 'work' ? 'briefcase' : 'mug-hot'" 
-              size="S-12"
-              color="#000f30"
-            />
-          </div>
-          <span class="status-text">{{ status === 'work' ? 'At work' : 'On break' }}</span>
-        </div>
+    <!-- Status Pill (Moved out of header to be full height) -->
+    <div class="status-pill">
+      <div class="status-icon-wrapper">
+        <Icon 
+          :icon="status === 'work' ? 'briefcase' : 'mug-hot'" 
+          size="S-12"
+          color="#000f30"
+        />
       </div>
+      <span class="status-text">{{ status === 'work' ? 'At work' : 'On break' }}</span>
+    </div>
 
+    <!-- 1. Header Container (Timers) -->
+    <div class="tracker-header">
+      <!-- Spacer for layout balance if needed, or just flex-end -->
+      
       <!-- Right: Timers -->
       <div class="timers">
         <transition name="fade">
@@ -203,28 +203,32 @@ onUnmounted(() => {
   height: 20px; /* Fixed height for header area */
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end; /* Right aligned */
   align-items: flex-start;
   /* No padding needed if children handle spacing, but timers need right padding */
 }
 
-.status-pill-wrapper {
-  display: flex;
-  align-items: flex-end;
-  position: relative;
-  height: 20px;
-}
-
+/* Status Pill - Now absolute and full height */
 .status-pill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  z-index: 3; /* Above main card (z-index 2) */
+  
   display: flex;
-  align-items: center;
+  align-items: flex-start; /* Text at top */
+  padding-top: 4px; /* Vertical alignment for 20px header area */
+  
   gap: 4px;
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(3px);
-  padding: 0 12px;
+  padding-left: 12px;
+  padding-right: 12px;
+  
   /* Top-left and Top-right corners only */
   border-radius: var(--radius-28-fallback, 12px) var(--radius-28-fallback, 12px) 0 0;
-  height: 20px;
+  
   box-sizing: border-box;
 }
 
@@ -278,11 +282,6 @@ onUnmounted(() => {
   border-radius: var(--radius-28-fallback, 12px);
   padding: 12px;
   box-sizing: border-box;
-  /* Remove top radius to sit flush against header? No, design has full radius card sitting at bottom */
-  /* If card sits at bottom, it effectively covers bottom part of component */
-  /* But to match design exactly where white card looks like a separate element inset: */
-  /* Actually, looking at previous implementation, absolute positioning was fine, but user wants structure change. */
-  /* Let's keep standard block flow */
 }
 
 @supports (corner-shape: superellipse(2)) {
