@@ -20,6 +20,27 @@
         </div>
         <span class="status-text">{{ status === 'work' ? 'At work' : 'On break' }}</span>
       </div>
+
+      <!-- Timers (Right aligned in status bar) -->
+      <div class="timers">
+        <!-- Break Timer (Only visible when on break) -->
+        <transition name="fade">
+          <span 
+            v-if="status === 'break'" 
+            class="timer break-timer"
+          >
+            {{ formatTime(breakTime) }}
+          </span>
+        </transition>
+
+        <!-- Work Timer (Dimmed when on break) -->
+        <span 
+          class="timer work-timer"
+          :class="{ 'dimmed': status === 'break' }"
+        >
+          {{ formatTime(workTime) }}
+        </span>
+      </div>
     </div>
 
     <!-- Main Card (Bottom) -->
@@ -33,59 +54,35 @@
           <span class="project-name">Project name</span>
         </div>
 
-        <!-- Right: Controls & Timers -->
-        <div class="controls-container">
-          <!-- Timers -->
-          <div class="timers">
-            <!-- Work Timer (Dimmed when on break) -->
-            <span 
-              class="timer work-timer"
-              :class="{ 'dimmed': status === 'break' }"
-            >
-              {{ formatTime(workTime) }}
-            </span>
-            
-            <!-- Break Timer (Only visible when on break) -->
-             <transition name="fade">
-              <span 
-                v-if="status === 'break'" 
-                class="timer break-timer"
-              >
-                {{ formatTime(breakTime) }}
-              </span>
-            </transition>
-          </div>
-
-          <!-- Buttons -->
-          <div class="actions">
-            <Button 
-              v-if="status === 'work'"
-              type="icon-only" 
-              size="24" 
-              tone="secondary" 
-              l-icon 
-              l-icon-name="pause"
-              @click="toggleBreak"
-            />
-            <Button 
-              v-else
-              type="icon-only" 
-              size="24" 
-              tone="secondary" 
-              l-icon 
-              l-icon-name="play"
-              @click="toggleBreak"
-            />
-            
-            <Button 
-              type="icon-only" 
-              size="24" 
-              tone="secondary" 
-              l-icon 
-              l-icon-name="stop"
-              @click="stop"
-            />
-          </div>
+        <!-- Right: Buttons -->
+        <div class="actions">
+          <Button 
+            v-if="status === 'work'"
+            type="icon-only" 
+            size="24" 
+            tone="secondary" 
+            l-icon 
+            l-icon-name="mug-hot"
+            @click="toggleBreak"
+          />
+          <Button 
+            v-else
+            type="icon-only" 
+            size="24" 
+            tone="secondary" 
+            l-icon 
+            l-icon-name="briefcase"
+            @click="toggleBreak"
+          />
+          
+          <Button 
+            type="icon-only" 
+            size="24" 
+            tone="secondary" 
+            l-icon 
+            l-icon-name="circle-stop"
+            @click="stop"
+          />
         </div>
       </div>
     </div>
@@ -118,7 +115,7 @@ const startTimer = () => {
       workTime.value++
     } else {
       breakTime.value++
-      // According to user: "when on break both timers are running"
+      // Both increment during break
       workTime.value++
     }
   }, 1000)
@@ -197,6 +194,9 @@ onUnmounted(() => {
   padding: 4px 12px;
   box-sizing: border-box;
   z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .status-content {
@@ -207,9 +207,11 @@ onUnmounted(() => {
   /* Glassmorphism effect from design */
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(3px);
-  padding: 4px 12px; /* Adjusted to match design's inner padding */
+  padding: 4px 12px; 
   border-radius: 12px;
   width: fit-content;
+  height: 20px; /* Ensure height matches content */
+  box-sizing: border-box;
 }
 
 .status-icon-wrapper {
@@ -223,6 +225,24 @@ onUnmounted(() => {
 .status-text {
   font-size: 10px;
   color: #1b1a18;
+  line-height: 1;
+}
+
+.timers {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Spacing between timers */
+}
+
+.timer {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: #1b1a18;
+  line-height: 1;
+}
+
+.dimmed {
+  opacity: 0.5;
 }
 
 /* Main Card */
@@ -272,39 +292,9 @@ onUnmounted(() => {
   max-width: 100px;
 }
 
-.controls-container {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.timers {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
-  position: absolute; /* Positioning timers absolutely to match design placement or relative? */
-  right: 100px; /* Adjust based on buttons width */
-  top: 50%;
-  transform: translateY(-50%);
-  gap: 2px;
-}
-
-.timer {
-  font-family: 'Space Mono', monospace;
-  font-size: 12px;
-  color: #1b1a18;
-  line-height: 1;
-}
-
-.dimmed {
-  opacity: 0.5;
-}
-
 .actions {
   display: flex;
   gap: 8px;
-  margin-left: auto; /* Push to right */
 }
 
 /* Fade transition */
