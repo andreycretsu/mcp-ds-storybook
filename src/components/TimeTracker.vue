@@ -182,6 +182,9 @@ onUnmounted(() => {
   /* Flex container to hold header and main-card vertically */
   display: flex;
   flex-direction: column;
+  
+  /* Fix for clipping bugs in Safari/Chrome with overflow:hidden and border-radius */
+  transform: translateZ(0);
 }
 
 @supports (corner-shape: superellipse(2)) {
@@ -336,7 +339,7 @@ onUnmounted(() => {
   top: 0;
   right: 0; /* Anchor to right of wrapper */
   height: 100%;
-  width: 340px; /* Arbitrary large width to cover the header area */
+  width: 200%; /* Increase width significantly to ensure full coverage across the header */
   background-color: #f8ecc4;
   z-index: -1; /* Behind the text content of this wrapper */
   border-radius: var(--radius-20-fallback, 12px) var(--radius-20-fallback, 12px) 0 0;
