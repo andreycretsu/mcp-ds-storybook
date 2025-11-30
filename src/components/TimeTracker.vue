@@ -16,12 +16,12 @@
     <!-- Trigger Handle -->
     <transition name="fade">
       <div 
-        v-if="(isHovered && !isDrawerOpen) || isDrawerOpen" 
+        v-if="isHovered && !isDrawerOpen" 
         class="drawer-trigger"
         @click="toggleDrawer"
       >
         <Icon 
-          :icon="isDrawerOpen ? 'chevron-down' : 'chevron-up'" 
+          :icon="'chevron-up'" 
           size="XS-8" 
           color="white" 
         />
