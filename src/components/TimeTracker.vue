@@ -1,19 +1,48 @@
 <template>
   <div 
-    ref="trackerRef"
-    class="time-tracker" 
-    :class="{ 'is-collapsed': !isExpanded, [status]: true }"
+    class="tracker-container" 
+    @mouseenter="isHovered = true" 
+    @mouseleave="isHovered = false"
   >
-    <!-- Background layers -->
-    <div class="bg-layer work-bg"></div>
+    <!-- Drawer Section (Second Drawer) -->
     <div 
-      ref="breakBg"
-      class="bg-layer break-bg"
-      :style="{ opacity: 0 }"
-    ></div>
+      ref="drawerRef" 
+      class="drawer-section" 
+      :style="{ height: '0px', opacity: 0 }"
+    >
+      <!-- Empty content for now -->
+    </div>
 
-    <!-- Header Elements (Hidden when collapsed) -->
-    <!-- <transition name="fade"> -->
+    <!-- Trigger Handle -->
+    <transition name="fade">
+      <div 
+        v-if="isHovered || isDrawerOpen" 
+        class="drawer-trigger"
+        @click="toggleDrawer"
+      >
+        <Icon 
+          :icon="isDrawerOpen ? 'chevron-down' : 'chevron-up'" 
+          size="XS-8" 
+          color="#6B7280" 
+        />
+      </div>
+    </transition>
+
+    <!-- Main Time Tracker Widget -->
+    <div 
+      ref="trackerRef"
+      class="time-tracker" 
+      :class="{ 'is-collapsed': !isExpanded, [status]: true }"
+    >
+      <!-- Background layers -->
+      <div class="bg-layer work-bg"></div>
+      <div 
+        ref="breakBg"
+        class="bg-layer break-bg"
+        :style="{ opacity: 0 }"
+      ></div>
+
+      <!-- Header Elements (Hidden when collapsed) -->
       <div v-show="isExpanded" class="header-group" ref="headerGroup">
         <!-- Status Pill (Left) -->
         <div 
@@ -66,63 +95,63 @@
           <!-- Spacer for layout balance -->
         </div>
       </div>
-    <!-- </transition> -->
 
-    <!-- 2. White Card Container (Project Info + Actions) -->
-    <div class="main-card">
-      <div class="card-content">
-        <!-- Left: Project Info -->
-        <div class="project-info">
-          <div class="project-icon">
-            <span>😂</span>
+      <!-- 2. White Card Container (Project Info + Actions) -->
+      <div class="main-card">
+        <div class="card-content">
+          <!-- Left: Project Info -->
+          <div class="project-info">
+            <div class="project-icon">
+              <span>😂</span>
+            </div>
+            <span class="project-name">Project name</span>
           </div>
-          <span class="project-name">Project name</span>
-        </div>
 
-        <!-- Right: Buttons -->
-        <div class="actions">
-          <transition name="fade" mode="out-in">
-            <div v-if="isExpanded" class="actions-group">
-              <Button 
-                v-if="status === 'work'"
-                type="icon-only" 
-                size="24" 
-                tone="secondary" 
-                l-icon 
-                l-icon-name="mug"
-                @click="toggleBreak"
-              />
-              <Button 
-                v-else
-                type="icon-only" 
-                size="24" 
-                tone="secondary" 
-                l-icon 
-                l-icon-name="briefcase"
-                @click="toggleBreak"
-              />
-              
-              <Button 
-                type="icon-only" 
-                size="24" 
-                tone="secondary" 
-                l-icon 
-                l-icon-name="circle-stop"
-                @click="stop"
-              />
-            </div>
-            <div v-else class="actions-group">
-               <!-- Play button to expand/restart -->
-               <Button 
-                type="icon-only" 
-                size="24" 
-                tone="secondary" 
-                l-icon 
-                l-icon-name="circle-play"
-                @click="start"
-              />
-            </div>
-          </transition>
+          <!-- Right: Buttons -->
+          <div class="actions">
+            <transition name="fade" mode="out-in">
+              <div v-if="isExpanded" class="actions-group">
+                <Button 
+                  v-if="status === 'work'"
+                  type="icon-only" 
+                  size="24" 
+                  tone="secondary" 
+                  l-icon 
+                  l-icon-name="mug"
+                  @click="toggleBreak"
+                />
+                <Button 
+                  v-else
+                  type="icon-only" 
+                  size="24" 
+                  tone="secondary" 
+                  l-icon 
+                  l-icon-name="briefcase"
+                  @click="toggleBreak"
+                />
+                
+                <Button 
+                  type="icon-only" 
+                  size="24" 
+                  tone="secondary" 
+                  l-icon 
+                  l-icon-name="circle-stop"
+                  @click="stop"
+                />
+              </div>
+              <div v-else class="actions-group">
+                 <!-- Play button to expand/restart -->
+                 <Button 
+                  type="icon-only" 
+                  size="24" 
+                  tone="secondary" 
+                  l-icon 
+                  l-icon-name="circle-play"
+                  @click="start"
+                />
+              </div>
+            </transition>
+          </div>
         </div>
       </div>
     </div>
@@ -141,7 +170,10 @@ const breakTime = ref(0)
 const breakBg = ref<HTMLElement | null>(null)
 const trackerRef = ref<HTMLElement | null>(null)
 const headerGroup = ref<HTMLElement | null>(null)
+const drawerRef = ref<HTMLElement | null>(null)
 const isExpanded = ref(true)
+const isHovered = ref(false)
+const isDrawerOpen = ref(false)
 let timerInterval: number | null = null
 
 const formatTime = (seconds: number) => {
@@ -196,6 +228,23 @@ const start = () => {
   startTimer()
 }
 
+const toggleDrawer = () => {
+  isDrawerOpen.value = !isDrawerOpen.value
+}
+
+watch(isDrawerOpen, (newValue) => {
+  if (drawerRef.value) {
+    const targetHeight = newValue ? "216px" : "0px" // 3x height of widget (72px * 3)
+    const targetOpacity = newValue ? 1 : 0
+    
+    animate(
+      drawerRef.value,
+      { height: targetHeight, opacity: targetOpacity },
+      { type: "spring", stiffness: 400, damping: 30 }
+    )
+  }
+})
+
 watch(isExpanded, (newValue) => {
   if (trackerRef.value) {
     const targetHeight = newValue ? "72px" : "52px"
@@ -228,6 +277,60 @@ onUnmounted(() => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
 
+.tracker-container {
+  position: relative;
+  width: 340px;
+  /* Allows drawer to expand upwards absolutely */
+}
+
+.drawer-section {
+  position: absolute;
+  bottom: 100%; /* Positioned above the widget */
+  left: 0;
+  width: 100%;
+  background: white;
+  border-radius: var(--radius-20-fallback, 12px);
+  margin-bottom: 8px; /* Spacing from trigger/widget */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Optional shadow for drawer */
+  overflow: hidden;
+  transform-origin: bottom center;
+  z-index: 10; /* Ensure it's on top */
+}
+
+@supports (corner-shape: superellipse(2)) {
+  .drawer-section {
+    border-radius: var(--radius-20-ideal, 12px);
+    corner-shape: superellipse(var(--superK));
+  }
+}
+
+.drawer-trigger {
+  position: absolute;
+  top: -20px; /* 4px padding above widget + height of trigger roughly */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 16px; /* Small touch area */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 8px 8px 0 0; /* Rounded top */
+  cursor: pointer;
+  z-index: 5;
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
+}
+
+/* Adjust positioning to be "above the widget 4px padding" */
+.drawer-trigger {
+  top: -16px; /* Position just above */
+  border-radius: 12px; /* Capsule shape */
+  height: 12px;
+  width: 32px;
+  padding: 4px;
+  margin-bottom: 4px;
+}
+
 .time-tracker {
   width: 340px;
   height: 72px; /* Initial Expanded height */
@@ -243,6 +346,8 @@ onUnmounted(() => {
   
   /* Fix for clipping bugs in Safari/Chrome with overflow:hidden and border-radius */
   transform: translateZ(0);
+  background: white; /* Ensure it has background */
+  z-index: 2;
 }
 
 .time-tracker.is-collapsed {
