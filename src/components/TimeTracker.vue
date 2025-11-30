@@ -5,11 +5,14 @@
     <div 
       ref="breakBg"
       class="bg-layer break-bg"
-      :style="{ opacity: status === 'break' ? 1 : 0 }"
+      :style="{ opacity: 0 }"
     ></div>
 
     <!-- Status Pill (Left) -->
-    <div class="status-pill">
+    <div 
+      class="status-pill"
+      :class="{ 'on-break': status === 'break' }"
+    >
       <div class="status-content">
         <div class="status-icon-wrapper">
           <Icon 
@@ -24,28 +27,26 @@
 
     <!-- Timer Pill (Right) -->
     <div class="timer-pill">
-      <!-- Break Timer Background (Yellow) - Only visible when on break -->
-      <div 
-        class="break-timer-bg"
-        :style="{ opacity: status === 'break' ? 1 : 0 }"
-      ></div>
-
-      <div class="timer-content">
+      <div class="timer-pill-container">
         <transition name="fade">
-          <span 
+          <div 
             v-if="status === 'break'" 
-            class="timer break-timer"
+            class="timer-wrapper break-timer-wrapper"
           >
-            {{ formatTime(breakTime) }}
-          </span>
+            <span class="timer break-timer">
+              {{ formatTime(breakTime) }}
+            </span>
+          </div>
         </transition>
 
-        <span 
-          class="timer work-timer"
-          :class="{ 'dimmed': status === 'break' }"
-        >
-          {{ formatTime(workTime) }}
-        </span>
+        <div class="timer-wrapper work-timer-wrapper">
+          <span 
+            class="timer work-timer"
+            :class="{ 'dimmed': status === 'break' }"
+          >
+            {{ formatTime(workTime) }}
+          </span>
+        </div>
       </div>
     </div>
 
@@ -135,10 +136,11 @@ const toggleBreak = () => {
   status.value = status.value === 'work' ? 'break' : 'work'
   
   if (breakBg.value) {
+    // Keeping logic if we ever need global bg animation back, but currently opaque 0
     if (status.value === 'break') {
-      animate(breakBg.value, { opacity: 1 }, { duration: 0.3 })
+      // animate(breakBg.value, { opacity: 1 }, { duration: 0.3 }) 
     } else {
-      animate(breakBg.value, { opacity: 0 }, { duration: 0.3 })
+      // animate(breakBg.value, { opacity: 0 }, { duration: 0.3 })
     }
   }
 }
@@ -227,6 +229,7 @@ onUnmounted(() => {
   align-items: flex-start; /* Align content wrapper to top */
   padding-top: 4px; /* Vertical alignment for 20px header area */
   
+  /* Default background: Glass on Blue */
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(3px);
   padding-left: 12px;
@@ -236,6 +239,11 @@ onUnmounted(() => {
   border-radius: var(--radius-28-fallback, 12px) var(--radius-28-fallback, 12px) 0 0;
   
   box-sizing: border-box;
+  transition: background-color 0.3s ease;
+}
+
+.status-pill.on-break {
+  background-color: #f8ecc4; /* Yellow on break */
 }
 
 @supports (corner-shape: superellipse(2)) {
@@ -265,7 +273,7 @@ onUnmounted(() => {
   line-height: 1;
 }
 
-/* Timer Pill - Right (New) */
+/* Timer Pill - Right */
 .timer-pill {
   position: absolute;
   top: 0;
@@ -273,190 +281,52 @@ onUnmounted(() => {
   height: 100%;
   z-index: 1; /* Below main card (z-index 2) */
   
-  /* Container setup */
+  /* Container setup for right alignment */
   display: flex;
-  /* No direct padding or background on container anymore, handled by children/layers */
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-top: 4px;
+  padding-right: 12px; /* Right padding from design */
+}
+
+.timer-pill-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  height: 100%;
+}
+
+.timer-wrapper {
+  /* Base styles for timer wrappers */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  height: 20px; /* Fixed height for pill look */
   
-  /* Top-left and Top-right corners only */
+  /* Top corners rounded logic or full pill? Design looks like full pill or top-rounded */
+  /* Since they sit behind the card, bottom radius doesn't matter much visually, 
+     but consistency with status pill suggests top-rounded */
   border-radius: var(--radius-28-fallback, 12px) var(--radius-28-fallback, 12px) 0 0;
   
   box-sizing: border-box;
-  overflow: hidden; /* Clip the background layer */
 }
 
 @supports (corner-shape: superellipse(2)) {
-  .timer-pill {
+  .timer-wrapper {
     border-radius: var(--radius-28-ideal, 12px) var(--radius-28-ideal, 12px) 0 0;
     corner-shape: superellipse(var(--superK));
   }
 }
 
-/* Yellow background for break timer */
-.break-timer-bg {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.break-timer-wrapper {
   background-color: #f8ecc4; /* Yellow */
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 0;
 }
 
-/* Overlap Header BG - Special yellow bg that extends to left */
-.break-overlap-bg {
-  position: absolute;
-  top: 0;
-  right: 0;
-  height: 100%;
-  /* Extend very far to the left to cover the header space */
-  width: 200%; 
-  background-color: #f8ecc4;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 0;
-  /* Start from right edge of timer pill and go left */
-  transform-origin: right center;
-}
-
-.timer-content {
-  position: relative;
-  z-index: 1;
-  height: 100%;
-  display: flex;
-  align-items: flex-start;
-  padding-top: 4px;
-  gap: 12px;
-  padding-left: 12px;
-  padding-right: 12px;
-  
-  /* Background logic:
-     - Work state: Transparent (shows through to blue/white layers below)
-     - Break state: Transparent (shows through to yellow layer below)
-     
-     Actually, user says: "the widget bg is always blue, but when the break timer is true than we have anpther yellow background overlapping the whole header except the work timer"
-     
-     Wait, "overlapping the whole header except the work timer".
-     If it overlaps the whole header, it should be behind everything in the header area?
-     
-     Let's look at the provided image.
-     It shows a yellow background covering the "On break" pill AND extending to the right, covering the break timer area.
-     The Work timer seems to have a different background (blue/white).
-     
-     Wait, "except the work timer".
-     
-     If I look at the image:
-     [On break (Yellow)] ------------------- [Break Timer (Yellow)] [Work Timer (Blue/White)]
-     
-     So the yellow background seems to be:
-     1. Under the status pill (left)
-     2. Under the break timer (right, first item)
-     
-     But NOT under the work timer (right, second item)?
-     
-     Re-reading user: "the widget bg is always blue, but when the break timer is true than we have anpther yellow background overlapping the whole header except the work timer"
-     
-     This implies:
-     - The main widget background is blue (we have .work-bg).
-     - When on break, a yellow background overlaps the "header" area.
-     - BUT "except the work timer".
-     
-     So the work timer sits on top of the blue/white, while the break timer and status pill sit on yellow?
-     
-     If so, I need a yellow background layer that covers the top area, but is masked out or pushed behind the work timer?
-     
-     Or maybe the work timer has its OWN background that sits on top of the yellow?
-     
-     Let's try to handle the timer pill background specifically.
-     
-     If the yellow background is "overlapping the whole header", it might be the .break-bg layer we already have which covers the whole widget?
-     But user said "overlapping the whole header".
-     
-     Let's adjust the .timer-content background.
-     If I remove the blur/white bg from .timer-content, it will be transparent.
-     Then I can put the yellow bg behind specific parts.
-     
-     But user said "For At work we don't show that background on timer".
-     
-     Let's make .timer-content transparent.
-     And add backgrounds to individual timer elements? No, they are text.
-     
-     Maybe the structure is:
-     [Yellow Header BG] (Visible on break)
-     [Work Timer Pill] (Always Blue/White)
-     
-     If I separate the timers?
-     
-     Let's try to interpret "except the work timer".
-     Maybe the work timer is in its own container with a white/blue background?
-     
-     Let's look at the image again.
-     The work timer has a distinct blue/white rounded background.
-     The break timer is just text on the yellow background.
-     
-     So:
-     1. Break Timer (Left in pill): Text on Yellow.
-     2. Work Timer (Right in pill): Text in a Pill with Blue/White BG.
-     
-     So the .timer-pill container shouldn't have a background.
-     The .work-timer should have its own background.
-     And the .break-timer should just be text.
-     And the yellow background should be behind everything (except work timer).
-     
-     Let's try:
-     - Remove .timer-pill background.
-     - Add background to .work-timer (white/blue).
-     - Ensure .break-bg (yellow) covers the header area.
-     
-     But .break-bg currently covers the WHOLE widget.
-     "overlapping the whole header" - implies maybe just the top part?
-     "as in my figma, the widget bg is always blue, but when the break timer is true than we have anpther yellow background overlapping the whole header"
-     
-     Okay, so if .break-bg is visible, it covers the blue .work-bg.
-     And the work timer needs to sit ON TOP of that yellow background, retaining the blue/white look?
-     
-     Let's try giving .work-timer a specific background style.
-     And removing the general pill background.
-  */
-  background: transparent; 
-}
-
-.work-timer {
-  /* Give work timer its own pill look if needed, or just let it sit on top if it has a bg */
-  /* From image: The work timer has a light blue background when on break? */
-  /* "For At work we don't show that background on timer" - means transparent on work? */
-  
-  position: relative;
-  z-index: 2; /* Above yellow bg */
-  padding: 0 8px; /* Add some padding if it has a bg */
-  border-radius: 4px; /* Small radius? */
-  
-  /* When on break, it needs to look different? */
-  /* User says: "For At work we don't show that background on timer" */
-  /* Implies: Work state -> No special bg. Break state -> Yellow bg everywhere EXCEPT work timer. */
-  /* So Work timer needs to mask out the yellow? or have a blue bg? */
-  
-  /* Let's try giving it the .work-bg color when on break? */
-  transition: background-color 0.3s ease;
-}
-
-.work-timer.dimmed {
-   /* When on break (dimmed is true) */
-   /* It should have the blue background to stand out from yellow? */
-   /* "overlapping the whole header except the work timer" */
-   background-color: #d1e6fa; /* Match work-bg */
-   border-radius: 12px; /* Match pill radius or smaller? */
-   height: 20px;
-   display: flex;
-   align-items: center;
-   opacity: 1; /* Reset opacity since we are styling it */
-   color: #1b1a18; /* Text color */
-}
-
-/* We need to override the .dimmed opacity: 0.5 if we use it for styling */
-.timer.work-timer.dimmed {
-  opacity: 1;
+.work-timer-wrapper {
+  /* Always glass/blueish */
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(3px);
 }
 
 .timer {
@@ -467,7 +337,7 @@ onUnmounted(() => {
 }
 
 .dimmed {
-  opacity: 0.5;
+  /* opacity: 0.5; */ /* Removed opacity dimming since we have distinct backgrounds */
 }
 
 /* 2. Main Card Container */
