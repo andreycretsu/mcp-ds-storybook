@@ -14,6 +14,23 @@
   
   /* Superellipse corner shape variable */
   --superK: 2;
+
+  /* Border Radius Tokens */
+  /* Size 24 */
+  --radius-24-ideal: 14px;
+  --radius-24-fallback: 8px;
+  
+  /* Size 32 */
+  --radius-32-ideal: 18px;
+  --radius-32-fallback: 10px;
+  
+  /* Size 36 */
+  --radius-36-ideal: 22px;
+  --radius-36-fallback: 12px;
+  
+  /* Size 40 */
+  --radius-40-ideal: 26px;
+  --radius-40-fallback: 14px;
 }
 
 a {

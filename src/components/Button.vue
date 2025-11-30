@@ -45,12 +45,12 @@
     
     <!-- Success Icon (centered when success) -->
     <div v-if="state === 'success'" class="button__icon-success">
-      <Icon 
+        <Icon 
         icon="fa-solid fa-check" 
         :size="sizeConfig.iconSize"
-        :color="iconColor"
-      />
-    </div>
+          :color="iconColor"
+        />
+      </div>
     
     <!-- Label Container (always rendered to maintain size, hidden with opacity when loading) -->
     <div v-if="type !== 'icon-only'" class="button__label-container" :style="{ padding: sizeConfig.labelPadding }">
@@ -60,12 +60,12 @@
     
     <!-- Right Icon (always rendered when rIcon is true, hidden with opacity during loading/success) -->
     <div v-if="rIcon && !kbd && type !== 'icon-only' && state !== 'loading'" class="button__icon-right">
-      <Icon 
+        <Icon 
         :icon="rIconName" 
         :size="sizeConfig.iconSize"
-        :color="iconColor"
-      />
-    </div>
+          :color="iconColor"
+        />
+      </div>
     <!-- Placeholder to maintain size during loading/success -->
     <div v-else-if="rIcon && !kbd && type !== 'icon-only'" class="button__icon-right" style="opacity: 0; pointer-events: none;">
       <Icon 
@@ -157,8 +157,8 @@ const sizeConfig = computed(() => {
       gap: '2px', 
       spinnerSize: '12px',
       labelPadding: '0px 2px',
-      borderRadius: '14px',
-      fallbackBorderRadius: '8px'
+      borderRadius: 'var(--radius-24-ideal)',
+      fallbackBorderRadius: 'var(--radius-24-fallback)'
     },
     '32': { 
       height: '32px', 
@@ -171,8 +171,8 @@ const sizeConfig = computed(() => {
       gap: '2px', 
       spinnerSize: '16px', // 16px to match icon
       labelPadding: '2px 4px',
-      borderRadius: '18px',
-      fallbackBorderRadius: '10px'
+      borderRadius: 'var(--radius-32-ideal)',
+      fallbackBorderRadius: 'var(--radius-32-fallback)'
     },
     '36': { 
       height: '36px', 
@@ -185,8 +185,8 @@ const sizeConfig = computed(() => {
       gap: '2px', 
       spinnerSize: '20px',
       labelPadding: '1px 4px',
-      borderRadius: '22px',
-      fallbackBorderRadius: '12px'
+      borderRadius: 'var(--radius-36-ideal)',
+      fallbackBorderRadius: 'var(--radius-36-fallback)'
     },
     '40': { 
       height: '40px', 
@@ -199,8 +199,8 @@ const sizeConfig = computed(() => {
       gap: '4px', 
       spinnerSize: '20px',
       labelPadding: '2px 4px',
-      borderRadius: '26px',
-      fallbackBorderRadius: '14px'
+      borderRadius: 'var(--radius-40-ideal)',
+      fallbackBorderRadius: 'var(--radius-40-fallback)'
     }
   }
   

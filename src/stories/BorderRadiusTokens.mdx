@@ -1,0 +1,62 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Design System/Border Radius System" />
+
+# Border Radius System
+
+Our design system uses a dual-value border radius system to support advanced corner smoothing (superellipse) on modern browsers while providing graceful fallbacks for others.
+
+## 🔲 Token System
+
+We define both an **Ideal** value (used with `corner-shape: superellipse`) and a **Fallback** value (standard `border-radius`) for each component size.
+
+### Button Radius Tokens
+
+| Size | Token Name | Ideal Radius (Corner Shape) | Fallback Radius |
+| :--- | :--- | :--- | :--- |
+| **24** | `--radius-24` | 14px | 8px |
+| **32** | `--radius-32` | 18px | 10px |
+| **36** | `--radius-36` | 22px | 12px |
+| **40** | `--radius-40` | 26px | 14px |
+
+## 💻 Usage
+
+```css
+.button-24 {
+  /* Fallback for all browsers */
+  border-radius: var(--radius-24-fallback);
+}
+
+@supports (corner-shape: superellipse(2)) {
+  .button-24 {
+    /* Ideal shape for supported browsers */
+    border-radius: var(--radius-24-ideal);
+    corner-shape: superellipse(var(--superK));
+  }
+}
+```
+
+## 🔧 CSS Variables
+
+The following variables are available globally:
+
+```css
+:root {
+  /* Size 24 */
+  --radius-24-ideal: 14px;
+  --radius-24-fallback: 8px;
+  
+  /* Size 32 */
+  --radius-32-ideal: 18px;
+  --radius-32-fallback: 10px;
+  
+  /* Size 36 */
+  --radius-36-ideal: 22px;
+  --radius-36-fallback: 12px;
+  
+  /* Size 40 */
+  --radius-40-ideal: 26px;
+  --radius-40-fallback: 14px;
+}
+```
+
