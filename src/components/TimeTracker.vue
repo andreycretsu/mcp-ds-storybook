@@ -569,7 +569,7 @@ onUnmounted(() => {
 }
 
 .dimmed {
-  /* opacity: 0.5; */ /* Removed opacity dimming since we have distinct backgrounds */
+  opacity: 0.5;
 }
 
 /* 2. Main Card Container */
