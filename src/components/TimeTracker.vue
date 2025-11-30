@@ -12,7 +12,7 @@
     <div class="status-pill">
       <div class="status-icon-wrapper">
         <Icon 
-          :icon="status === 'work' ? 'briefcase' : 'mug-hot'" 
+          :icon="status === 'work' ? 'briefcase' : 'mug'" 
           size="S-12"
           color="#000f30"
         />
@@ -63,7 +63,7 @@
             size="24" 
             tone="secondary" 
             l-icon 
-            l-icon-name="mug-hot"
+            l-icon-name="mug"
             @click="toggleBreak"
           />
           <Button 
