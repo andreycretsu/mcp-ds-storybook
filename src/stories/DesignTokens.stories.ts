@@ -113,7 +113,7 @@ type Story = StoryObj<typeof meta>;
 export const Colors: Story = {
   render: () => ({
     template: `
-      <div style="padding: 20px; max-width: 800px;">
+      <div style="padding: 20px; max-width: 1200px;">
         <h1>🎨 Design Tokens</h1>
         
         <h2>Primary Colors</h2>
@@ -162,7 +162,7 @@ export const Colors: Story = {
 export const Typography: Story = {
   render: () => ({
     template: `
-      <div style="padding: 20px; max-width: 800px;">
+      <div style="padding: 20px; max-width: 1200px;">
         <h1>📝 Typography</h1>
         
         <h2>Font Family</h2>
@@ -229,7 +229,7 @@ export const Typography: Story = {
 export const Spacing: Story = {
   render: () => ({
     template: `
-      <div style="padding: 20px; max-width: 800px;">
+      <div style="padding: 20px; max-width: 1200px;">
         <h1>📏 Spacing</h1>
         
         <h2>Spacing Scale</h2>
@@ -296,7 +296,7 @@ export const BorderRadius: Story = {
     return {
       components: { BorderRadiusChart },
       template: `
-      <div style="padding: 20px; max-width: 800px;">
+      <div style="padding: 20px; max-width: 1200px;">
         <h1>🔲 Border Radius</h1>
         
         <p style="margin-bottom: 24px; color: #666;">

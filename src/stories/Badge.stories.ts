@@ -195,7 +195,7 @@ export const CompleteMatrixLow: Story = {
   render: () => ({
     components: { Badge },
     template: `
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 800px;">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1200px;">
         <!-- Size L -->
         <div>
           <h4 style="margin: 0 0 8px 0; font-size: 14px; color: #666;">Large (24px)</h4>
@@ -253,7 +253,7 @@ export const CompleteMatrixHigh: Story = {
   render: () => ({
     components: { Badge },
     template: `
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 800px;">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1200px;">
         <!-- Size L -->
         <div>
           <h4 style="margin: 0 0 8px 0; font-size: 14px; color: #666;">Large (24px)</h4>

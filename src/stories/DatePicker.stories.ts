@@ -173,7 +173,7 @@ export const FeaturesShowcase: Story = {
   render: () => ({
     components: { DatePicker },
     template: `
-      <div style="display: flex; flex-direction: column; gap: 24px; max-width: 800px;">
+      <div style="display: flex; flex-direction: column; gap: 24px; max-width: 1200px;">
         <div style="text-align: center;">
           <h2 style="margin: 0 0 8px; font-size: 18px; color: #333;">DatePicker Features</h2>
           <p style="margin: 0; font-size: 14px; color: #666;">

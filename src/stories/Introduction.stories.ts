@@ -76,7 +76,7 @@ type Story = StoryObj<typeof meta>;
 export const Welcome: Story = {
   render: () => ({
     template: `
-      <div style="padding: 20px; max-width: 800px; font-family: Inter, sans-serif;">
+      <div style="padding: 20px; max-width: 1200px; font-family: Inter, sans-serif;">
         <h1 style="color: #000f30; margin-bottom: 16px;">🎉 Welcome to Vue Design System!</h1>
         <p style="color: #476887; font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
           This is your comprehensive Vue 3 design system with 20+ carefully crafted components.

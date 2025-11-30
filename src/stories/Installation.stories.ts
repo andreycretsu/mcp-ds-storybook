@@ -167,7 +167,7 @@ type Story = StoryObj<typeof meta>;
 export const Guide: Story = {
   render: () => ({
     template: `
-      <div style="padding: 20px; max-width: 800px; font-family: Inter, sans-serif;">
+      <div style="padding: 20px; max-width: 1200px; font-family: Inter, sans-serif;">
         <h1 style="color: #000f30; margin-bottom: 16px;">📦 Installation Guide</h1>
         <p style="color: #476887; font-size: 16px; line-height: 1.6; margin-bottom: 24px;">
           Welcome to the Vue Design System! This guide will help you install and start using our component library in your Vue 3 projects.

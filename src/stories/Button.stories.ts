@@ -397,7 +397,7 @@ export const StateTransition: Story = {
       }
     },
     template: `
-      <div style="display: flex; flex-direction: column; gap: 32px; width: 100%; max-width: 800px; padding: 20px;">
+      <div style="display: flex; flex-direction: column; gap: 32px; width: 100%; max-width: 1200px; padding: 20px;">
         <div style="font-size: 14px; color: #666; margin-bottom: -16px;">
           <strong>Interactive Demo:</strong> Hover and click any button to see the transition cycle (default → hover → press → loading → success).
         </div>
