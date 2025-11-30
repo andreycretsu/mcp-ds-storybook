@@ -174,7 +174,7 @@ onUnmounted(() => {
   width: 340px;
   height: 72px;
   position: relative;
-  border-radius: var(--radius-28-fallback, 12px);
+  border-radius: var(--radius-20-fallback, 12px);
   overflow: hidden;
   font-family: 'Inter', sans-serif;
   transition: all 0.3s ease;
@@ -186,7 +186,7 @@ onUnmounted(() => {
 
 @supports (corner-shape: superellipse(2)) {
   .time-tracker {
-    border-radius: var(--radius-28-ideal, 12px);
+    border-radius: var(--radius-20-ideal, 12px);
     corner-shape: superellipse(var(--superK));
   }
 }
@@ -240,7 +240,7 @@ onUnmounted(() => {
   padding-right: 12px;
   
   /* Top-left and Top-right corners only */
-  border-radius: var(--radius-28-fallback, 12px) var(--radius-28-fallback, 12px) 0 0;
+  border-radius: var(--radius-20-fallback, 12px) var(--radius-20-fallback, 12px) 0 0;
   
   box-sizing: border-box;
   transition: background-color 0.3s ease;
@@ -252,7 +252,7 @@ onUnmounted(() => {
 
 @supports (corner-shape: superellipse(2)) {
   .status-pill {
-    border-radius: var(--radius-28-ideal, 12px) var(--radius-28-ideal, 12px) 0 0;
+    border-radius: var(--radius-20-ideal, 12px) var(--radius-20-ideal, 12px) 0 0;
     corner-shape: superellipse(var(--superK));
   }
 }
@@ -312,7 +312,7 @@ onUnmounted(() => {
   /* Top corners rounded logic or full pill? Design looks like full pill or top-rounded */
   /* Since they sit behind the card, bottom radius doesn't matter much visually, 
      but consistency with status pill suggests top-rounded */
-  border-radius: var(--radius-28-fallback, 12px) var(--radius-28-fallback, 12px) 0 0;
+  border-radius: var(--radius-20-fallback, 12px) var(--radius-20-fallback, 12px) 0 0;
   
   box-sizing: border-box;
   position: relative; /* For z-index stacking */
@@ -320,7 +320,7 @@ onUnmounted(() => {
 
 @supports (corner-shape: superellipse(2)) {
   .timer-wrapper {
-    border-radius: var(--radius-28-ideal, 12px) var(--radius-28-ideal, 12px) 0 0;
+    border-radius: var(--radius-20-ideal, 12px) var(--radius-20-ideal, 12px) 0 0;
     corner-shape: superellipse(var(--superK));
   }
 }
@@ -339,12 +339,12 @@ onUnmounted(() => {
   width: 340px; /* Arbitrary large width to cover the header area */
   background-color: #f8ecc4;
   z-index: -1; /* Behind the text content of this wrapper */
-  border-radius: var(--radius-28-fallback, 12px) var(--radius-28-fallback, 12px) 0 0;
+  border-radius: var(--radius-20-fallback, 12px) var(--radius-20-fallback, 12px) 0 0;
 }
 
 @supports (corner-shape: superellipse(2)) {
   .break-timer-wrapper::before {
-    border-radius: var(--radius-28-ideal, 12px) var(--radius-28-ideal, 12px) 0 0;
+    border-radius: var(--radius-20-ideal, 12px) var(--radius-20-ideal, 12px) 0 0;
     corner-shape: superellipse(var(--superK));
   }
 }
@@ -380,14 +380,14 @@ onUnmounted(() => {
   flex: 1; /* Take remaining height (72px - 20px = 52px) */
   width: 100%;
   background: white;
-  border-radius: var(--radius-28-fallback, 12px);
+  border-radius: var(--radius-20-fallback, 12px);
   padding: 12px;
   box-sizing: border-box;
 }
 
 @supports (corner-shape: superellipse(2)) {
   .main-card {
-    border-radius: var(--radius-28-ideal, 12px);
+    border-radius: var(--radius-20-ideal, 12px);
     corner-shape: superellipse(var(--superK));
   }
 }
