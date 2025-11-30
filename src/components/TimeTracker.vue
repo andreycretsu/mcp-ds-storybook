@@ -8,9 +8,9 @@
       :style="{ opacity: status === 'break' ? 1 : 0 }"
     ></div>
 
-    <!-- Status Bar (Top) -->
-    <div class="status-bar">
-      <!-- Status Pill Container -->
+    <!-- 1. Header Container (Status + Timers) -->
+    <div class="tracker-header">
+      <!-- Left: Status Pill -->
       <div class="status-pill-wrapper">
         <div class="status-pill">
           <div class="status-icon-wrapper">
@@ -22,10 +22,9 @@
           </div>
           <span class="status-text">{{ status === 'work' ? 'At work' : 'On break' }}</span>
         </div>
-        <!-- SVG Connector for the smooth corner transition -->
+        <!-- SVG Connector -->
         <div class="pill-connector">
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <!-- This path draws the inverse curve to make it look connected like a tab -->
             <path 
               d="M0 12C0 5.37258 5.37258 0 12 0V12H0Z" 
               fill="rgba(255, 255, 255, 0.4)"
@@ -34,9 +33,8 @@
         </div>
       </div>
 
-      <!-- Timers (Right aligned in status bar) -->
+      <!-- Right: Timers -->
       <div class="timers">
-        <!-- Break Timer (Only visible when on break) -->
         <transition name="fade">
           <span 
             v-if="status === 'break'" 
@@ -46,7 +44,6 @@
           </span>
         </transition>
 
-        <!-- Work Timer (Dimmed when on break) -->
         <span 
           class="timer work-timer"
           :class="{ 'dimmed': status === 'break' }"
@@ -56,7 +53,7 @@
       </div>
     </div>
 
-    <!-- Main Card (Bottom) -->
+    <!-- 2. White Card Container (Project Info + Actions) -->
     <div class="main-card">
       <div class="card-content">
         <!-- Left: Project Info -->
@@ -128,7 +125,6 @@ const startTimer = () => {
       workTime.value++
     } else {
       breakTime.value++
-      // Both increment during break
       workTime.value++
     }
   }, 1000)
@@ -137,7 +133,6 @@ const startTimer = () => {
 const toggleBreak = () => {
   status.value = status.value === 'work' ? 'break' : 'work'
   
-  // Animate background
   if (breakBg.value) {
     if (status.value === 'break') {
       animate(breakBg.value, { opacity: 1 }, { duration: 0.3 })
@@ -172,14 +167,16 @@ onUnmounted(() => {
   width: 340px;
   height: 72px;
   position: relative;
-  /* Use radius-28 token or fallback */
   border-radius: var(--radius-28-fallback, 12px);
   overflow: hidden;
   font-family: 'Inter', sans-serif;
   transition: all 0.3s ease;
+  
+  /* Flex container to hold header and main-card vertically */
+  display: flex;
+  flex-direction: column;
 }
 
-/* Modern browsers with corner-shape support */
 @supports (corner-shape: superellipse(2)) {
   .time-tracker {
     border-radius: var(--radius-28-ideal, 12px);
@@ -187,7 +184,7 @@ onUnmounted(() => {
   }
 }
 
-/* Backgrounds */
+/* Backgrounds (absolute to cover whole area behind content) */
 .bg-layer {
   position: absolute;
   top: 0;
@@ -195,53 +192,47 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   transition: opacity 0.3s ease;
-  border-radius: inherit; /* Inherit radius from parent */
+  border-radius: inherit;
+  z-index: 0;
 }
 
 .work-bg {
-  background-color: #d1e6fa; /* var(--color/additional/blue/75) */
+  background-color: #d1e6fa;
 }
 
 .break-bg {
-  background-color: #f8ecc4; /* var(--color/additional/yellow/100) */
+  background-color: #f8ecc4;
   opacity: 0;
 }
 
-/* Status Bar */
-.status-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%; /* Fill full height so backgrounds are visible */
-  padding: 4px 12px 0 0; /* Top padding for alignment, no left padding for full width background strip */
-  box-sizing: border-box;
+/* 1. Header Container */
+.tracker-header {
+  position: relative;
   z-index: 1;
+  height: 20px; /* Fixed height for header area */
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start; /* Align items to top */
+  align-items: flex-start;
+  /* No padding needed if children handle spacing, but timers need right padding */
 }
 
 .status-pill-wrapper {
   display: flex;
-  align-items: flex-end; /* Align connector to bottom of pill */
+  align-items: flex-end;
   position: relative;
+  height: 20px;
 }
 
 .status-pill {
   display: flex;
   align-items: center;
   gap: 4px;
-  
-  /* Glassmorphism effect from design */
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(3px);
-  padding: 0 12px; 
-  /* Only rounded on bottom-right corner */
-  border-radius: 0 0 var(--radius-28-fallback, 12px) 0; 
-  
-  width: fit-content;
-  height: 20px; /* Fixed height matching screenshot inspection */
+  padding: 0 12px;
+  border-radius: 0 0 var(--radius-28-fallback, 12px) 0;
+  height: 20px;
   box-sizing: border-box;
 }
 
@@ -255,13 +246,8 @@ onUnmounted(() => {
 .pill-connector {
   width: 12px;
   height: 12px;
-  /* Positioned to the right of the pill */
   display: flex;
-  align-items: flex-start; /* Align top to match pill bottom edge logic */
-}
-
-.status-pill-wrapper {
-  align-items: flex-start; /* Align to top */
+  align-items: flex-start;
 }
 
 .status-icon-wrapper {
@@ -281,8 +267,9 @@ onUnmounted(() => {
 .timers {
   display: flex;
   align-items: center;
-  gap: 12px; /* Spacing between timers */
-  margin-top: 4px; /* Align vertically with status pill */
+  gap: 12px;
+  height: 20px; /* Match header height */
+  padding-right: 12px; /* Right padding for timers */
 }
 
 .timer {
@@ -296,19 +283,21 @@ onUnmounted(() => {
   opacity: 0.5;
 }
 
-/* Main Card */
+/* 2. Main Card Container */
 .main-card {
-  position: absolute;
-  top: 20px; /* Matches original design */
-  left: 0;
+  position: relative; /* Relative to flow in flex column */
+  z-index: 2;
+  flex: 1; /* Take remaining height (72px - 20px = 52px) */
   width: 100%;
-  height: calc(100% - 20px);
   background: white;
-  /* Same radius logic as the main container */
   border-radius: var(--radius-28-fallback, 12px);
   padding: 12px;
   box-sizing: border-box;
-  z-index: 2;
+  /* Remove top radius to sit flush against header? No, design has full radius card sitting at bottom */
+  /* If card sits at bottom, it effectively covers bottom part of component */
+  /* But to match design exactly where white card looks like a separate element inset: */
+  /* Actually, looking at previous implementation, absolute positioning was fine, but user wants structure change. */
+  /* Let's keep standard block flow */
 }
 
 @supports (corner-shape: superellipse(2)) {
@@ -334,7 +323,7 @@ onUnmounted(() => {
 .project-icon {
   width: 28px;
   height: 28px;
-  background: #f8cbcb; /* var(--additional/red/100) */
+  background: #f8cbcb;
   border-radius: var(--radius-18-fallback, 8px);
   display: flex;
   align-items: center;
