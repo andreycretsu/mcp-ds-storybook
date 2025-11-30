@@ -26,6 +26,7 @@ import SearchInput from './components/SearchInput.vue'
 import SegmentItem from './components/SegmentItem.vue'
 import SegmentedControl from './components/SegmentedControl.vue'
 import SnackBar from './components/SnackBar.vue'
+import TimeTracker from './components/TimeTracker.vue'
 
 // Import styles
 import './style.css'
@@ -56,7 +57,8 @@ export {
   SearchInput,
   SegmentItem,
   SegmentedControl,
-  SnackBar
+  SnackBar,
+  TimeTracker
 }
 
 // Create plugin for Vue app installation
@@ -87,5 +89,6 @@ export default {
     app.component('SegmentItem', SegmentItem)
     app.component('SegmentedControl', SegmentedControl)
     app.component('SnackBar', SnackBar)
+    app.component('TimeTracker', TimeTracker)
   }
 }
