@@ -16,14 +16,14 @@
     <!-- Trigger Handle -->
     <transition name="fade">
       <div 
-        v-if="isHovered || isDrawerOpen" 
+        v-if="(isHovered && !isDrawerOpen) || isDrawerOpen" 
         class="drawer-trigger"
         @click="toggleDrawer"
       >
         <Icon 
           :icon="isDrawerOpen ? 'chevron-down' : 'chevron-up'" 
           size="XS-8" 
-          color="#6B7280" 
+          color="white" 
         />
       </div>
     </transition>
@@ -314,7 +314,8 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: white;
+  background: rgba(107, 114, 128, 0.5); /* Gray semi-transparent */
+  backdrop-filter: blur(4px); /* Optional: add some blur */
   border-radius: 8px 8px 0 0; /* Rounded top */
   cursor: pointer;
   z-index: 5;

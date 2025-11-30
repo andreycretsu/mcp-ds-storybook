@@ -7,6 +7,9 @@ const meta: Meta<typeof TimeTracker> = {
   tags: ['autodocs'],
   argTypes: {
   },
+  parameters: {
+    layout: 'fullscreen',
+  }
 };
 
 export default meta;
@@ -16,10 +19,9 @@ export const Default: Story = {
   render: () => ({
     components: { TimeTracker },
     template: `
-      <div style="padding: 20px; display: flex; justify-content: center; background: #f6f9fb; min-height: 200px; align-items: center;">
+      <div style="padding: 40px; display: flex; justify-content: center; align-items: center; background: #f6f9fb; width: 100vw; height: 100vh; min-height: 600px;">
         <TimeTracker />
       </div>
     `,
   }),
 };
-
