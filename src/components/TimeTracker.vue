@@ -291,44 +291,100 @@ const stopDrag = async () => {
   if (!el) return
 
   const rect = el.getBoundingClientRect()
+  const parent = el.offsetParent || document.body
+  const parentRect = parent.getBoundingClientRect()
+  
   const threshold = 50
-  const windowWidth = window.innerWidth
   const EXPANDED_WIDTH = 340
   const STICKY_WIDTH = 120
+  // Sticky height is 40px, Expanded is 72px
+  const EXPANDED_HEIGHT = 72
+  const STICKY_HEIGHT = 40
   
-  if (rect.left < threshold) {
-    // Snap Left
-    const targetX = position.value.x - rect.left
+  // Calculate distances to parent edges
+  const distLeft = rect.left - parentRect.left
+  const distRight = parentRect.right - rect.right
+  const distTop = rect.top - parentRect.top
+  const distBottom = parentRect.bottom - rect.bottom
+  
+  let newX = position.value.x
+  let newY = position.value.y
+  let newIsSticky = false
+  
+  // Check edges
+  const snapLeft = distLeft < threshold
+  const snapRight = distRight < threshold
+  const snapTop = distTop < threshold
+  const snapBottom = distBottom < threshold
+  
+  if (snapLeft || snapRight || snapTop || snapBottom) {
+    newIsSticky = true
     
-    if (!isSticky.value) {
-      isSticky.value = true
-      await nextTick()
-      requestAnimationFrame(() => {
-        position.value.x = targetX
-      })
-    } else {
-      position.value.x = targetX
+    // Handle Horizontal Snapping
+    if (snapLeft) {
+      newX -= distLeft // Snap flush to left (distLeft is positive gap)
+    } else if (snapRight) {
+      // Target: Right edge flush
+      // If becoming sticky, width shrinks, so Left position must increase to keep Right edge flush
+      // Current Right is at parentRect.right - distRight
+      // We want Right at parentRect.right
+      newX += distRight
+      
+      // If switching from Expanded to Sticky, compensate width change
+      if (!isSticky.value) {
+        newX += (EXPANDED_WIDTH - STICKY_WIDTH)
+      }
     }
-  } else if (rect.right > windowWidth - threshold) {
-    // Snap Right
-    const distToRight = windowWidth - rect.right
-    let targetX = position.value.x + distToRight
     
-    if (!isSticky.value) {
-       targetX += (EXPANDED_WIDTH - STICKY_WIDTH)
-       isSticky.value = true
-       await nextTick()
-       requestAnimationFrame(() => {
-         position.value.x = targetX
-       })
-    } else {
-       position.value.x = targetX
+    // Handle Vertical Snapping
+    if (snapTop) {
+      newY -= distTop // Snap flush to top
+    } else if (snapBottom) {
+       // Target: Bottom edge flush
+       // Current Bottom is at parentRect.bottom - distBottom
+       // We want Bottom at parentRect.bottom
+       newY += distBottom
+       
+       // If switching from Expanded to Sticky, height shrinks
+       if (!isSticky.value) {
+         newY += (EXPANDED_HEIGHT - STICKY_HEIGHT)
+       }
     }
+    
   } else {
+    // Unstick logic
     if (isSticky.value) {
-       isSticky.value = false
+      newIsSticky = false
+      
+      // If unsticking from Right, we need to shift Left to keep Right edge approximate (or just expand left)
+      // Logic: If right edge is close to parent right (within expanded width + threshold?), keep right aligned?
+      // But simple logic: just expand. The expansion goes to right by default?
+      // No, width expands. Flex/Layout direction? 
+      // Transform translates the top-left corner.
+      // If we expanded, width increases to right. 
+      // If we were snapped to Right, we need to shift X back left by (EXP - STICKY) to keep Right edge at boundary.
+      
+      // Check if we are near Right edge
+      // Current rect.right is approx parentRect.right
+      if (distRight < threshold + (EXPANDED_WIDTH - STICKY_WIDTH)) {
+         newX -= (EXPANDED_WIDTH - STICKY_WIDTH)
+      }
+      
+      // Check if we are near Bottom edge
+      if (distBottom < threshold + (EXPANDED_HEIGHT - STICKY_HEIGHT)) {
+         newY -= (EXPANDED_HEIGHT - STICKY_HEIGHT)
+      }
     }
   }
+
+  if (newIsSticky !== isSticky.value) {
+     isSticky.value = newIsSticky
+     await nextTick()
+  }
+  
+  requestAnimationFrame(() => {
+    position.value = { x: newX, y: newY }
+  })
 }
 
 const handleClickOutside = (event: MouseEvent) => {
