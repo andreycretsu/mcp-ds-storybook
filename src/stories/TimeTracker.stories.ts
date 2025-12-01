@@ -56,38 +56,16 @@ export const Default: Story = {
       });
     },
     template: `
-      <div style="display: flex; width: 100%; height: 800px; background: #f0f2f5; font-family: sans-serif; overflow: hidden; position: relative;">
-        <!-- Mock Sidebar -->
-        <div style="width: 240px; background: #1e293b; color: white; padding: 24px; display: flex; flex-direction: column; gap: 16px; z-index: 0;">
-          <div style="font-weight: bold; font-size: 20px; margin-bottom: 24px;">Acme App</div>
-          <div style="padding: 8px 12px; background: rgba(255,255,255,0.1); border-radius: 8px;">Dashboard</div>
-          <div style="padding: 8px 12px; opacity: 0.7;">Projects</div>
-          <div style="padding: 8px 12px; opacity: 0.7;">Tasks</div>
-          <div style="padding: 8px 12px; opacity: 0.7;">Reports</div>
-        </div>
-        
-        <!-- Mock Main Content -->
-        <div style="flex: 1; display: flex; flex-direction: column; z-index: 0;">
-          <!-- Mock Header -->
-          <div style="height: 64px; background: white; border-bottom: 1px solid #e2e8f0; display: flex; align-items: center; padding: 0 24px; justify-content: space-between;">
-            <div style="font-weight: 600;">Dashboard</div>
-            <div style="width: 32px; height: 32px; background: #cbd5e1; border-radius: 50%;"></div>
-          </div>
-          
-          <!-- Mock Page Content -->
-          <div style="flex: 1; padding: 32px; position: relative;">
-             <div style="margin-bottom: 24px; height: 200px; background: white; border-radius: 12px; border: 1px solid #e2e8f0;"></div>
-             <div style="display: flex; gap: 24px;">
-               <div style="flex: 1; height: 300px; background: white; border-radius: 12px; border: 1px solid #e2e8f0;"></div>
-               <div style="flex: 1; height: 300px; background: white; border-radius: 12px; border: 1px solid #e2e8f0;"></div>
-             </div>
-             
-             <!-- TimeTracker injected here, free floating -->
-             <div style="position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100;">
-                <TimeTracker />
-             </div>
-          </div>
-        </div>
+      <div style="width: 100%; height: 800px; background: #f6f9fb; position: relative; overflow: hidden;">
+         <!-- TimeTracker injected here, free floating, initially centered -->
+         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 100;">
+            <TimeTracker />
+         </div>
+         
+         <!-- Helper text -->
+         <div style="position: absolute; bottom: 24px; width: 100%; text-align: center; color: #64748b; font-family: sans-serif;">
+           Drag the widget to the left or right edge to see the magnetic sticky effect
+         </div>
       </div>
     `,
   }),
