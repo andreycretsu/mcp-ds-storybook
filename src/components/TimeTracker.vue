@@ -1,204 +1,202 @@
 <template>
-  <!-- Sticky View (Minimized) -->
+  <!-- Main Container (Single Root) -->
   <div 
-    v-if="isSticky"
-    ref="stickyRef"
-    class="sticky-view"
-    @mousedown="startDrag"
-    @click="expandSticky"
-    :style="{ transform: `translate(${position.x}px, ${position.y}px)`, cursor: isDragging ? 'grabbing' : 'grab', transition: isDragging ? 'none' : 'transform 0.5s cubic-bezier(0.19, 1, 0.22, 1)' }"
-  >
-    <div class="sticky-content" :class="{ 'on-break': status === 'break' }">
-      <template v-if="status === 'break'">
-        <Icon 
-          icon="mug" 
-          size="S-16" 
-          color="#856404" 
-        />
-        <span class="sticky-timer" style="color: #856404;">
-          {{ formatTime(breakTime) }}
-        </span>
-        <Icon 
-          icon="briefcase" 
-          size="S-16" 
-          color="#000f30" 
-          style="opacity: 0.5; margin-left: 4px;"
-        />
-        <span class="sticky-timer" style="color: #000f30; opacity: 0.5;">
-          {{ formatTime(workTime) }}
-        </span>
-      </template>
-      <template v-else>
-        <Icon 
-          icon="briefcase" 
-          size="S-16" 
-          color="#000f30" 
-        />
-        <span class="sticky-timer" style="color: #000f30;">
-          {{ formatTime(workTime) }}
-        </span>
-      </template>
-    </div>
-  </div>
-
-  <!-- Main Widget -->
-  <div 
-    v-else
-    class="tracker-container" 
     ref="containerRef"
-    @mouseenter="isHovered = true" 
-    @mouseleave="isHovered = false"
+    class="tracker-container"
+    :class="{ 'is-sticky': isSticky, 'is-dragging': isDragging }"
     @mousedown="startDrag"
-    :style="{ transform: `translate(${position.x}px, ${position.y}px)`, cursor: isDragging ? 'grabbing' : 'grab', transition: isDragging ? 'none' : 'transform 0.5s cubic-bezier(0.19, 1, 0.22, 1)' }"
+    @click="handleContainerClick"
+    :style="containerStyle"
   >
-    <!-- Drawer Section (Second Drawer) -->
+    <!-- 1. Sticky Content (Shown when sticky) -->
     <div 
-      ref="drawerRef" 
-      class="drawer-section" 
-      :style="{ height: '0px', opacity: 0 }"
+      class="sticky-content-wrapper"
+      :style="{ opacity: isSticky ? 1 : 0, pointerEvents: isSticky ? 'auto' : 'none' }"
     >
-      <!-- Empty content for now -->
-    </div>
-
-    <!-- Trigger Handle -->
-    <transition name="fade">
-      <div 
-        v-if="isHovered && !isDrawerOpen" 
-        class="drawer-trigger"
-        @click="toggleDrawer"
-      >
-        <Icon 
-          :icon="'chevron-up'" 
-          size="XS-8" 
-          color="white" 
-        />
-      </div>
-    </transition>
-
-    <!-- Main Time Tracker Widget -->
-    <div 
-      ref="trackerRef"
-      class="time-tracker" 
-      :class="{ 'is-collapsed': !isExpanded, [status]: true }"
-      :style="{ opacity: isDrawerOpen ? 0.5 : 1, transition: 'opacity 0.3s ease' }"
-    >
-      <!-- Background layers -->
-      <div class="bg-layer work-bg"></div>
-      <div 
-        ref="breakBg"
-        class="bg-layer break-bg"
-        :style="{ opacity: 0 }"
-      ></div>
-
-      <!-- Header Elements (Hidden when collapsed) -->
-      <div v-show="isExpanded" class="header-group" ref="headerGroup">
-        <!-- Status Pill (Left) -->
-        <div 
-          class="status-pill"
-          :class="{ 'on-break': status === 'break' }"
-        >
-          <div class="status-content">
-            <div class="status-icon-wrapper">
-              <Icon 
-                :icon="status === 'work' ? 'briefcase' : 'mug'" 
-                size="S-12"
-                color="#000f30"
-              />
-            </div>
-            <span class="status-text">{{ status === 'work' ? 'At work' : 'On break' }}</span>
+      <div class="sticky-content" :class="{ 'on-break': status === 'break' }">
+        <div class="sticky-left-section" :class="{ 'break-bg-color': status === 'break' }">
+          <div class="status-part">
+            <Icon 
+              :icon="status === 'work' ? 'briefcase' : 'mug'" 
+              size="S-12" 
+              :color="status === 'break' ? '#1b1a18' : '#000f30'" 
+            />
+            <span class="sticky-status-text" :style="{ color: status === 'break' ? '#1b1a18' : '#000f30' }">
+              {{ status === 'work' ? 'At work' : 'On break' }}
+            </span>
+          </div>
+          
+          <div v-if="status === 'break'" class="break-timer-part">
+             <span class="sticky-timer" style="color: #1b1a18;">
+              {{ formatTime(breakTime) }}
+            </span>
           </div>
         </div>
 
-        <!-- Timer Pill (Right) -->
-        <div class="timer-pill">
-          <div class="timer-pill-container">
-            <transition name="fade">
-              <!-- Break timer wrapper gets yellow background when on break -->
+        <div class="sticky-right-section" :class="{ 'work-bg-color': true }">
+           <span class="sticky-timer" :style="{ color: '#000f30', opacity: status === 'break' ? 0.5 : 1 }">
+              {{ formatTime(workTime) }}
+            </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. Expanded Content (Shown when expanded) -->
+    <div 
+      class="expanded-content-wrapper"
+      :style="{ opacity: isSticky ? 0 : 1, pointerEvents: isSticky ? 'none' : 'auto' }"
+    >
+      <!-- Drawer Section (Second Drawer) -->
+      <div 
+        ref="drawerRef" 
+        class="drawer-section" 
+        :style="{ height: '0px', opacity: 0 }"
+      >
+        <!-- Empty content for now -->
+      </div>
+
+      <!-- Trigger Handle -->
+      <transition name="fade">
+        <div 
+          v-if="isHovered && !isDrawerOpen && !isSticky" 
+          class="drawer-trigger"
+          @click.stop="toggleDrawer"
+        >
+          <Icon 
+            :icon="'chevron-up'" 
+            size="XS-8" 
+            color="white" 
+          />
+        </div>
+      </transition>
+
+      <!-- Main Time Tracker Widget Content -->
+      <div 
+        ref="trackerRef"
+        class="time-tracker" 
+        :class="{ 'is-collapsed': !isExpanded, [status]: true }"
+        :style="{ opacity: isDrawerOpen ? 0.5 : 1, transition: 'opacity 0.3s ease' }"
+        @mouseenter="isHovered = true" 
+        @mouseleave="isHovered = false"
+      >
+        <!-- Background layers -->
+        <div class="bg-layer work-bg"></div>
+        <div 
+          ref="breakBg"
+          class="bg-layer break-bg"
+          :style="{ opacity: 0 }"
+        ></div>
+
+        <!-- Header Elements (Hidden when collapsed) -->
+        <div v-show="isExpanded" class="header-group" ref="headerGroup">
+          <!-- Status Pill (Left) -->
+          <div 
+            class="status-pill"
+            :class="{ 'on-break': status === 'break' }"
+          >
+            <div class="status-content">
+              <div class="status-icon-wrapper">
+                <Icon 
+                  :icon="status === 'work' ? 'briefcase' : 'mug'" 
+                  size="S-12"
+                  color="#000f30"
+                />
+              </div>
+              <span class="status-text">{{ status === 'work' ? 'At work' : 'On break' }}</span>
+            </div>
+          </div>
+
+          <!-- Timer Pill (Right) -->
+          <div class="timer-pill">
+            <div class="timer-pill-container">
+              <transition name="fade">
+                <!-- Break timer wrapper gets yellow background when on break -->
+                <div 
+                  v-if="status === 'break'" 
+                  class="timer-wrapper break-timer-wrapper"
+                >
+                  <span class="timer break-timer">
+                    {{ formatTime(breakTime) }}
+                  </span>
+                </div>
+              </transition>
+
+              <!-- Work timer wrapper has NO background in either state -->
               <div 
-                v-if="status === 'break'" 
-                class="timer-wrapper break-timer-wrapper"
+                class="timer-wrapper work-timer-wrapper"
+                :class="{ 'dimmed': status === 'break' }"
               >
-                <span class="timer break-timer">
-                  {{ formatTime(breakTime) }}
+                <span 
+                  class="timer work-timer"
+                >
+                  {{ formatTime(workTime) }}
                 </span>
               </div>
-            </transition>
-
-            <!-- Work timer wrapper has NO background in either state -->
-            <div 
-              class="timer-wrapper work-timer-wrapper"
-              :class="{ 'dimmed': status === 'break' }"
-            >
-              <span 
-                class="timer work-timer"
-              >
-                {{ formatTime(workTime) }}
-              </span>
             </div>
+          </div>
+
+          <!-- Header Container (Spacer) -->
+          <div class="tracker-header">
+            <!-- Spacer for layout balance -->
           </div>
         </div>
 
-        <!-- Header Container (Spacer) -->
-        <div class="tracker-header">
-          <!-- Spacer for layout balance -->
-        </div>
-      </div>
-
-      <!-- 2. White Card Container (Project Info + Actions) -->
-      <div class="main-card">
-        <div class="card-content">
-          <!-- Left: Project Info -->
-          <div class="project-info">
-            <div class="project-icon">
-              <span>📑</span>
+        <!-- 2. White Card Container (Project Info + Actions) -->
+        <div class="main-card">
+          <div class="card-content">
+            <!-- Left: Project Info -->
+            <div class="project-info">
+              <div class="project-icon">
+                <span>📑</span>
+              </div>
+              <span class="project-name">Customer Success Strategy</span>
             </div>
-            <span class="project-name">Customer Success Strategy</span>
-          </div>
 
-          <!-- Right: Buttons -->
-          <div class="actions">
-            <transition name="fade" mode="out-in">
-              <div v-if="isExpanded" class="actions-group">
-                <Button 
-                  v-if="status === 'work'"
-                  type="icon-only" 
-                  size="24" 
-                  tone="secondary" 
-                  l-icon 
-                  l-icon-name="mug"
-                  @click="toggleBreak"
-                />
-                <Button 
-                  v-else
-                  type="icon-only" 
-                  size="24" 
-                  tone="secondary" 
-                  l-icon 
-                  l-icon-name="briefcase"
-                  @click="toggleBreak"
-                />
-                
-                <Button 
-                  type="icon-only" 
-                  size="24" 
-                  tone="secondary" 
-                  l-icon 
-                  l-icon-name="circle-stop"
-                  @click="stop"
-                />
-              </div>
-              <div v-else class="actions-group">
-                 <!-- Play button to expand/restart -->
-                 <Button 
-                  type="icon-only" 
-                  size="24" 
-                  tone="secondary" 
-                  l-icon 
-                  l-icon-name="circle-play"
-                  @click="start"
-                />
-              </div>
-            </transition>
+            <!-- Right: Buttons -->
+            <div class="actions">
+              <transition name="fade" mode="out-in">
+                <div v-if="isExpanded" class="actions-group">
+                  <Button 
+                    v-if="status === 'work'"
+                    type="icon-only" 
+                    size="24" 
+                    tone="secondary" 
+                    l-icon 
+                    l-icon-name="mug"
+                    @click.stop="toggleBreak"
+                  />
+                  <Button 
+                    v-else
+                    type="icon-only" 
+                    size="24" 
+                    tone="secondary" 
+                    l-icon 
+                    l-icon-name="briefcase"
+                    @click.stop="toggleBreak"
+                  />
+                  
+                  <Button 
+                    type="icon-only" 
+                    size="24" 
+                    tone="secondary" 
+                    l-icon 
+                    l-icon-name="circle-stop"
+                    @click.stop="stop"
+                  />
+                </div>
+                <div v-else class="actions-group">
+                   <!-- Play button to expand/restart -->
+                   <Button 
+                    type="icon-only" 
+                    size="24" 
+                    tone="secondary" 
+                    l-icon 
+                    l-icon-name="circle-play"
+                    @click.stop="start"
+                  />
+                </div>
+              </transition>
+            </div>
           </div>
         </div>
       </div>
@@ -207,7 +205,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
 import Button from './Button.vue'
 import Icon from './Icon.vue'
 import { animate } from 'motion'
@@ -220,7 +218,6 @@ const trackerRef = ref<HTMLElement | null>(null)
 const headerGroup = ref<HTMLElement | null>(null)
 const drawerRef = ref<HTMLElement | null>(null)
 const containerRef = ref<HTMLElement | null>(null)
-const stickyRef = ref<HTMLElement | null>(null)
 const isExpanded = ref(true)
 const isHovered = ref(false)
 const isDrawerOpen = ref(false)
@@ -229,6 +226,41 @@ const position = ref({ x: 0, y: 0 })
 const isDragging = ref(false)
 const dragStart = ref({ x: 0, y: 0 })
 let timerInterval: number | null = null
+
+// --- Dimensions for Magnetic/Sticky Logic ---
+const EXPANDED_WIDTH = 340
+const EXPANDED_HEIGHT = 72
+const STICKY_HEIGHT = 32 // Reduced to be more header-like
+
+// Dynamic width for sticky view depending on content (single vs dual timer)
+const stickyWidth = computed(() => {
+  // Approx width calculation:
+  // Status part: ~80px ("At work" + icon) or ~85px ("On break" + icon)
+  // Timer part: ~65px each
+  // Break Mode: 85 + 65 + 65 = 215px
+  // Work Mode: 80 + 65 = 145px
+  return status.value === 'break' ? 230 : 160
+})
+
+const containerStyle = computed(() => {
+  const width = isSticky.value ? `${stickyWidth.value}px` : `${EXPANDED_WIDTH}px`
+  
+  const targetHeight = isSticky.value 
+    ? STICKY_HEIGHT 
+    : (isExpanded.value ? EXPANDED_HEIGHT : 52)
+
+  return {
+    width: width,
+    height: `${targetHeight}px`,
+    transform: `translate(${position.value.x}px, ${position.value.y}px)`,
+    cursor: isDragging.value ? 'grabbing' : 'grab',
+    // Apply smooth transition for morphing effect
+    transition: isDragging.value 
+      ? 'none' 
+      : 'width 0.5s cubic-bezier(0.19, 1, 0.22, 1), height 0.5s cubic-bezier(0.19, 1, 0.22, 1), transform 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
+    borderRadius: isSticky.value ? '20px' : 'var(--radius-20-fallback, 12px)'
+  }
+})
 
 const formatTime = (seconds: number) => {
   const h = Math.floor(seconds / 3600)
@@ -253,7 +285,6 @@ const toggleBreak = () => {
   status.value = status.value === 'work' ? 'break' : 'work'
   
   if (breakBg.value) {
-    // Keeping logic if we ever need global bg animation back, but currently opaque 0
     if (status.value === 'break') {
       // animate(breakBg.value, { opacity: 1 }, { duration: 0.3 }) 
     } else {
@@ -286,10 +317,16 @@ const toggleDrawer = () => {
   isDrawerOpen.value = !isDrawerOpen.value
 }
 
+const handleContainerClick = () => {
+  if (isSticky.value && !isDragging.value) {
+    expandSticky()
+  }
+}
+
 const expandSticky = async () => {
   if (isDragging.value) return
   
-  const el = stickyRef.value
+  const el = containerRef.value
   if (!el) return
 
   const rect = el.getBoundingClientRect()
@@ -297,13 +334,8 @@ const expandSticky = async () => {
   const parentRect = parent.getBoundingClientRect()
   
   const threshold = 50
-  const EXPANDED_WIDTH = 340
-  const STICKY_WIDTH = 120
-  const EXPANDED_HEIGHT = 72
-  const STICKY_HEIGHT = 40
-  
-  // Current sticky width might be larger due to 2 timers
-  const currentStickyWidth = rect.width
+  // Use current computed sticky width logic for accurate calculation
+  const currentStickyWidth = stickyWidth.value
   
   // Calculate distances to parent edges
   const distRight = parentRect.right - rect.right
@@ -321,18 +353,21 @@ const expandSticky = async () => {
   // If snapped Bottom, expand Up
   if (distBottom < threshold) {
     // Shift up by height difference
-    newY -= (EXPANDED_HEIGHT - STICKY_HEIGHT)
+    // Note: Need to account for current Expanded Height (72 or 52)
+    const targetExpandedHeight = isExpanded.value ? EXPANDED_HEIGHT : 52
+    newY -= (targetExpandedHeight - STICKY_HEIGHT)
   }
   
   isSticky.value = false
-  await nextTick()
+  // await nextTick() // Not strictly needed if we rely on reactive state + transition
   
-  requestAnimationFrame(() => {
+  // requestAnimationFrame(() => {
     position.value = { x: newX, y: newY }
-  })
+  // })
 }
 
 const startDrag = (e: MouseEvent) => {
+  // Prevent drag if clicking buttons or triggers
   if ((e.target as HTMLElement).closest('button') || (e.target as HTMLElement).closest('.drawer-trigger')) return
   
   isDragging.value = true
@@ -355,7 +390,7 @@ const stopDrag = async () => {
   document.removeEventListener('mousemove', onDrag)
   document.removeEventListener('mouseup', stopDrag)
   
-  const el = isSticky.value ? stickyRef.value : containerRef.value
+  const el = containerRef.value
   if (!el) return
 
   const rect = el.getBoundingClientRect()
@@ -363,11 +398,9 @@ const stopDrag = async () => {
   const parentRect = parent.getBoundingClientRect()
   
   const threshold = 50
-  const EXPANDED_WIDTH = 340
-  const STICKY_WIDTH = 120
-  // Sticky height is 40px, Expanded is 72px
-  const EXPANDED_HEIGHT = 72
-  const STICKY_HEIGHT = 40
+  // Use current Sticky Width for calculation
+  const TARGET_STICKY_WIDTH = stickyWidth.value
+  const TARGET_EXPANDED_HEIGHT = isExpanded.value ? EXPANDED_HEIGHT : 52
   
   // Calculate distances to parent edges
   const distLeft = rect.left - parentRect.left
@@ -390,17 +423,14 @@ const stopDrag = async () => {
     
     // Handle Horizontal Snapping
     if (snapLeft) {
-      newX -= distLeft // Snap flush to left (distLeft is positive gap)
+      newX -= distLeft // Snap flush to left
     } else if (snapRight) {
       // Target: Right edge flush
-      // If becoming sticky, width shrinks, so Left position must increase to keep Right edge flush
-      // Current Right is at parentRect.right - distRight
-      // We want Right at parentRect.right
       newX += distRight
       
       // If switching from Expanded to Sticky, compensate width change
       if (!isSticky.value) {
-        newX += (EXPANDED_WIDTH - STICKY_WIDTH)
+        newX += (EXPANDED_WIDTH - TARGET_STICKY_WIDTH)
       }
     }
     
@@ -409,13 +439,11 @@ const stopDrag = async () => {
       newY -= distTop // Snap flush to top
     } else if (snapBottom) {
        // Target: Bottom edge flush
-       // Current Bottom is at parentRect.bottom - distBottom
-       // We want Bottom at parentRect.bottom
        newY += distBottom
        
        // If switching from Expanded to Sticky, height shrinks
        if (!isSticky.value) {
-         newY += (EXPANDED_HEIGHT - STICKY_HEIGHT)
+         newY += (TARGET_EXPANDED_HEIGHT - STICKY_HEIGHT)
        }
     }
     
@@ -424,30 +452,22 @@ const stopDrag = async () => {
     if (isSticky.value) {
       newIsSticky = false
       
-      // If unsticking from Right, we need to shift Left to keep Right edge approximate (or just expand left)
-      // Logic: If right edge is close to parent right (within expanded width + threshold?), keep right aligned?
-      // But simple logic: just expand. The expansion goes to right by default?
-      // No, width expands. Flex/Layout direction? 
-      // Transform translates the top-left corner.
-      // If we expanded, width increases to right. 
-      // If we were snapped to Right, we need to shift X back left by (EXP - STICKY) to keep Right edge at boundary.
-      
       // Check if we are near Right edge
-      // Current rect.right is approx parentRect.right
-      if (distRight < threshold + (EXPANDED_WIDTH - STICKY_WIDTH)) {
-         newX -= (EXPANDED_WIDTH - STICKY_WIDTH)
+      // Note: Use current sticky width here as we are starting FROM sticky
+      if (distRight < threshold + (EXPANDED_WIDTH - TARGET_STICKY_WIDTH)) {
+         newX -= (EXPANDED_WIDTH - TARGET_STICKY_WIDTH)
       }
       
       // Check if we are near Bottom edge
-      if (distBottom < threshold + (EXPANDED_HEIGHT - STICKY_HEIGHT)) {
-         newY -= (EXPANDED_HEIGHT - STICKY_HEIGHT)
+      if (distBottom < threshold + (TARGET_EXPANDED_HEIGHT - STICKY_HEIGHT)) {
+         newY -= (TARGET_EXPANDED_HEIGHT - STICKY_HEIGHT)
       }
     }
   }
 
   if (newIsSticky !== isSticky.value) {
      isSticky.value = newIsSticky
-     await nextTick()
+     // await nextTick()
   }
   
   requestAnimationFrame(() => {
@@ -463,7 +483,7 @@ const handleClickOutside = (event: MouseEvent) => {
 
 watch(isDrawerOpen, (newValue) => {
   if (drawerRef.value) {
-    const targetHeight = newValue ? "216px" : "0px" // 3x height of widget (72px * 3)
+    const targetHeight = newValue ? "216px" : "0px"
     const targetOpacity = newValue ? 1 : 0
     
     animate(
@@ -502,6 +522,8 @@ onMounted(() => {
 onUnmounted(() => {
   if (timerInterval) clearInterval(timerInterval)
   document.removeEventListener('click', handleClickOutside)
+  document.removeEventListener('mousemove', onDrag)
+  document.removeEventListener('mouseup', stopDrag)
 })
 </script>
 
@@ -510,64 +532,124 @@ onUnmounted(() => {
 
 .tracker-container {
   position: relative;
-  width: 340px;
-  /* Allows drawer to expand upwards absolutely */
-  border-radius: var(--radius-20-fallback, 12px);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Main widget shadow moved here to avoid clipping */
+  /* Width and Height are controlled via inline styles for animation */
+  /* border-radius is also controlled via inline styles */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  background: white;
+  overflow: visible; /* Must be visible for drawer? No, drawer is inside? */
+  /* Wait, drawer is absolutely positioned "bottom: 100%". 
+     If overflow:hidden, drawer will be clipped. 
+     Original code had drawer inside, but container had overflow:hidden?
+     Actually, drawer was inside .tracker-container but outside .time-tracker (which had overflow:hidden).
+     Now we have one container.
+     The container itself transitions size. 
+     If we use overflow:hidden on container, drawer will clip.
+     So container must be overflow: visible.
+     But we need rounded corners.
+     We can use a separate inner wrapper for rounded corners if needed, or just rely on border-radius.
+  */
+  z-index: 100;
 }
 
 @supports (corner-shape: superellipse(2)) {
   .tracker-container {
-    border-radius: var(--radius-20-ideal, 12px);
     corner-shape: superellipse(var(--superK));
   }
 }
 
-.sticky-view {
-  position: relative;
-  min-width: 120px;
-  width: auto; /* Allow expansion for two timers */
-  height: 40px;
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+/* 
+  Content Wrappers 
+  These absolute positionings ensure contents overlap during morph 
+*/
+.sticky-content-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 16px; /* Add horizontal padding */
-  cursor: grab;
-  z-index: 100;
+  align-items: stretch; /* Stretch to fill container height */
+  justify-content: flex-start;
+  overflow: hidden; /* Clip content during shrink */
+  border-radius: inherit;
+  transition: opacity 0.3s ease;
+  background: white; /* Ensure background covers other content */
+  z-index: 20;
+}
+
+.expanded-content-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: opacity 0.3s ease;
+  /* border-radius is inherited from container visually, but we need inner overflow hidden for children */
 }
 
 .sticky-content {
   display: flex;
-  align-items: center;
-  gap: 8px;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+  font-family: 'Inter', sans-serif;
 }
 
-.sticky-content.on-break {
-  /* Styles for break state in sticky mode if needed */
+.sticky-left-section {
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  gap: 12px;
+  flex-grow: 1; /* Takes available space */
+  background: #d1e6fa; /* Default Work Blue */
+  transition: background-color 0.3s ease;
+}
+
+.sticky-left-section.break-bg-color {
+  background: #f8ecc4; /* Break Yellow */
+}
+
+.status-part {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sticky-status-text {
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.break-timer-part {
+  display: flex;
+  align-items: center;
+}
+
+.sticky-right-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  background: #d1e6fa; /* Always Work Blue */
 }
 
 .sticky-timer {
   font-family: 'Space Mono', monospace;
   font-size: 12px;
-  color: #1b1a18;
   line-height: 1;
 }
 
 .drawer-section {
   position: absolute;
-  bottom: 100%; /* Positioned above the widget */
+  bottom: 100%;
   left: 0;
   width: 100%;
   background: white;
   border-radius: var(--radius-20-fallback, 12px);
-  margin-bottom: 8px; /* Spacing from trigger/widget */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Lighter shadow as requested */
+  margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   overflow: hidden;
   transform-origin: bottom center;
-  z-index: 10; /* Ensure it's on top */
+  z-index: 10;
 }
 
 @supports (corner-shape: superellipse(2)) {
@@ -579,49 +661,36 @@ onUnmounted(() => {
 
 .drawer-trigger {
   position: absolute;
-  top: -16px; /* 12px height + 4px gap */
+  top: -16px;
   left: 50%;
   transform: translateX(-50%);
-  width: 40px; /* Slightly larger width */
-  height: 12px; /* Slightly larger height */
+  width: 40px;
+  height: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(107, 114, 128, 0.5); /* Gray semi-transparent */
-  backdrop-filter: blur(4px); /* Optional: add some blur */
-  border-radius: 12px; /* Capsule shape */
+  background: rgba(107, 114, 128, 0.5);
+  backdrop-filter: blur(4px);
+  border-radius: 12px;
   cursor: pointer;
   z-index: 5;
   box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
-  margin-bottom: 4px; /* Add gap from widget */
+  margin-bottom: 4px;
 }
-
-/* Adjust positioning to be "above the widget 4px padding" */
-/* .drawer-trigger rule is defined above */
 
 .time-tracker {
-  width: 340px;
-  height: 72px; /* Initial Expanded height */
+  width: 100%;
+  height: 100%; /* Fill the animating container */
   position: relative;
   border-radius: var(--radius-20-fallback, 12px);
-  overflow: hidden;
+  overflow: hidden; /* Inner clipping for backgrounds/layers */
   font-family: 'Inter', sans-serif;
-  /* transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1); */ /* Disabled CSS transition for motion spring */
-  
-  /* Flex container to hold header and main-card vertically */
   display: flex;
   flex-direction: column;
-  
-  /* Fix for clipping bugs in Safari/Chrome with overflow:hidden and border-radius */
   transform: translateZ(0);
-  -webkit-mask-image: -webkit-radial-gradient(white, black); /* Safari overflow fix */
-  background: white; /* Ensure it has background */
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+  background: white;
   z-index: 2;
-  /* box-shadow moved to container to avoid clipping by mask-image */
-}
-
-.time-tracker.is-collapsed {
-  /* Height is now controlled by JS animation */
 }
 
 @supports (corner-shape: superellipse(2)) {
@@ -631,7 +700,7 @@ onUnmounted(() => {
   }
 }
 
-/* Backgrounds (absolute to cover whole area behind content) */
+/* Reuse existing styles for internals */
 .bg-layer {
   position: absolute;
   top: 0;
@@ -639,7 +708,7 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   transition: opacity 0.3s ease;
-  border-radius: var(--radius-20-fallback, 12px); /* Explicit radius matching parent */
+  border-radius: var(--radius-20-fallback, 12px);
   z-index: 0;
 }
 
@@ -650,57 +719,35 @@ onUnmounted(() => {
   }
 }
 
-.work-bg {
-  background-color: #d1e6fa;
-}
+.work-bg { background-color: #d1e6fa; }
+.break-bg { background-color: #f8ecc4; opacity: 0; }
 
-.break-bg {
-  background-color: #f8ecc4;
-  opacity: 0;
-}
-
-/* Header Group Wrapper */
-.header-group {
-  /* Wrapper to group header elements for transition */
-}
-
-/* 1. Header Container */
 .tracker-header {
   position: relative;
   z-index: 1;
-  height: 20px; /* Fixed height for header area */
+  height: 20px;
   width: 100%;
-  /* No content needed, just spacing */
 }
 
-/* Status Pill - Left */
 .status-pill {
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
-  z-index: 3; /* Higher than timer wrappers (which are in .timer-pill z-index 1) */
-  
+  z-index: 3;
   display: flex;
-  align-items: flex-start; /* Align content wrapper to top */
-  padding-top: 4px; /* Vertical alignment for 20px header area */
-  
-  /* Default background: Glass on Blue */
+  align-items: flex-start;
+  padding-top: 4px;
   background: rgba(255, 255, 255, 0.4);
   backdrop-filter: blur(3px);
   padding-left: 12px;
   padding-right: 12px;
-  
-  /* Top-left and Top-right corners only */
   border-radius: var(--radius-20-fallback, 12px) var(--radius-20-fallback, 12px) 0 0;
-  
   box-sizing: border-box;
   transition: background-color 0.3s ease;
 }
 
-.status-pill.on-break {
-  background-color: rgba(255, 255, 255, 0.4); /* Keep white blurred even on break */
-}
+.status-pill.on-break { background-color: rgba(255, 255, 255, 0.4); }
 
 @supports (corner-shape: superellipse(2)) {
   .status-pill {
@@ -709,65 +756,32 @@ onUnmounted(() => {
   }
 }
 
-.status-content {
-  display: flex;
-  align-items: center; /* Center icon and text relative to each other */
-  gap: 4px;
-}
+.status-content { display: flex; align-items: center; gap: 4px; }
+.status-icon-wrapper { display: flex; align-items: center; justify-content: center; width: 12px; height: 12px; }
+.status-text { font-size: 10px; color: #1b1a18; line-height: 1; }
 
-.status-icon-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 12px;
-  height: 12px;
-}
-
-.status-text {
-  font-size: 10px;
-  color: #1b1a18;
-  line-height: 1;
-}
-
-/* Timer Pill - Right */
 .timer-pill {
   position: absolute;
   top: 0;
   right: 0;
   height: 100%;
-  z-index: 1; /* Below main card (z-index 2) */
-  
-  /* Container setup for right alignment */
+  z-index: 1;
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-  /* padding-top: 4px; */ /* Remove top padding as requested "remove top margins from timers" */
-  /* padding-right: 12px; */ /* Remove right padding as requested "remove right green padding from this div" */
 }
 
-.timer-pill-container {
-  display: flex;
-  align-items: flex-start;
-  /* gap: 12px; */ /* Removed gap as requested "remove the spacer between timer wrappers" */
-  height: 100%;
-}
+.timer-pill-container { display: flex; align-items: flex-start; height: 100%; }
 
 .timer-wrapper {
-  /* Base styles for timer wrappers */
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 12px;
-  height: 20px; /* Fixed height for pill look */
-  /* margin-top: 4px; */ /* Remove margin as requested "remove mragings from timer wrpappers from both" */
-  
-  /* Top corners rounded logic or full pill? Design looks like full pill or top-rounded */
-  /* Since they sit behind the card, bottom radius doesn't matter much visually, 
-     but consistency with status pill suggests top-rounded */
+  height: 20px;
   border-radius: var(--radius-20-fallback, 12px) var(--radius-20-fallback, 12px) 0 0;
-  
   box-sizing: border-box;
-  position: relative; /* For z-index stacking */
+  position: relative;
 }
 
 @supports (corner-shape: superellipse(2)) {
@@ -777,20 +791,17 @@ onUnmounted(() => {
   }
 }
 
-.break-timer-wrapper {
-  background-color: transparent; /* Wrapper itself transparent */
-}
+.break-timer-wrapper { background-color: transparent; }
 
-/* Extend yellow background to the left using pseudo-element */
 .break-timer-wrapper::before {
   content: '';
   position: absolute;
   top: 0;
-  right: 0; /* Anchor to right of wrapper */
+  right: 0;
   height: 100%;
-  width: 360px; /* Fixed width larger than widget (340px) to ensure it reaches left edge */
+  width: 360px;
   background-color: #f8ecc4;
-  z-index: -1; /* Behind the text content of this wrapper */
+  z-index: -1;
   border-radius: var(--radius-20-fallback, 12px) var(--radius-20-fallback, 12px) 0 0;
 }
 
@@ -802,18 +813,13 @@ onUnmounted(() => {
 }
 
 .work-timer-wrapper {
-  /* "right ands main timer has no background in both states" */
-  background: transparent; 
+  background: transparent;
   backdrop-filter: none;
   transition: background-color 0.3s ease;
-  z-index: 2; /* Ensure work timer sits on top of any extending yellow bg */
+  z-index: 2;
 }
 
-.work-timer-wrapper.dimmed {
-  /* No background change on dim */
-  background-color: transparent;
-  opacity: 0.5;
-}
+.work-timer-wrapper.dimmed { background-color: transparent; opacity: 0.5; }
 
 .timer {
   font-family: 'Space Mono', monospace;
@@ -822,15 +828,10 @@ onUnmounted(() => {
   line-height: 1;
 }
 
-.dimmed {
-  opacity: 0.5;
-}
-
-/* 2. Main Card Container */
 .main-card {
-  position: relative; /* Relative to flow in flex column */
-  z-index: 4; /* "white card shouldmbe on top in terms of z index" - higher than status-pill (3) */
-  flex: 1; /* Take remaining height (72px - 20px = 52px) */
+  position: relative;
+  z-index: 4;
+  flex: 1;
   width: 100%;
   background: white;
   border-radius: var(--radius-20-fallback, 12px);
@@ -850,15 +851,15 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   height: 100%;
-  gap: 8px; /* Ensure 8px gap before buttons */
+  gap: 8px;
 }
 
 .project-info {
   display: flex;
   align-items: center;
   gap: 9px;
-  flex: 1; /* Take available space */
-  min-width: 0; /* Allow shrinking */
+  flex: 1;
+  min-width: 0;
 }
 
 .project-icon {
@@ -888,25 +889,9 @@ onUnmounted(() => {
   min-width: 0;
 }
 
-.actions {
-  display: flex;
-  gap: 8px;
-  flex-shrink: 0;
-}
+.actions { display: flex; gap: 8px; flex-shrink: 0; }
+.actions-group { display: flex; gap: 8px; }
 
-.actions-group {
-  display: flex;
-  gap: 8px;
-}
-
-/* Fade transition */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
+.fade-enter-active, .fade-leave-active { transition: opacity 0.3s ease; }
+.fade-enter-from, .fade-leave-to { opacity: 0; }
 </style>
