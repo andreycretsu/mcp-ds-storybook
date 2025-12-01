@@ -104,9 +104,9 @@
           <!-- Left: Project Info -->
           <div class="project-info">
             <div class="project-icon">
-              <span>😂</span>
+              <span>📑</span>
             </div>
-            <span class="project-name">Website Redesign</span>
+            <span class="project-name">Customer Success Strategy</span>
           </div>
 
           <!-- Right: Buttons -->
