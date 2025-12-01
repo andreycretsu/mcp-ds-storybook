@@ -253,9 +253,8 @@ const containerStyle = computed(() => {
     // Apply smooth transition for morphing effect
     transition: isDragging.value 
       ? 'none' 
-      : 'width 0.5s cubic-bezier(0.19, 1, 0.22, 1), height 0.5s cubic-bezier(0.19, 1, 0.22, 1), transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), border-radius 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
-    // Use consistent radius token
-    borderRadius: isSticky.value ? '20px' : 'var(--radius-20-fallback, 12px)'
+      : 'width 0.5s cubic-bezier(0.19, 1, 0.22, 1), height 0.5s cubic-bezier(0.19, 1, 0.22, 1), transform 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
+    // Removed inline borderRadius to rely on CSS classes using design tokens
   }
 })
 
@@ -530,15 +529,18 @@ onUnmounted(() => {
 .tracker-container {
   position: relative;
   /* Width and Height are controlled via inline styles for animation */
-  /* border-radius is also controlled via inline styles */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   background: white;
   overflow: visible;
   z-index: 100;
+  
+  /* Use Design Tokens for Border Radius */
+  border-radius: var(--radius-20-fallback, 8px); /* Default fallback */
 }
 
 @supports (corner-shape: superellipse(2)) {
   .tracker-container {
+    border-radius: var(--radius-20-ideal, 20px);
     corner-shape: superellipse(var(--superK));
   }
 }
@@ -580,15 +582,18 @@ onUnmounted(() => {
 
 .break-section {
   background: #f8ecc4;
-  border-radius: 20px;
   z-index: 2;
   position: relative;
   box-shadow: 2px 0 4px rgba(0,0,0,0.02); /* Optional subtle separator */
   min-width: 110px;
+  
+  /* Use Design Tokens */
+  border-radius: var(--radius-20-fallback, 8px);
 }
 
 @supports (corner-shape: superellipse(2)) {
   .break-section {
+    border-radius: var(--radius-20-ideal, 20px);
     corner-shape: superellipse(var(--superK));
   }
 }
@@ -598,11 +603,14 @@ onUnmounted(() => {
   z-index: 1;
   justify-content: center;
   min-width: 110px;
-  border-radius: 20px;
+  
+  /* Use Design Tokens */
+  border-radius: var(--radius-20-fallback, 8px);
 }
 
 @supports (corner-shape: superellipse(2)) {
   .work-section {
+    border-radius: var(--radius-20-ideal, 20px);
     corner-shape: superellipse(var(--superK));
   }
 }
