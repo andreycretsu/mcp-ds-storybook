@@ -4,6 +4,8 @@
     ref="containerRef"
     @mouseenter="isHovered = true" 
     @mouseleave="isHovered = false"
+    @mousedown="startDrag"
+    :style="{ transform: `translate(${position.x}px, ${position.y}px)`, cursor: isDragging ? 'grabbing' : 'grab' }"
   >
     <!-- Drawer Section (Second Drawer) -->
     <div 
@@ -177,6 +179,9 @@ const containerRef = ref<HTMLElement | null>(null)
 const isExpanded = ref(true)
 const isHovered = ref(false)
 const isDrawerOpen = ref(false)
+const position = ref({ x: 0, y: 0 })
+const isDragging = ref(false)
+const dragStart = ref({ x: 0, y: 0 })
 let timerInterval: number | null = null
 
 const formatTime = (seconds: number) => {
@@ -233,6 +238,30 @@ const start = () => {
 
 const toggleDrawer = () => {
   isDrawerOpen.value = !isDrawerOpen.value
+}
+
+const startDrag = (e: MouseEvent) => {
+  if ((e.target as HTMLElement).closest('button') || (e.target as HTMLElement).closest('.drawer-trigger')) return
+  
+  isDragging.value = true
+  dragStart.value = { x: e.clientX - position.value.x, y: e.clientY - position.value.y }
+  
+  document.addEventListener('mousemove', onDrag)
+  document.addEventListener('mouseup', stopDrag)
+}
+
+const onDrag = (e: MouseEvent) => {
+  if (!isDragging.value) return
+  position.value = {
+    x: e.clientX - dragStart.value.x,
+    y: e.clientY - dragStart.value.y
+  }
+}
+
+const stopDrag = () => {
+  isDragging.value = false
+  document.removeEventListener('mousemove', onDrag)
+  document.removeEventListener('mouseup', stopDrag)
 }
 
 const handleClickOutside = (event: MouseEvent) => {
