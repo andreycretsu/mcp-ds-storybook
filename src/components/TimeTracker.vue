@@ -5,17 +5,39 @@
     ref="stickyRef"
     class="sticky-view"
     @mousedown="startDrag"
+    @click="expandSticky"
     :style="{ transform: `translate(${position.x}px, ${position.y}px)`, cursor: isDragging ? 'grabbing' : 'grab', transition: isDragging ? 'none' : 'transform 0.5s cubic-bezier(0.19, 1, 0.22, 1)' }"
   >
     <div class="sticky-content" :class="{ 'on-break': status === 'break' }">
-      <Icon 
-        :icon="status === 'work' ? 'briefcase' : 'mug'" 
-        size="S-16" 
-        :color="status === 'work' ? '#000f30' : '#1b1a18'" 
-      />
-      <span class="sticky-timer">
-        {{ formatTime(status === 'work' ? workTime : breakTime) }}
-      </span>
+      <template v-if="status === 'break'">
+        <Icon 
+          icon="mug" 
+          size="S-16" 
+          color="#856404" 
+        />
+        <span class="sticky-timer" style="color: #856404;">
+          {{ formatTime(breakTime) }}
+        </span>
+        <Icon 
+          icon="briefcase" 
+          size="S-16" 
+          color="#000f30" 
+          style="opacity: 0.5; margin-left: 4px;"
+        />
+        <span class="sticky-timer" style="color: #000f30; opacity: 0.5;">
+          {{ formatTime(workTime) }}
+        </span>
+      </template>
+      <template v-else>
+        <Icon 
+          icon="briefcase" 
+          size="S-16" 
+          color="#000f30" 
+        />
+        <span class="sticky-timer" style="color: #000f30;">
+          {{ formatTime(workTime) }}
+        </span>
+      </template>
     </div>
   </div>
 
@@ -264,6 +286,52 @@ const toggleDrawer = () => {
   isDrawerOpen.value = !isDrawerOpen.value
 }
 
+const expandSticky = async () => {
+  if (isDragging.value) return
+  
+  const el = stickyRef.value
+  if (!el) return
+
+  const rect = el.getBoundingClientRect()
+  const parent = el.offsetParent || document.body
+  const parentRect = parent.getBoundingClientRect()
+  
+  const threshold = 50
+  const EXPANDED_WIDTH = 340
+  const STICKY_WIDTH = 120
+  const EXPANDED_HEIGHT = 72
+  const STICKY_HEIGHT = 40
+  
+  // Current sticky width might be larger due to 2 timers
+  const currentStickyWidth = rect.width
+  
+  // Calculate distances to parent edges
+  const distRight = parentRect.right - rect.right
+  const distBottom = parentRect.bottom - rect.bottom
+  
+  let newX = position.value.x
+  let newY = position.value.y
+  
+  // If snapped Right, expand to Left
+  if (distRight < threshold) {
+    // Shift left by width difference
+    newX -= (EXPANDED_WIDTH - currentStickyWidth)
+  }
+  
+  // If snapped Bottom, expand Up
+  if (distBottom < threshold) {
+    // Shift up by height difference
+    newY -= (EXPANDED_HEIGHT - STICKY_HEIGHT)
+  }
+  
+  isSticky.value = false
+  await nextTick()
+  
+  requestAnimationFrame(() => {
+    position.value = { x: newX, y: newY }
+  })
+}
+
 const startDrag = (e: MouseEvent) => {
   if ((e.target as HTMLElement).closest('button') || (e.target as HTMLElement).closest('.drawer-trigger')) return
   
@@ -457,7 +525,8 @@ onUnmounted(() => {
 
 .sticky-view {
   position: relative;
-  width: 120px;
+  min-width: 120px;
+  width: auto; /* Allow expansion for two timers */
   height: 40px;
   background: white;
   border-radius: 20px;
@@ -465,6 +534,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 16px; /* Add horizontal padding */
   cursor: grab;
   z-index: 100;
 }
