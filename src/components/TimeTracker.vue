@@ -561,6 +561,12 @@ onUnmounted(() => {
   z-index: 20;
 }
 
+@supports (corner-shape: superellipse(2)) {
+  .sticky-content-wrapper {
+    corner-shape: superellipse(var(--superK));
+  }
+}
+
 .sticky-content {
   display: flex;
   align-items: stretch;
@@ -633,6 +639,12 @@ onUnmounted(() => {
   transition: opacity 0.3s ease;
   background: white; /* Restore white bg for expanded view */
   border-radius: inherit; /* Ensure white bg follows radius */
+}
+
+@supports (corner-shape: superellipse(2)) {
+  .expanded-content-wrapper {
+    corner-shape: superellipse(var(--superK));
+  }
 }
 
 .drawer-section {
