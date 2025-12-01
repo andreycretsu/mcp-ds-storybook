@@ -5,7 +5,7 @@
     ref="stickyRef"
     class="sticky-view"
     @mousedown="startDrag"
-    :style="{ transform: `translate(${position.x}px, ${position.y}px)`, cursor: isDragging ? 'grabbing' : 'grab' }"
+    :style="{ transform: `translate(${position.x}px, ${position.y}px)`, cursor: isDragging ? 'grabbing' : 'grab', transition: isDragging ? 'none' : 'transform 0.5s cubic-bezier(0.19, 1, 0.22, 1)' }"
   >
     <div class="sticky-content" :class="{ 'on-break': status === 'break' }">
       <Icon 
@@ -27,7 +27,7 @@
     @mouseenter="isHovered = true" 
     @mouseleave="isHovered = false"
     @mousedown="startDrag"
-    :style="{ transform: `translate(${position.x}px, ${position.y}px)`, cursor: isDragging ? 'grabbing' : 'grab' }"
+    :style="{ transform: `translate(${position.x}px, ${position.y}px)`, cursor: isDragging ? 'grabbing' : 'grab', transition: isDragging ? 'none' : 'transform 0.5s cubic-bezier(0.19, 1, 0.22, 1)' }"
   >
     <!-- Drawer Section (Second Drawer) -->
     <div 
@@ -185,7 +185,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted, watch, nextTick } from 'vue'
 import Button from './Button.vue'
 import Icon from './Icon.vue'
 import { animate } from 'motion'
@@ -282,7 +282,7 @@ const onDrag = (e: MouseEvent) => {
   }
 }
 
-const stopDrag = () => {
+const stopDrag = async () => {
   isDragging.value = false
   document.removeEventListener('mousemove', onDrag)
   document.removeEventListener('mouseup', stopDrag)
@@ -298,18 +298,32 @@ const stopDrag = () => {
   
   if (rect.left < threshold) {
     // Snap Left
-    position.value.x -= rect.left
-    isSticky.value = true
+    const targetX = position.value.x - rect.left
+    
+    if (!isSticky.value) {
+      isSticky.value = true
+      await nextTick()
+      requestAnimationFrame(() => {
+        position.value.x = targetX
+      })
+    } else {
+      position.value.x = targetX
+    }
   } else if (rect.right > windowWidth - threshold) {
     // Snap Right
     const distToRight = windowWidth - rect.right
-    position.value.x += distToRight
+    let targetX = position.value.x + distToRight
     
     if (!isSticky.value) {
-       position.value.x += (EXPANDED_WIDTH - STICKY_WIDTH)
+       targetX += (EXPANDED_WIDTH - STICKY_WIDTH)
+       isSticky.value = true
+       await nextTick()
+       requestAnimationFrame(() => {
+         position.value.x = targetX
+       })
+    } else {
+       position.value.x = targetX
     }
-    
-    isSticky.value = true
   } else {
     if (isSticky.value) {
        isSticky.value = false
