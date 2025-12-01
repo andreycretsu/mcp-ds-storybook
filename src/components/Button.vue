@@ -271,9 +271,9 @@ function getBackgroundColor(tone: string, state: string): string {
 
   const colors: Record<string, Record<string, string>> = {
     primary: {
-      default: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.08) 100%), linear-gradient(90deg, rgb(44, 141, 255) 0%, rgb(44, 141, 255) 100%)',
-      hover: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.08) 100%), linear-gradient(90deg, rgb(18, 127, 254) 0%, rgb(18, 127, 254) 100%)',
-      press: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.08) 100%), linear-gradient(90deg, rgb(69, 154, 254) 0%, rgb(69, 154, 254) 100%)'
+      default: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%), linear-gradient(90deg, rgb(44, 141, 255) 0%, rgb(44, 141, 255) 100%)',
+      hover: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%), linear-gradient(90deg, rgb(18, 127, 254) 0%, rgb(18, 127, 254) 100%)',
+      press: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%), linear-gradient(90deg, rgb(69, 154, 254) 0%, rgb(69, 154, 254) 100%)'
     },
     secondary: {
       default: 'linear-gradient(to top, #ffffff 0%, #e5ecf3 100%)',
@@ -281,14 +281,14 @@ function getBackgroundColor(tone: string, state: string): string {
       press: 'linear-gradient(to top, #ffffff 0%, #edf2f7 100%)'
     },
     destructive: {
-      default: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.08) 100%), linear-gradient(90deg, rgb(233, 88, 88) 0%, rgb(233, 88, 88) 100%)',
-      hover: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.08) 100%), linear-gradient(90deg, rgb(228, 46, 46) 0%, rgb(228, 46, 46) 100%)',
-      press: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.08) 100%), linear-gradient(90deg, rgb(237, 119, 119) 0%, rgb(237, 119, 119) 100%)'
+      default: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%), linear-gradient(90deg, rgb(233, 88, 88) 0%, rgb(233, 88, 88) 100%)',
+      hover: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%), linear-gradient(90deg, rgb(228, 46, 46) 0%, rgb(228, 46, 46) 100%)',
+      press: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%), linear-gradient(90deg, rgb(237, 119, 119) 0%, rgb(237, 119, 119) 100%)'
     },
     dark: {
-      default: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.08) 100%), linear-gradient(90deg, rgb(36, 60, 92) 0%, rgb(36, 60, 92) 100%)',
-      hover: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.08) 100%), linear-gradient(90deg, rgb(80, 99, 125) 0%, rgb(80, 99, 125) 100%)',
-      press: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.08) 100%), linear-gradient(90deg, rgb(113, 128, 149) 0%, rgb(113, 128, 149) 100%)'
+      default: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%), linear-gradient(90deg, rgb(36, 60, 92) 0%, rgb(36, 60, 92) 100%)',
+      hover: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%), linear-gradient(90deg, rgb(80, 99, 125) 0%, rgb(80, 99, 125) 100%)',
+      press: 'linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.1) 100%), linear-gradient(90deg, rgb(113, 128, 149) 0%, rgb(113, 128, 149) 100%)'
     }
   }
   
