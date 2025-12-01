@@ -253,7 +253,8 @@ const containerStyle = computed(() => {
     // Apply smooth transition for morphing effect
     transition: isDragging.value 
       ? 'none' 
-      : 'width 0.5s cubic-bezier(0.19, 1, 0.22, 1), height 0.5s cubic-bezier(0.19, 1, 0.22, 1), transform 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
+      : 'width 0.5s cubic-bezier(0.19, 1, 0.22, 1), height 0.5s cubic-bezier(0.19, 1, 0.22, 1), transform 0.5s cubic-bezier(0.19, 1, 0.22, 1), border-radius 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
+    // Use consistent radius token
     borderRadius: isSticky.value ? '20px' : 'var(--radius-20-fallback, 12px)'
   }
 })
@@ -579,7 +580,7 @@ onUnmounted(() => {
 
 .break-section {
   background: #f8ecc4;
-  border-radius: 20px; /* This creates the pill shape on top */
+  border-radius: 20px;
   z-index: 2;
   position: relative;
   box-shadow: 2px 0 4px rgba(0,0,0,0.02); /* Optional subtle separator */
@@ -597,6 +598,13 @@ onUnmounted(() => {
   z-index: 1;
   justify-content: center;
   min-width: 110px;
+  border-radius: 20px;
+}
+
+@supports (corner-shape: superellipse(2)) {
+  .work-section {
+    corner-shape: superellipse(var(--superK));
+  }
 }
 
 /* When work section is the only one displayed (default state) */
