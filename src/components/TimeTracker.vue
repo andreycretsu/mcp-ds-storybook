@@ -1,5 +1,27 @@
 <template>
+  <!-- Sticky View (Minimized) -->
   <div 
+    v-if="isSticky"
+    ref="stickyRef"
+    class="sticky-view"
+    @mousedown="startDrag"
+    :style="{ transform: `translate(${position.x}px, ${position.y}px)`, cursor: isDragging ? 'grabbing' : 'grab' }"
+  >
+    <div class="sticky-content" :class="{ 'on-break': status === 'break' }">
+      <Icon 
+        :icon="status === 'work' ? 'briefcase' : 'mug'" 
+        size="S-16" 
+        :color="status === 'work' ? '#000f30' : '#1b1a18'" 
+      />
+      <span class="sticky-timer">
+        {{ formatTime(status === 'work' ? workTime : breakTime) }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Main Widget -->
+  <div 
+    v-else
     class="tracker-container" 
     ref="containerRef"
     @mouseenter="isHovered = true" 
@@ -176,9 +198,11 @@ const trackerRef = ref<HTMLElement | null>(null)
 const headerGroup = ref<HTMLElement | null>(null)
 const drawerRef = ref<HTMLElement | null>(null)
 const containerRef = ref<HTMLElement | null>(null)
+const stickyRef = ref<HTMLElement | null>(null)
 const isExpanded = ref(true)
 const isHovered = ref(false)
 const isDrawerOpen = ref(false)
+const isSticky = ref(false)
 const position = ref({ x: 0, y: 0 })
 const isDragging = ref(false)
 const dragStart = ref({ x: 0, y: 0 })
@@ -262,6 +286,35 @@ const stopDrag = () => {
   isDragging.value = false
   document.removeEventListener('mousemove', onDrag)
   document.removeEventListener('mouseup', stopDrag)
+  
+  const el = isSticky.value ? stickyRef.value : containerRef.value
+  if (!el) return
+
+  const rect = el.getBoundingClientRect()
+  const threshold = 50
+  const windowWidth = window.innerWidth
+  const EXPANDED_WIDTH = 340
+  const STICKY_WIDTH = 120
+  
+  if (rect.left < threshold) {
+    // Snap Left
+    position.value.x -= rect.left
+    isSticky.value = true
+  } else if (rect.right > windowWidth - threshold) {
+    // Snap Right
+    const distToRight = windowWidth - rect.right
+    position.value.x += distToRight
+    
+    if (!isSticky.value) {
+       position.value.x += (EXPANDED_WIDTH - STICKY_WIDTH)
+    }
+    
+    isSticky.value = true
+  } else {
+    if (isSticky.value) {
+       isSticky.value = false
+    }
+  }
 }
 
 const handleClickOutside = (event: MouseEvent) => {
@@ -330,6 +383,37 @@ onUnmounted(() => {
     border-radius: var(--radius-20-ideal, 12px);
     corner-shape: superellipse(var(--superK));
   }
+}
+
+.sticky-view {
+  position: relative;
+  width: 120px;
+  height: 40px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  z-index: 100;
+}
+
+.sticky-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sticky-content.on-break {
+  /* Styles for break state in sticky mode if needed */
+}
+
+.sticky-timer {
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: #1b1a18;
+  line-height: 1;
 }
 
 .drawer-section {
@@ -588,6 +672,7 @@ onUnmounted(() => {
 .work-timer-wrapper.dimmed {
   /* No background change on dim */
   background-color: transparent;
+  opacity: 0.5;
 }
 
 .timer {
