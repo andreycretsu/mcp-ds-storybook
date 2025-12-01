@@ -13,27 +13,26 @@
       class="sticky-content-wrapper"
       :style="{ opacity: isSticky ? 1 : 0, pointerEvents: isSticky ? 'auto' : 'none' }"
     >
-      <div class="sticky-content" :class="{ 'on-break': status === 'break' }">
-        <div class="sticky-left-section" :class="{ 'break-bg-color': status === 'break' }">
-          <div class="status-part">
-            <Icon 
-              :icon="status === 'work' ? 'briefcase' : 'mug'" 
-              size="S-12" 
-              :color="status === 'break' ? '#1b1a18' : '#000f30'" 
-            />
-            <span class="sticky-status-text" :style="{ color: status === 'break' ? '#1b1a18' : '#000f30' }">
-              {{ status === 'work' ? 'At work' : 'On break' }}
-            </span>
-          </div>
-          
-          <div v-if="status === 'break'" class="break-timer-part">
-             <span class="sticky-timer" style="color: #1b1a18;">
-              {{ formatTime(breakTime) }}
-            </span>
-          </div>
+      <div class="sticky-content">
+        <!-- Break Timer Section (Yellow Overlay) -->
+        <div v-if="status === 'break'" class="sticky-timer-section break-section">
+          <Icon 
+            icon="mug" 
+            size="S-16" 
+            color="#1b1a18" 
+          />
+          <span class="sticky-timer" style="color: #1b1a18;">
+            {{ formatTime(breakTime) }}
+          </span>
         </div>
 
-        <div class="sticky-right-section" :class="{ 'work-bg-color': true }">
+        <!-- Work Timer Section (Right/Default) -->
+        <div class="sticky-timer-section work-section" :class="{ 'is-default': status === 'work' }">
+           <Icon 
+            icon="briefcase" 
+            size="S-16" 
+            :color="status === 'break' ? 'rgba(0, 15, 48, 0.5)' : '#000f30'" 
+          />
            <span class="sticky-timer" :style="{ color: '#000f30', opacity: status === 'break' ? 0.5 : 1 }">
               {{ formatTime(workTime) }}
             </span>
@@ -230,16 +229,13 @@ let timerInterval: number | null = null
 // --- Dimensions for Magnetic/Sticky Logic ---
 const EXPANDED_WIDTH = 340
 const EXPANDED_HEIGHT = 72
-const STICKY_HEIGHT = 32 // Reduced to be more header-like
+const STICKY_HEIGHT = 40 // Match radius 20px (40px diameter)
 
 // Dynamic width for sticky view depending on content (single vs dual timer)
 const stickyWidth = computed(() => {
-  // Approx width calculation:
-  // Status part: ~80px ("At work" + icon) or ~85px ("On break" + icon)
-  // Timer part: ~65px each
-  // Break Mode: 85 + 65 + 65 = 215px
-  // Work Mode: 80 + 65 = 145px
-  return status.value === 'break' ? 230 : 160
+  // Single timer: Icon (16) + Gap (8) + Time (60) + Padding (12*2) ~= 110
+  // Double timer: 110 + 110 = 220
+  return status.value === 'break' ? 220 : 110
 })
 
 const containerStyle = computed(() => {
@@ -536,18 +532,7 @@ onUnmounted(() => {
   /* border-radius is also controlled via inline styles */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
   background: white;
-  overflow: visible; /* Must be visible for drawer? No, drawer is inside? */
-  /* Wait, drawer is absolutely positioned "bottom: 100%". 
-     If overflow:hidden, drawer will be clipped. 
-     Original code had drawer inside, but container had overflow:hidden?
-     Actually, drawer was inside .tracker-container but outside .time-tracker (which had overflow:hidden).
-     Now we have one container.
-     The container itself transitions size. 
-     If we use overflow:hidden on container, drawer will clip.
-     So container must be overflow: visible.
-     But we need rounded corners.
-     We can use a separate inner wrapper for rounded corners if needed, or just rely on border-radius.
-  */
+  overflow: visible;
   z-index: 100;
 }
 
@@ -557,10 +542,6 @@ onUnmounted(() => {
   }
 }
 
-/* 
-  Content Wrappers 
-  These absolute positionings ensure contents overlap during morph 
-*/
 .sticky-content-wrapper {
   position: absolute;
   top: 0;
@@ -568,21 +549,13 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: stretch; /* Stretch to fill container height */
+  align-items: stretch;
   justify-content: flex-start;
-  overflow: hidden; /* Clip content during shrink */
+  overflow: hidden;
   border-radius: inherit;
   transition: opacity 0.3s ease;
-  background: white; /* Ensure background covers other content */
+  background: #d1e6fa; /* Default to Work Blue */
   z-index: 20;
-}
-
-.expanded-content-wrapper {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  transition: opacity 0.3s ease;
-  /* border-radius is inherited from container visually, but we need inner overflow hidden for children */
 }
 
 .sticky-content {
@@ -593,49 +566,57 @@ onUnmounted(() => {
   font-family: 'Inter', sans-serif;
 }
 
-.sticky-left-section {
-  display: flex;
-  align-items: center;
-  padding: 0 12px;
-  gap: 12px;
-  flex-grow: 1; /* Takes available space */
-  background: #d1e6fa; /* Default Work Blue */
-  transition: background-color 0.3s ease;
-}
-
-.sticky-left-section.break-bg-color {
-  background: #f8ecc4; /* Break Yellow */
-}
-
-.status-part {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.sticky-status-text {
-  font-size: 12px;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
-.break-timer-part {
-  display: flex;
-  align-items: center;
-}
-
-.sticky-right-section {
+.sticky-timer-section {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 8px;
   padding: 0 12px;
-  background: #d1e6fa; /* Always Work Blue */
+  flex: 1; /* Distribute space evenly? Or sized by content? */
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.break-section {
+  background: #f8ecc4;
+  border-radius: 20px; /* This creates the pill shape on top */
+  z-index: 2;
+  position: relative;
+  box-shadow: 2px 0 4px rgba(0,0,0,0.02); /* Optional subtle separator */
+  min-width: 110px;
+}
+
+@supports (corner-shape: superellipse(2)) {
+  .break-section {
+    corner-shape: superellipse(var(--superK));
+  }
+}
+
+.work-section {
+  background: transparent; /* Let container blue show through */
+  z-index: 1;
+  justify-content: center;
+  min-width: 110px;
+}
+
+/* When work section is the only one displayed (default state) */
+.work-section.is-default {
+  background: transparent;
 }
 
 .sticky-timer {
   font-family: 'Space Mono', monospace;
   font-size: 12px;
   line-height: 1;
+}
+
+.expanded-content-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transition: opacity 0.3s ease;
+  background: white; /* Restore white bg for expanded view */
+  border-radius: inherit; /* Ensure white bg follows radius */
 }
 
 .drawer-section {
