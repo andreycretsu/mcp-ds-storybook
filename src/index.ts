@@ -1,5 +1,8 @@
 import type { App } from 'vue'
 
+// Import FontAwesome CSS (Free version)
+import '@fortawesome/fontawesome-free/css/all.css'
+
 // Import all components
 import Avatar from './components/Avatar.vue'
 import Badge from './components/Badge.vue'

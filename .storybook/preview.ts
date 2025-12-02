@@ -1,6 +1,6 @@
 import type { Preview } from '@storybook/vue3'
 import '../src/style.css'
-import '@fortawesome/fontawesome-pro/css/all.css'
+import '@fortawesome/fontawesome-free/css/all.css'
 
 const preview: Preview = {
   parameters: {

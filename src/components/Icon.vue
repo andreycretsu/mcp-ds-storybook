@@ -84,27 +84,27 @@ const computedStyle = computed(() => {
 /* Ensure Font Awesome weights and families are respected even if parent enforces a different weight */
 :deep(.fa-solid), :deep(.fas) {
   font-weight: 900 !important;
-  font-family: "Font Awesome 7 Pro" !important;
+  font-family: "Font Awesome 6 Free", "Font Awesome 6 Pro", sans-serif !important;
 }
 :deep(.fa-regular), :deep(.far) {
   font-weight: 400 !important;
-  font-family: "Font Awesome 7 Pro" !important;
+  font-family: "Font Awesome 6 Free", "Font Awesome 6 Pro", sans-serif !important;
 }
 :deep(.fa-light), :deep(.fal) {
   font-weight: 300 !important;
-  font-family: "Font Awesome 7 Pro" !important;
+  font-family: "Font Awesome 6 Pro", "Font Awesome 6 Free", sans-serif !important;
 }
 :deep(.fa-thin), :deep(.fat) {
   font-weight: 100 !important;
-  font-family: "Font Awesome 7 Pro" !important;
+  font-family: "Font Awesome 6 Pro", "Font Awesome 6 Free", sans-serif !important;
 }
 :deep(.fa-duotone), :deep(.fad) {
   font-weight: 900 !important;
-  font-family: "Font Awesome 7 Duotone" !important;
+  font-family: "Font Awesome 6 Duotone", "Font Awesome 6 Pro", "Font Awesome 6 Free", sans-serif !important;
 }
 :deep(.fa-brands), :deep(.fab) {
   font-weight: 400 !important;
-  font-family: "Font Awesome 7 Brands" !important;
+  font-family: "Font Awesome 6 Brands", sans-serif !important;
 }
 
 .icon-container {

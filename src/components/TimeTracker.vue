@@ -7,6 +7,8 @@
     @mousedown="startDrag"
     @click="handleContainerClick"
     :style="containerStyle"
+    @mouseenter="isHovered = true" 
+    @mouseleave="isHovered = false"
   >
     <!-- 1. Sticky Content (Shown when sticky) -->
     <div 
@@ -16,11 +18,9 @@
       <div class="sticky-content">
         <!-- Break Timer Section (Yellow Overlay) -->
         <div v-if="status === 'break'" class="sticky-timer-section break-section">
-          <Icon 
-            icon="mug" 
-            size="S-16" 
-            color="#1b1a18" 
-          />
+          <svg :viewBox="icons.mug.viewBox" width="16" height="16" fill="#1b1a18" style="display: block;">
+            <path :d="icons.mug.path" />
+          </svg>
           <span class="sticky-timer" style="color: #1b1a18;">
             {{ formatTime(breakTime) }}
           </span>
@@ -28,11 +28,9 @@
 
         <!-- Work Timer Section (Right/Default) -->
         <div class="sticky-timer-section work-section" :class="{ 'is-default': status === 'work' }">
-           <Icon 
-            icon="briefcase" 
-            size="S-16" 
-            :color="status === 'break' ? 'rgba(0, 15, 48, 0.5)' : '#000f30'" 
-          />
+           <svg :viewBox="icons.briefcase.viewBox" width="16" height="16" :fill="status === 'break' ? 'rgba(0, 15, 48, 0.5)' : '#000f30'" style="display: block;">
+             <path :d="icons.briefcase.path" />
+           </svg>
            <span class="sticky-timer" :style="{ color: '#000f30', opacity: status === 'break' ? 0.5 : 1 }">
               {{ formatTime(workTime) }}
             </span>
@@ -45,6 +43,19 @@
       class="expanded-content-wrapper"
       :style="{ opacity: isSticky ? 0 : 1, pointerEvents: isSticky ? 'none' : 'auto' }"
     >
+      <!-- Minimize Button -->
+      <transition name="fade">
+        <div 
+          v-if="isHovered && !isDrawerOpen && !isSticky" 
+          class="minimize-trigger"
+          @click.stop="minimize"
+        >
+          <svg :viewBox="icons.minus.viewBox" width="10" height="10" fill="white" style="display: block;">
+            <path :d="icons.minus.path" />
+          </svg>
+        </div>
+      </transition>
+
       <!-- Drawer Section (Second Drawer) -->
       <div 
         ref="drawerRef" 
@@ -54,29 +65,12 @@
         <!-- Empty content for now -->
       </div>
 
-      <!-- Trigger Handle -->
-      <transition name="fade">
-        <div 
-          v-if="isHovered && !isDrawerOpen && !isSticky" 
-          class="drawer-trigger"
-          @click.stop="toggleDrawer"
-        >
-          <Icon 
-            :icon="'chevron-up'" 
-            size="XS-8" 
-            color="white" 
-          />
-        </div>
-      </transition>
-
       <!-- Main Time Tracker Widget Content -->
       <div 
         ref="trackerRef"
         class="time-tracker" 
         :class="{ 'is-collapsed': !isExpanded, [status]: true }"
         :style="{ opacity: isDrawerOpen ? 0.5 : 1, transition: 'opacity 0.3s ease' }"
-        @mouseenter="isHovered = true" 
-        @mouseleave="isHovered = false"
       >
         <!-- Background layers -->
         <div class="bg-layer work-bg"></div>
@@ -95,11 +89,12 @@
           >
             <div class="status-content">
               <div class="status-icon-wrapper">
-                <Icon 
-                  :icon="status === 'work' ? 'briefcase' : 'mug'" 
-                  size="S-12"
-                  color="#000f30"
-                />
+                <svg v-if="status === 'work'" :viewBox="icons.briefcase.viewBox" width="12" height="12" fill="#000f30" style="display: block;">
+                  <path :d="icons.briefcase.path" />
+                </svg>
+                <svg v-else :viewBox="icons.mug.viewBox" width="12" height="12" fill="#000f30" style="display: block;">
+                  <path :d="icons.mug.path" />
+                </svg>
               </div>
               <span class="status-text">{{ status === 'work' ? 'At work' : 'On break' }}</span>
             </div>
@@ -146,42 +141,70 @@
             <!-- Left: Project Info -->
             <div class="project-info">
               <div class="project-icon">
-                <span>📑</span>
+                <span>{{ props.projectEmoji }}</span>
               </div>
-              <span class="project-name">Customer Success Strategy</span>
+              <span class="project-name">{{ props.projectName }}</span>
             </div>
 
             <!-- Right: Buttons -->
             <div class="actions">
               <transition name="fade" mode="out-in">
                 <div v-if="isExpanded" class="actions-group">
+                  <transition name="fade">
+                    <Button 
+                      v-if="isHovered || isDrawerOpen"
+                      type="icon-only" 
+                      size="24" 
+                      tone="secondary" 
+                      @click.stop="toggleDrawer"
+                    >
+                      <template #l-icon="{ color }">
+                        <svg :viewBox="icons.penToSquare.viewBox" width="12" height="12" :fill="color" style="display: block;">
+                          <path :d="icons.penToSquare.path" />
+                        </svg>
+                      </template>
+                    </Button>
+                  </transition>
+
                   <Button 
                     v-if="status === 'work'"
                     type="icon-only" 
                     size="24" 
                     tone="secondary" 
-                    l-icon 
-                    l-icon-name="mug"
                     @click.stop="toggleBreak"
-                  />
+                  >
+                    <template #l-icon="{ color }">
+                      <svg :viewBox="icons.mug.viewBox" width="12" height="12" :fill="color" style="display: block;">
+                        <path :d="icons.mug.path" />
+                      </svg>
+                    </template>
+                  </Button>
                   <Button 
                     v-else
                     type="icon-only" 
                     size="24" 
                     tone="secondary" 
-                    l-icon 
-                    l-icon-name="briefcase"
                     @click.stop="toggleBreak"
-                  />
+                  >
+                    <template #l-icon="{ color }">
+                      <svg :viewBox="icons.briefcase.viewBox" width="12" height="12" :fill="color" style="display: block;">
+                        <path :d="icons.briefcase.path" />
+                      </svg>
+                    </template>
+                  </Button>
                   
                   <Button 
                     type="icon-only" 
                     size="24" 
                     tone="secondary" 
-                    l-icon 
-                    l-icon-name="circle-stop"
                     @click.stop="stop"
-                  />
+                  >
+                    <template #l-icon="{ color }">
+                      <svg :viewBox="icons.circleStop.viewBox" width="12" height="12" :fill="color" style="display: block;">
+                        <path :d="icons.circleStop.path" />
+                      </svg>
+                    </template>
+                  </Button>
                 </div>
                 <div v-else class="actions-group">
                    <!-- Play button to expand/restart -->
@@ -189,10 +212,14 @@
                     type="icon-only" 
                     size="24" 
                     tone="secondary" 
-                    l-icon 
-                    l-icon-name="circle-play"
                     @click.stop="start"
-                  />
+                  >
+                    <template #l-icon="{ color }">
+                      <svg :viewBox="icons.circlePlay.viewBox" width="12" height="12" :fill="color" style="display: block;">
+                        <path :d="icons.circlePlay.path" />
+                      </svg>
+                    </template>
+                  </Button>
                 </div>
               </transition>
             </div>
@@ -206,12 +233,70 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch, nextTick, computed } from 'vue'
 import Button from './Button.vue'
-import Icon from './Icon.vue'
 import { animate } from 'motion'
 
-const status = ref<'work' | 'break'>('work')
-const workTime = ref(0)
-const breakTime = ref(0)
+const icons = {
+  mug: {
+    viewBox: '0 0 576 512',
+    path: 'M64 64c0-17.7 14.3-32 32-32l352 0c70.7 0 128 57.3 128 128S518.7 288 448 288c0 53-43 96-96 96l-192 0c-53 0-96-43-96-96L64 64zm448 96c0-35.3-28.7-64-64-64l0 128c35.3 0 64-28.7 64-64zM64 448l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L64 512c-17.7 0-32-14.3-32-32s14.3-32 32-32z'
+  },
+  briefcase: {
+    viewBox: '0 0 512 512',
+    path: 'M200 48l112 0c4.4 0 8 3.6 8 8l0 40-128 0 0-40c0-4.4 3.6-8 8-8zm-56 8l0 40-80 0C28.7 96 0 124.7 0 160l0 96 512 0 0-96c0-35.3-28.7-64-64-64l-80 0 0-40c0-30.9-25.1-56-56-56L200 0c-30.9 0-56 25.1-56 56zM512 304l-192 0 0 16c0 17.7-14.3 32-32 32l-64 0c-17.7 0-32-14.3-32-32l0-16-192 0 0 112c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-112z'
+  },
+  chevronUp: {
+    viewBox: '0 0 448 512',
+    path: 'M201.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 173.3 54.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z'
+  },
+  chevronDown: {
+    viewBox: '0 0 448 512',
+    path: 'M201.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 338.7 54.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z'
+  },
+  minus: {
+    viewBox: '0 0 448 512',
+    path: 'M0 256c0-17.7 14.3-32 32-32l384 0c17.7 0 32 14.3 32 32s-14.3 32-32 32L32 288c-17.7 0-32-14.3-32-32z'
+  },
+  circleStop: {
+    viewBox: '0 0 512 512',
+    path: 'M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM192 160l128 0c17.7 0 32 14.3 32 32l0 128c0 17.7-14.3 32-32 32l-128 0c-17.7 0-32-14.3-32-32l0-128c0-17.7 14.3-32 32-32z'
+  },
+  circlePlay: {
+    viewBox: '0 0 512 512',
+    path: 'M0 256a256 256 0 1 1 512 0 256 256 0 1 1 -512 0zM188.3 147.1c-7.6 4.2-12.3 12.3-12.3 20.9l0 176c0 8.7 4.7 16.7 12.3 20.9s16.8 4.1 24.3-.5l144-88c7.1-4.4 11.5-12.1 11.5-20.5s-4.4-16.1-11.5-20.5l-144-88c-7.4-4.5-16.7-4.7-24.3-.5z'
+  },
+  penToSquare: {
+    viewBox: '0 0 512 512',
+    path: 'M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L368 46.1 465.9 144 490.3 119.6c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L432 177.9 334.1 80 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z'
+  }
+}
+
+// Define Props for customization
+const props = withDefaults(defineProps<{
+  projectName?: string
+  projectEmoji?: string
+  initialWorkTime?: number
+  initialBreakTime?: number
+  initialStatus?: 'work' | 'break'
+  snapThreshold?: number
+}>(), {
+  projectName: 'Customer Success Strategy',
+  projectEmoji: '📑',
+  initialWorkTime: 0,
+  initialBreakTime: 0,
+  initialStatus: 'work',
+  snapThreshold: 50
+})
+
+// Define Emits for integration
+const emit = defineEmits<{
+  (e: 'status-change', status: 'work' | 'break'): void
+  (e: 'stop', times: { workTime: number, breakTime: number }): void
+  (e: 'start'): void
+}>()
+
+const status = ref<'work' | 'break'>(props.initialStatus)
+const workTime = ref(props.initialWorkTime)
+const breakTime = ref(props.initialBreakTime)
 const breakBg = ref<HTMLElement | null>(null)
 const trackerRef = ref<HTMLElement | null>(null)
 const headerGroup = ref<HTMLElement | null>(null)
@@ -221,6 +306,7 @@ const isExpanded = ref(true)
 const isHovered = ref(false)
 const isDrawerOpen = ref(false)
 const isSticky = ref(false)
+const stickySide = ref<'left' | 'right' | 'top' | 'bottom' | null>(null)
 const position = ref({ x: 0, y: 0 })
 const isDragging = ref(false)
 const dragStart = ref({ x: 0, y: 0 })
@@ -245,7 +331,7 @@ const containerStyle = computed(() => {
     ? STICKY_HEIGHT 
     : (isExpanded.value ? EXPANDED_HEIGHT : 52)
 
-  return {
+  let style: Record<string, string | number> = {
     width: width,
     height: `${targetHeight}px`,
     transform: `translate(${position.value.x}px, ${position.value.y}px)`,
@@ -254,8 +340,27 @@ const containerStyle = computed(() => {
     transition: isDragging.value 
       ? 'none' 
       : 'width 0.5s cubic-bezier(0.19, 1, 0.22, 1), height 0.5s cubic-bezier(0.19, 1, 0.22, 1), transform 0.5s cubic-bezier(0.19, 1, 0.22, 1)',
-    // Removed inline borderRadius to rely on CSS classes using design tokens
   }
+
+  // Apply rotation if sticky to right edge
+  if (isSticky.value && stickySide.value === 'right') {
+    const w = stickyWidth.value
+    const h = STICKY_HEIGHT
+    // Shift right to keep the edge flush after rotation
+    const shiftX = (w - h) / 2
+    style.transform = `translate(${position.value.x}px, ${position.value.y}px) translate(${shiftX}px, 0) rotate(-90deg)`
+  }
+  
+  // Apply rotation if sticky to left edge
+  if (isSticky.value && stickySide.value === 'left') {
+    const w = stickyWidth.value
+    const h = STICKY_HEIGHT
+    // Shift left to keep the edge flush after rotation
+    const shiftX = -(w - h) / 2
+    style.transform = `translate(${position.value.x}px, ${position.value.y}px) translate(${shiftX}px, 0) rotate(90deg)`
+  }
+
+  return style
 })
 
 const formatTime = (seconds: number) => {
@@ -279,6 +384,7 @@ const startTimer = () => {
 
 const toggleBreak = () => {
   status.value = status.value === 'work' ? 'break' : 'work'
+  emit('status-change', status.value)
   
   if (breakBg.value) {
     if (status.value === 'break') {
@@ -290,6 +396,7 @@ const toggleBreak = () => {
 }
 
 const stop = () => {
+  emit('stop', { workTime: workTime.value, breakTime: breakTime.value })
   workTime.value = 0
   breakTime.value = 0
   status.value = 'work'
@@ -305,12 +412,42 @@ const stop = () => {
 }
 
 const start = () => {
+  emit('start')
   isExpanded.value = true
   startTimer()
 }
 
 const toggleDrawer = () => {
   isDrawerOpen.value = !isDrawerOpen.value
+}
+
+const minimize = async () => {
+  isSticky.value = true
+  stickySide.value = 'bottom'
+  
+  const el = containerRef.value
+  if (!el) return
+  
+  const parent = el.offsetParent || document.body
+  const parentRect = parent.getBoundingClientRect()
+  
+  // Snap to bottom immediately
+  // Current X is maintained but clamped?
+  // Let's clamp X to parent width - sticky width
+  
+  const TARGET_STICKY_WIDTH = stickyWidth.value
+  let newX = position.value.x
+  
+  // Clamp X
+  if (newX < 0) newX = 0
+  if (newX + TARGET_STICKY_WIDTH > parentRect.width) {
+    newX = parentRect.width - TARGET_STICKY_WIDTH
+  }
+  
+  // Set Y to bottom edge (0 padding)
+  const newY = parentRect.height - STICKY_HEIGHT
+  
+  position.value = { x: newX, y: newY }
 }
 
 const handleContainerClick = () => {
@@ -329,7 +466,7 @@ const expandSticky = async () => {
   const parent = el.offsetParent || document.body
   const parentRect = parent.getBoundingClientRect()
   
-  const threshold = 50
+  const threshold = props.snapThreshold
   // Use current computed sticky width logic for accurate calculation
   const currentStickyWidth = stickyWidth.value
   
@@ -355,6 +492,7 @@ const expandSticky = async () => {
   }
   
   isSticky.value = false
+  stickySide.value = null
   // await nextTick() // Not strictly needed if we rely on reactive state + transition
   
   // requestAnimationFrame(() => {
@@ -375,10 +513,46 @@ const startDrag = (e: MouseEvent) => {
 
 const onDrag = (e: MouseEvent) => {
   if (!isDragging.value) return
-  position.value = {
-    x: e.clientX - dragStart.value.x,
-    y: e.clientY - dragStart.value.y
+  
+  // Update position naturally
+  let newX = e.clientX - dragStart.value.x
+  let newY = e.clientY - dragStart.value.y
+  
+  const el = containerRef.value
+  if (el) {
+    const parent = el.offsetParent || document.body
+    const parentRect = parent.getBoundingClientRect()
+    
+    // If sticky, constrain movement
+    if (isSticky.value) {
+      // Constrain Y to bottom (allow no vertical movement)
+      // Or allow dragging along bottom edge? "drag it around the bottom edge only"
+      // So Y is fixed.
+      
+      // We must enforce bottom edge Y.
+      // Ensure we use the correct height (Sticky Height)
+      newY = parentRect.height - STICKY_HEIGHT
+      
+      // Constrain X to parent bounds
+      const currentW = stickyWidth.value
+      if (newX < 0) newX = 0
+      if (newX + currentW > parentRect.width) newX = parentRect.width - currentW
+      
+    } else {
+      // Normal dragging (Expanded)
+      // Just bounds checking?
+      // Or free dragging?
+      // Let's apply bounds checking so it doesn't fly off.
+      
+      const currentW = EXPANDED_WIDTH // approx or actual rect?
+      // Using actual rect is better but position is top-left relative.
+      
+      // Just let it drag freely for now, logic in stopDrag handles boundaries if needed.
+      // But we REMOVED auto-minimize logic here.
+    }
   }
+  
+  position.value = { x: newX, y: newY }
 }
 
 const stopDrag = async () => {
@@ -386,6 +560,7 @@ const stopDrag = async () => {
   document.removeEventListener('mousemove', onDrag)
   document.removeEventListener('mouseup', stopDrag)
   
+  // Ensure boundaries on stop
   const el = containerRef.value
   if (!el) return
 
@@ -393,77 +568,21 @@ const stopDrag = async () => {
   const parent = el.offsetParent || document.body
   const parentRect = parent.getBoundingClientRect()
   
-  const threshold = 50
-  // Use current Sticky Width for calculation
-  const TARGET_STICKY_WIDTH = stickyWidth.value
-  const TARGET_EXPANDED_HEIGHT = isExpanded.value ? EXPANDED_HEIGHT : 52
-  
-  // Calculate distances to parent edges
-  const distLeft = rect.left - parentRect.left
-  const distRight = parentRect.right - rect.right
-  const distTop = rect.top - parentRect.top
-  const distBottom = parentRect.bottom - rect.bottom
-  
   let newX = position.value.x
   let newY = position.value.y
-  let newIsSticky = false
   
-  // Check edges
-  const snapLeft = distLeft < threshold
-  const snapRight = distRight < threshold
-  const snapTop = distTop < threshold
-  const snapBottom = distBottom < threshold
+  const currentW = isSticky.value ? stickyWidth.value : EXPANDED_WIDTH
+  const currentH = isSticky.value ? STICKY_HEIGHT : (isExpanded.value ? EXPANDED_HEIGHT : 52)
   
-  if (snapLeft || snapRight || snapTop || snapBottom) {
-    newIsSticky = true
-    
-    // Handle Horizontal Snapping
-    if (snapLeft) {
-      newX -= distLeft // Snap flush to left
-    } else if (snapRight) {
-      // Target: Right edge flush
-      newX += distRight
-      
-      // If switching from Expanded to Sticky, compensate width change
-      if (!isSticky.value) {
-        newX += (EXPANDED_WIDTH - TARGET_STICKY_WIDTH)
-      }
-    }
-    
-    // Handle Vertical Snapping
-    if (snapTop) {
-      newY -= distTop // Snap flush to top
-    } else if (snapBottom) {
-       // Target: Bottom edge flush
-       newY += distBottom
-       
-       // If switching from Expanded to Sticky, height shrinks
-       if (!isSticky.value) {
-         newY += (TARGET_EXPANDED_HEIGHT - STICKY_HEIGHT)
-       }
-    }
-    
-  } else {
-    // Unstick logic
-    if (isSticky.value) {
-      newIsSticky = false
-      
-      // Check if we are near Right edge
-      // Note: Use current sticky width here as we are starting FROM sticky
-      if (distRight < threshold + (EXPANDED_WIDTH - TARGET_STICKY_WIDTH)) {
-         newX -= (EXPANDED_WIDTH - TARGET_STICKY_WIDTH)
-      }
-      
-      // Check if we are near Bottom edge
-      if (distBottom < threshold + (TARGET_EXPANDED_HEIGHT - STICKY_HEIGHT)) {
-         newY -= (TARGET_EXPANDED_HEIGHT - STICKY_HEIGHT)
-      }
-    }
-  }
-
-  if (newIsSticky !== isSticky.value) {
-     isSticky.value = newIsSticky
-     // await nextTick()
+  // Clamp to viewport
+  if (newX < 0) newX = 0
+  if (newX + currentW > parentRect.width) newX = parentRect.width - currentW
+  if (newY < 0) newY = 0
+  if (newY + currentH > parentRect.height) newY = parentRect.height - currentH
+  
+  // If sticky, enforce bottom edge exactly (0 padding)
+  if (isSticky.value) {
+    newY = parentRect.height - STICKY_HEIGHT
   }
   
   requestAnimationFrame(() => {
@@ -687,6 +806,42 @@ onUnmounted(() => {
   margin-bottom: 4px;
 }
 
+.minimize-trigger {
+  position: absolute;
+  top: -16px; /* 12px height + 4px gap */
+  right: 0;
+  width: 24px;
+  height: 16px; /* Increased height to bridge the gap */
+  display: flex;
+  align-items: center; /* This might center it too low if height is 16px. We want content at top? */
+  padding-bottom: 4px; /* Push content up by 4px? No, padding adds to size if box-sizing content-box */
+  box-sizing: border-box; /* Include padding in height */
+  justify-content: center;
+  background: rgba(107, 114, 128, 0.5); /* This will color the bridge too? */
+  /* We only want the top part colored. */
+  background: transparent;
+  z-index: 5;
+  cursor: pointer;
+}
+
+.minimize-trigger::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 12px;
+  background: rgba(107, 114, 128, 0.5);
+  backdrop-filter: blur(4px);
+  border-radius: 12px;
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.05);
+}
+
+.minimize-trigger svg {
+  z-index: 1; /* Ensure icon is above pseudo-element */
+  margin-bottom: 4px; /* Lift icon back up into the visual pill */
+}
+
 .time-tracker {
   width: 100%;
   height: 100%; /* Fill the animating container */
@@ -767,7 +922,7 @@ onUnmounted(() => {
 
 .status-content { display: flex; align-items: center; gap: 4px; }
 .status-icon-wrapper { display: flex; align-items: center; justify-content: center; width: 12px; height: 12px; }
-.status-text { font-size: 10px; color: #1b1a18; line-height: 1; }
+.status-text { font-size: 10px; color: #1b1a18; line-height: 1; user-select: none; }
 
 .timer-pill {
   position: absolute;
@@ -835,6 +990,7 @@ onUnmounted(() => {
   font-size: 12px;
   color: #1b1a18;
   line-height: 1;
+  user-select: none;
 }
 
 .main-card {

@@ -24,20 +24,24 @@
     <div v-if="state === 'focus'" class="button__focus-effect"></div>
     
     <!-- Left Icon (always rendered when lIcon is true, hidden with opacity during loading/success) -->
-    <div v-if="lIcon && state !== 'loading'" class="button__icon-left">
-      <Icon 
-        :icon="lIconName" 
-        :size="sizeConfig.iconSize"
-        :color="iconColor"
-      />
+    <div v-if="(lIcon || $slots['l-icon']) && state !== 'loading'" class="button__icon-left">
+      <slot name="l-icon" :size="sizeConfig.iconSize" :color="iconColor">
+        <Icon 
+          :icon="lIconName" 
+          :size="sizeConfig.iconSize"
+          :color="iconColor"
+        />
+      </slot>
     </div>
     <!-- Placeholder to maintain size during loading/success -->
-    <div v-else-if="lIcon" class="button__icon-left" style="opacity: 0; pointer-events: none;">
-      <Icon 
-        :icon="lIconName" 
-        :size="sizeConfig.iconSize"
-        :color="iconColor"
-      />
+    <div v-else-if="(lIcon || $slots['l-icon'])" class="button__icon-left" style="opacity: 0; pointer-events: none;">
+      <slot name="l-icon" :size="sizeConfig.iconSize" :color="iconColor">
+        <Icon 
+          :icon="lIconName" 
+          :size="sizeConfig.iconSize"
+          :color="iconColor"
+        />
+      </slot>
     </div>
     
     <!-- Loading Icon (centered when loading) -->
