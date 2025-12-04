@@ -13,12 +13,7 @@
   >
     <!-- Dot grid pattern overlay for all variants -->
     <DotPattern 
-      :className="getDotPatternColor()"
-      :width="16"
-      :height="16"
-      :cx="1"
-      :cy="1"
-      :cr="1"
+      :color="getDotPatternColor()"
     />
 
     <div class="banner__content">
@@ -158,15 +153,16 @@ const getIconColor = (): string => {
 }
 
 const getDotPatternColor = (): string => {
-  // Using the base color of each variant for the dot pattern
+  // Using HSL format to match the SVG pattern structure
+  // Colors are converted to HSL for consistency with the pattern
   const colorMap: Record<string, string> = {
-    default: '#6b7280', // Gray
-    info: '#2563eb', // Blue
-    success: '#10b981', // Green
-    warning: '#d97706', // Amber
-    error: '#dc2626', // Red
-    promotional: '#10b981', // Green (same as success)
-    muted: '#9ca3af' // Light gray
+    default: 'hsl(0, 0%, 45%)', // Gray
+    info: 'hsl(217, 91%, 60%)', // Blue
+    success: 'hsl(142, 71%, 45%)', // Green
+    warning: 'hsl(43, 96%, 56%)', // Amber
+    error: 'hsl(0, 84%, 60%)', // Red
+    promotional: 'hsl(142, 71%, 45%)', // Green (same as success)
+    muted: 'hsl(0, 0%, 55%)' // Light gray
   }
   return colorMap[props.variant] || colorMap.default
 }
