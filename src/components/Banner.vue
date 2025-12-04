@@ -155,14 +155,16 @@ const getIconColor = (): string => {
 }
 
 const getDotPatternColor = (): string => {
+  // Convert variant colors to HSL format matching the SVG pattern
+  // Using the base color of each variant in HSL format
   const colorMap: Record<string, string> = {
-    default: 'rgba(0, 0, 0, 0.03)',
-    info: 'rgba(37, 99, 235, 0.1)',
-    success: 'rgba(16, 185, 129, 0.15)',
-    warning: 'rgba(217, 119, 6, 0.1)',
-    error: 'rgba(220, 38, 38, 0.1)',
-    promotional: 'rgba(16, 185, 129, 0.15)',
-    muted: 'rgba(0, 0, 0, 0.02)'
+    default: 'hsl(0, 0%, 20%)', // Dark gray
+    info: 'hsl(217, 91%, 60%)', // Blue
+    success: 'hsl(142, 71%, 45%)', // Green
+    warning: 'hsl(43, 96%, 56%)', // Amber
+    error: 'hsl(0, 84%, 60%)', // Red
+    promotional: 'hsl(142, 71%, 45%)', // Green (same as success)
+    muted: 'hsl(0, 0%, 30%)' // Medium gray
   }
   return colorMap[props.variant] || colorMap.default
 }
