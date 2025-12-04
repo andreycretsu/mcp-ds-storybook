@@ -13,17 +13,24 @@ interface DotPatternProps {
 }
 
 const props = withDefaults(defineProps<DotPatternProps>(), {
-  size: 20,
-  radius: 1,
+  size: 16,
+  radius: 1.5,
   gap: 4,
-  color: 'rgba(0, 0, 0, 0.05)'
+  color: 'rgba(0, 0, 0, 0.08)'
 })
 
-const patternStyle = computed(() => ({
-  backgroundImage: `radial-gradient(circle, ${props.color} ${props.radius}px, transparent ${props.radius}px)`,
-  backgroundSize: `${props.size}px ${props.size}px`,
-  backgroundPosition: '0 0'
-}))
+const patternStyle = computed(() => {
+  const dotSize = props.size
+  const dotRadius = props.radius
+  const dotColor = props.color
+  
+  return {
+    backgroundImage: `radial-gradient(circle, ${dotColor} ${dotRadius}px, transparent ${dotRadius}px)`,
+    backgroundSize: `${dotSize}px ${dotSize}px`,
+    backgroundPosition: '0 0',
+    backgroundRepeat: 'repeat'
+  }
+})
 </script>
 
 <style scoped>
@@ -34,7 +41,9 @@ const patternStyle = computed(() => ({
   right: 0;
   bottom: 0;
   pointer-events: none;
-  opacity: 0.4;
+  opacity: 0.6;
+  z-index: 1;
+  border-radius: inherit;
 }
 </style>
 

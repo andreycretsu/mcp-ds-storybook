@@ -12,7 +12,12 @@
     v-bind="$attrs"
   >
     <!-- Dot grid pattern overlay for promotional variant -->
-    <DotPattern v-if="variant === 'promotional'" />
+    <DotPattern 
+      v-if="variant === 'promotional'" 
+      :color="'rgba(255, 255, 255, 0.3)'"
+      :size="16"
+      :radius="1.5"
+    />
 
     <div class="banner__content">
       <div class="banner__left">
@@ -168,6 +173,7 @@ defineExpose({
   font-size: 14px;
   transition: all 0.2s ease;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .banner__content {
