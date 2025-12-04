@@ -11,10 +11,9 @@
     ]"
     v-bind="$attrs"
   >
-    <!-- Dot grid pattern overlay for promotional variant -->
+    <!-- Dot grid pattern overlay for all variants -->
     <DotPattern 
-      v-if="variant === 'promotional'" 
-      :color="'rgba(255, 255, 255, 0.3)'"
+      :color="getDotPatternColor()"
       :size="16"
       :radius="1.5"
     />
@@ -155,6 +154,19 @@ const getIconColor = (): string => {
   return colorMap[props.variant] || colorMap.default
 }
 
+const getDotPatternColor = (): string => {
+  const colorMap: Record<string, string> = {
+    default: 'rgba(0, 0, 0, 0.03)',
+    info: 'rgba(37, 99, 235, 0.1)',
+    success: 'rgba(16, 185, 129, 0.15)',
+    warning: 'rgba(217, 119, 6, 0.1)',
+    error: 'rgba(220, 38, 38, 0.1)',
+    promotional: 'rgba(16, 185, 129, 0.15)',
+    muted: 'rgba(0, 0, 0, 0.02)'
+  }
+  return colorMap[props.variant] || colorMap.default
+}
+
 // Expose children prop for slot content
 defineExpose({
   bannerRef
@@ -169,11 +181,13 @@ defineExpose({
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 12px 16px;
+  padding: 8px 12px;
   font-size: 14px;
   transition: all 0.2s ease;
   overflow: hidden;
   isolation: isolate;
+  border-radius: 6px;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.1);
 }
 
 .banner__content {
@@ -261,15 +275,15 @@ defineExpose({
 
 /* Variant: Default */
 .banner--variant-default {
-  background-color: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(to right, #ffffff, #ffffff);
+  border: 0.5px solid #e5e7eb;
   color: #1f2937;
 }
 
 /* Variant: Info */
 .banner--variant-info {
-  background-color: #eff6ff;
-  border-bottom: 1px solid #bfdbfe;
+  background: linear-gradient(to right, #eff6ff, #ffffff);
+  border: 0.5px solid #bfdbfe;
   color: #1e3a8a;
 }
 
@@ -279,15 +293,15 @@ defineExpose({
 
 /* Variant: Success */
 .banner--variant-success {
-  background: linear-gradient(to right, rgba(209, 250, 229, 0.8), rgba(236, 253, 245, 0.5), transparent);
-  border-bottom: 1px solid rgba(187, 247, 208, 0.5);
-  color: #065f46;
+  background: linear-gradient(to right, #d9f9e5, #ffffff);
+  border: 0.5px solid #95eeb6;
+  color: #000f30;
 }
 
 /* Variant: Warning */
 .banner--variant-warning {
-  background-color: #fffbeb;
-  border-bottom: 1px solid #fde68a;
+  background: linear-gradient(to right, #fffbeb, #ffffff);
+  border: 0.5px solid #fde68a;
   color: #78350f;
 }
 
@@ -297,8 +311,8 @@ defineExpose({
 
 /* Variant: Error */
 .banner--variant-error {
-  background-color: #fef2f2;
-  border-bottom: 1px solid #fecaca;
+  background: linear-gradient(to right, #fef2f2, #ffffff);
+  border: 0.5px solid #fecaca;
   color: #991b1b;
 }
 
@@ -308,22 +322,21 @@ defineExpose({
 
 /* Variant: Promotional */
 .banner--variant-promotional {
-  background: linear-gradient(to right, rgba(209, 250, 229, 0.8), rgba(236, 253, 245, 0.4), rgba(255, 255, 255, 0.8));
-  border: 1px solid rgba(16, 185, 129, 0.6);
-  border-radius: 8px;
-  color: #1f2937;
+  background: linear-gradient(to right, #d9f9e5, #ffffff);
+  border: 0.5px solid #95eeb6;
+  color: #000f30;
 }
 
 /* Variant: Muted */
 .banner--variant-muted {
-  background-color: rgba(249, 250, 251, 0.5);
-  border-bottom: 1px solid #e5e7eb;
+  background: linear-gradient(to right, rgba(249, 250, 251, 0.5), #ffffff);
+  border: 0.5px solid #e5e7eb;
   color: #6b7280;
 }
 
 /* Size: Small */
 .banner--size-sm {
-  padding: 8px 12px;
+  padding: 6px 10px;
   font-size: 12px;
 }
 
@@ -337,7 +350,7 @@ defineExpose({
 
 /* Size: Large */
 .banner--size-lg {
-  padding: 16px 24px;
+  padding: 10px 16px;
   font-size: 16px;
 }
 

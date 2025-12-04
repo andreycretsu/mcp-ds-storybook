@@ -16,7 +16,7 @@ const props = withDefaults(defineProps<DotPatternProps>(), {
   size: 16,
   radius: 1.5,
   gap: 4,
-  color: 'rgba(0, 0, 0, 0.08)'
+  color: 'rgba(0, 0, 0, 0.1)'
 })
 
 const patternStyle = computed(() => {
@@ -41,7 +41,7 @@ const patternStyle = computed(() => {
   right: 0;
   bottom: 0;
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 0.8;
   z-index: 1;
   border-radius: inherit;
 }
